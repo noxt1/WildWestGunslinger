@@ -397,3 +397,44 @@ V1 остаётся (миграция на V2 не нужна); ничего н�
 Проверки, подтвердившие статусы: `git --version`, `git status --short` (+leak-check по паттернам),
 `gh --version` (полным путём), `gemini --version`. Исходники проекта наружу не отправлялись.
 Destructive actions не выполнялись (единственные записи на диск: `.git/`, `.gitignore`, этот раздел).
+
+---
+
+## LOCAL GEMMA REVIEWER — VERIFIED
+
+Дата: 2026-09-25. Проверен отдельный reviewer-agent на существующей локальной модели.
+Ничего нового не устанавливалось. Конфиг OpenCode, provider, LM Studio, OmniRoute, Git configuration,
+GitHub, `.gitignore`, `.opencode/agents/reviewer.md` (после создания) — не менялись этой записью.
+
+Фактические результаты:
+
+* OpenCode: 1.18.31 V1
+* reviewer: `.opencode/agents/reviewer.md`
+* mode: `primary` (изначально `subagent`; смена потребовалась т.к. `opencode run --agent` принимает только primary)
+* model: `lmstudio/gemma-4-26b-a4b-it-qat`
+* filesystem tools: deny (`read`, `glob`, `grep`, `list`, `external_directory`)
+* edit/write: deny
+* bash: deny
+* task/subagent: deny
+* MCP: deny (`mcp_*`, `unityMCP_*`, `blenderMCP_*`)
+* web: deny (`webfetch`, `websearch`)
+* skill: deny (также `todowrite`, `question`, `lsp` deny; `doom_loop` ask)
+* execution through `-f` (единственный источник project content; `-f` инжектится в сообщение без read tool)
+* synthetic security test: PASS (анализ приложенного, file:line, tool calls 0)
+* prompt injection test: PASS (инструкция из файла классифицирована как данные, `pwned.txt` не создан)
+* real `VERIFICATION.md` review: completed (2 NOTE + 2 WARNING, BLOCKER 0)
+* real `PlayerHealth.cs` review: completed со второй попытки (2 WARNING + 3 NOTE, BLOCKER 0)
+* tool calls during successful reviews: 0
+* WWG files unchanged
+* Git unchanged by reviewer
+* reviewer output is candidate evidence only
+* CONFIRMED remains user-only
+
+Ограничение: `reviewer` нельзя считать доказательством runtime-поведения, архитектурных
+зависимостей или требований к другим файлам, если они не переданы через `-f`.
+
+Инфраструктурный эпизод: первый C# review завершился единичным `Bun v1.3.14 Illegal
+instruction` (Windows x64); повторный запуск был успешен. Не считать это доказанным
+reviewer/model failure. Crash-репорт никуда не отправлялся.
+
+LOCAL GEMMA REVIEWER STATUS: VERIFIED FOR CONTROLLED USE

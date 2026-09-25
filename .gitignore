@@ -1,0 +1,38 @@
+# WildWestGunslinger — Unity .gitignore (Phase 2, approved 2026-09-25)
+# Стандарт GitHub Unity, адаптирован под проект. Файлы НЕ удаляются и НЕ переименовываются —
+# этот файл только исключает генерируемое из будущего трекинга.
+
+# Unity generated — never commit
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+/[Ll]ogs/
+[Uu]ser[Ss]ettings/
+[Mm]emoryCaptures/
+
+# Visual Studio / Rider (регенерируются при открытии проекта)
+.vs/
+*.csproj
+*.sln*
+*.user
+*.userprefs
+
+# VS Code — трекаем только осознанные настройки
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Локальные временные данные
+/.utmp/
+
+# OS мусор
+Thumbs.db
+Desktop.ini
+
+# Секреты и лицензии — никогда в репозиторий
+*.env
+*.ulf

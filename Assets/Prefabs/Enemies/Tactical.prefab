@@ -46,7 +46,6 @@ GameObject:
   - component: {fileID: 2509584410948562685}
   - component: {fileID: 2210380132172861519}
   - component: {fileID: -7910206680844380798}
-  - component: {fileID: 7338253614005484190}
   - component: {fileID: -9006943891459274629}
   m_Layer: 0
   m_Name: Tactical
@@ -289,34 +288,6 @@ MonoBehaviour:
   maxHpMultiplier: 3
   eliteHealthMultiplier: 2
   eliteXpMultiplier: 3
---- !u!114 &7338253614005484190
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5938421807427805521}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 809b48f6d9f34f34d90ca85975a9c332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyTacticalEnvironmentScanner
-  scanDistance: 5
-  scanHeight: 1.1
-  bodyRadius: 0.35
-  scanInterval: 0.08
-  rayCount: 15
-  scanAngle: 120
-  obstacleLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  ignoreTriggers: 1
-  minimumObstacleHeight: 0.35
-  cornerPadding: 0.8
-  routeProbeDistance: 2.5
-  routeProbeRadius: 0.3
-  sideProbeAngle: 70
-  showDebug: 1
 --- !u!114 &-9006943891459274629
 MonoBehaviour:
   m_ObjectHideFlags: 0

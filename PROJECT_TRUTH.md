@@ -60,8 +60,8 @@ Confirmed by play-mode observation on 2026-09-29:
 
 | # | Defect | Severity | Evidence |
 |---|---|---|---|
-| 1 | **12 broken object references** | Critical | Runtime |
-| 2 | **4 missing Mono Script** references | Critical | Runtime |
+| 1 | **2 broken material references** (DIAG_TEMP_* debris) - the previous "12" count was a misclassification, see UNI-D04 | Low | Static (Phase 5A) |
+| 2 | **4 missing Mono Script** references - **FIXED (static) 2026-09-29**, runtime NOT VERIFIED | ~~Critical~~ -> Fixed | Static (Phase 5A) |
 | 3 | **Zero NavMesh** — 0 agents, 0 triangulation | Critical | Runtime |
 | 4 | **No character rig** — 0 Animator, 0 Avatar, 0 Controller, 0 SkinnedMeshRenderer | Critical | Runtime |
 | 5 | **Player and enemies are Capsules** | Critical | Runtime |

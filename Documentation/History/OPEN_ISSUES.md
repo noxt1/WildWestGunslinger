@@ -143,12 +143,12 @@ Combat, investigation, sound propagation, cover-taking, flanking.
 ## Phase 4 discoveries — new open issues
 
 ### ISSUE-13 — 4 enemy prefabs hold a dangling script reference
-- **Severity:** High (console noise; **not** a functional break)
+- **Severity:** High (console noise; **not** a functional break) — **CLOSED (static) 2026-09-29**
 - **Root cause of:** `UNI-D05` (4 missing Mono Scripts) and `RT-06` (9 warnings per spawn cycle)
 - **Detail:** `Assets/Scripts/Enemies/EnemyTacticalEnvironmentScanner_TEST.cs` was deleted as temporary diagnostic cleanup. Its `.meta` is gone, but `Bandit.prefab`, `Rusher.prefab`, `Shooter.prefab` and `Tactical.prefab` still reference script GUID `809b48f6d9f34f34d90ca85975a9c332` in the component slot between `EnemyHealth` and `EnemyTacticalPlanner`
 - **Symptom:** `The referenced script (Unknown) on this Behaviour is missing!` — 7 warnings on one `Bandit`; scales with enemy count
 - **Not a compile error:** all code references to the deleted type were already removed; project compiles with 0 errors
-- **Fix:** remove the empty component slot from the 4 prefabs in the Editor. **A prefab edit — out of scope for documentation work**
+- **✅ FIXED 2026-09-29 (Phase 5A):** the orphaned component block and its m_Component entry were removed from all 4 prefabs. GUID occurrences 4 -> 0. Root-cause investigation showed the capability was absorbed into EnemyController (obstacleProbeRadius, obstacleRouteProbeDistance, obstacleStuckTime, obstacleRouteActive); the deleted component had 0 callers
 - **Verified:** 2026-09-29 against the filesystem
 
 ### ISSUE-14 — Shadow Aliasing is an open, unfixed rendering problem
@@ -187,6 +187,13 @@ Combat, investigation, sound propagation, cover-taking, flanking.
 
 ---
 
+### ISSUE-20 — Two `DIAG_TEMP_*` diagnostic debris objects with missing materials
+- **Severity:** Low (visual debris; no functional impact)
+- **Detail:** `DIAG_TEMP_White` (missing material GUID `5e0759d7869747ad89fefa597cdcd781`) and `DIAG_TEMP_Gray` (missing material GUID `e0b90311a8d04983a42b7fa1b1d8977b`) sit in `Assets/Scenes/TestArena.unity`. Both use hand-authored fileIDs (`910000001`), the Unity built-in Quad mesh, are `m_Enabled: 1` and cast shadows
+- **Origin:** leftovers from a washed-out-scene diagnosis session; the name prefix is explicit
+- **These are the only 2 genuinely broken asset references in the scene** (Phase 5A reclassified the former ""12 broken references"")
+- **Action:** removal is a destructive scene edit and requires a user decision. **Not removed**
+- **Status:** REVIEW - awaiting decision
 ## Cross-references
 
 - `UNI-0003` — Unity defects with severity

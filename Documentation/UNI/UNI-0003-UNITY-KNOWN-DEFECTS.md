@@ -74,12 +74,27 @@ tree.
 - **Impact:** no visual character in the playable build.
 - **State:** unfixed, downstream of `UNI-D02`.
 
-### UNI-D04 — 12 broken object references
-- **Observed:** 12 references resolve to `None` at runtime.
-- **Impact:** undefined behaviour in whichever systems consume them; likely a direct contributor to non-functional features.
-- **State:** unfixed. Must be enumerated per-object before repair.
+### UNI-D04 — Scene reference integrity — ✅ RECLASSIFIED in Phase 5A
+- **Previous claim:** "12 broken object references" — `None` at runtime.
+- **Phase 5A finding (static enumeration of `Assets/Scenes/TestArena.unity`):** the figure of 12 counted **unassigned serialized fields** that are *not* broken references. Full enumeration:
 
-### UNI-D05 — 4 missing Mono Script references
+| Group | Count | Actual behaviour | Broken? |
+|---|---|---|---|
+| `ArenaGenerator.fencePrefab / coverPrefab / cratePrefab / barrelPrefab / wagonPrefab / lanternPrefab / logWallPrefab` | 7 | Gated by `HaveClusterPrefabs()` (requires fence+cover+crate+barrel). All 7 null → generator **falls back to `BuildLegacyCovers()`** and builds covers as primitives. Graceful by design | **No** |
+| `MobileTouchControls.playerController / gunController / playerCamera` | 3 | Self-healed at runtime: `FindFirstObjectByType<PlayerController>()`, `FindFirstObjectByType<GunController>()`, `Camera.main` | **No** (see `UNI-D07` caveat) |
+| `HUDController.xpBar / levelText` | 2 | **Dead fields** — `HUDController.cs` (53 lines) never reads them. `UpdateHealth()` touches only `healthBar` and `healthText`. No XP UI objects exist in the scene | **No** — feature simply not implemented |
+
+- **Genuinely broken references found instead:** **2**, not 12. Both are unresolvable **material** GUIDs on temporary diagnostic objects:
+
+| Object | Missing material GUID | Note |
+|---|---|---|
+| `DIAG_TEMP_White` | `5e0759d7869747ad89fefa597cdcd781` | hand-authored fileID `910000001`, Unity built-in Quad mesh, `m_Enabled: 1`, casts shadows |
+| `DIAG_TEMP_Gray` | `e0b90311a8d04983a42b7fa1b1d8977b` | same pattern |
+
+  Named `DIAG_TEMP_*` — leftovers from a washed-out-scene diagnosis session. All 57 GUID references in the scene were resolved; the other 15 are Unity built-ins or package assets (URP, uGUI, Input System, TMP).
+- **State:** reclassified. The 2 diagnostic debris objects are **REVIEW — removal requires a user decision** (scene edit, destructive). Not removed by Phase 5A.
+
+### UNI-D05 — 4 missing Mono Script references — ✅ FIXED 2026-09-29 (Phase 5A)
 - **Observed:** 4 components show `Missing (Mono Script)`.
 - **Impact:** the owning GameObjects have lost their logic entirely; behaviour is silently absent.
 - **ROOT CAUSE IDENTIFIED in Phase 4** (verified against the filesystem, 2026-09-29): the diagnostic script `Assets/Scripts/Enemies/EnemyTacticalEnvironmentScanner_TEST.cs` was deleted as temporary cleanup. Its `.meta` is gone, but **4 enemy prefabs still hold a serialized reference to script GUID `809b48f6d9f34f34d90ca85975a9c332`**:
@@ -93,18 +108,44 @@ tree.
 
   The component slot sits **between `EnemyHealth` and `EnemyTacticalPlanner`**. All references in `EnemyTacticalPlanner.cs` to the deleted type were already removed, so **the project compiles with 0 errors** — only the orphaned prefab slots remain.
 - **Observable symptom:** Play Mode prints `The referenced script (Unknown) on this Behaviour is missing!` for spawned enemies — measured **7 warnings on one `Bandit`**. This is the source of `RT-06` ("9 missing-script warnings per spawn cycle, scales with enemy count").
-- **Fix required:** remove the empty component slot from the 4 prefabs in the Unity Editor. This is a **prefab edit** and therefore **out of scope for documentation work** — see `../History/OPEN_DECISIONS.md` (no decision entry yet; recorded as `ISSUE-13`).
-- **State:** root cause **KNOWN**, not fixed. This is no longer an "unidentified defect".
+- **What the component was for (Phase 5A investigation):** `EnemyTacticalEnvironmentScanner_TEST.cs` (435 lines, GUID confirmed as `809b48f6d9f34f34d90ca85975a9c332`) was a diagnostic obstacle-scanner exposing `ScanNow()`, `TryGetBestRoute(out RouteCandidate)`, `IsDirectionClear(Vector3, float)`, with `showDebug = true` and `OnDrawGizmos()`. Recovered from git history (`f9f4899`) and the 2026-09-22 `Z:` backup.
+- **Was its functionality replaced?** **Yes — absorbed into `EnemyController.cs`** as first-class fields, not via a component:
+
+  | Deleted scanner field | `EnemyController` equivalent |
+  |---|---|
+  | `bodyRadius = 0.35` | `obstacleProbeRadius = 0.35` — **identical** |
+  | `routeProbeDistance = 2.5` | `obstacleRouteProbeDistance = 2.2` |
+  | `sideProbeAngle = 70` | `obstacleSideProbeDistance = 1.6` |
+  | — | `obstacleStuckTime`, `obstacleRouteCommitTime`, `obstacleEscapeDistance`, `obstacleRouteActive` (newer, developed system) |
+
+  `TryGetBestRoute`, `IsDirectionClear`, `RouteCandidate`, `ObstacleInfo` and `visibleObstacles` have **0 references** anywhere in current code. No architectural replacement is needed — the capability lives in `EnemyController` directly.
+- **No state was lost:** all 16 serialized fields were still present in the prefabs and were readable.
+- **Decision: REMOVE obsolete reference.**
+- **Fix applied (2026-09-29):** the orphaned component block (28 lines) and its `m_Component` entry were removed from all 4 prefabs — `Bandit`, `Rusher`, `Shooter`, `Tactical`. Each prefab lost exactly 29 lines; component count 10 → 9.
+- **Static verification:** GUID occurrences 4 → **0**; `EnemyTacticalEnvironmentScanner` name **0**; orphaned `m_Component` references **0**; `EnemyHealth`, `EnemyTacticalPlanner`, `EnemyController` all intact; diff is **116 deletions, 0 insertions** across 4 files; orphan-block count identical to `HEAD` (2 = the GameObject headers themselves) → **no regression**.
+- **RUNTIME VERIFICATION: NOT VERIFIED.** Unity 6000.3.23f1 is installed and running, but this environment has **no Unity control channel** — Play mode and Console could not be driven. Per §12 the fix is IMPLEMENTED + WIRED + STATIC VERIFIED, **not runtime verified**. A Play-mode run is required to confirm the `missing script` warnings are gone.
+- **State:** FIXED (static) · runtime confirmation pending.
 
 ### UNI-D06 — Modular FBX imported at 0.01× scale
 - **Observed:** modular environment FBX import scale resolves to `0.01×`; Z-up is not compensated.
 - **Impact:** imported modular geometry is effectively invisible (1 cm scale). Any attempt to integrate the modular kit will place geometry at the wrong scale and orientation.
 - **State:** unfixed. Import settings are wrong; this is a source-side `.meta`/importer problem.
 
-### UNI-D07 — Android touch controls broken
-- **Observed:** `MobileTouchControls` object references are all `null`.
-- **Impact:** latent on PC, **critical for Android**. The Android target cannot be played.
-- **State:** unfixed.
+### UNI-D07 — Android touch controls — ⚠️ RECLASSIFIED in Phase 5A
+- **Previous claim:** "`MobileTouchControls` object references are all `null`" — critical for Android.
+- **Phase 5A finding:** the 3 null fields are **self-healed at runtime** in `MobileTouchControls.cs` (`Start()`):
+  - `playerController` → `FindFirstObjectByType<PlayerController>()`
+  - `gunController` → `FindFirstObjectByType<GunController>()`
+  - `playerCamera` → `Camera.main`
+
+  Additional `playerController == null` guards exist at usage sites. **Therefore the nulls are not a functional break on PC** — they are unassigned serialized fields with runtime fallback.
+- **Latent risks that remain real:**
+  1. **Instance ambiguity** — `FindFirstObjectByType<GunController>()` returns the *first* match. `RT-03` records a duplicate `FireButton`/`GunController`, so the wrong weapon could be bound on device.
+  2. **Initialisation order** — if the Player or its `GunController` does not exist yet when `Start()` runs, the lookup returns `null` and there is no retry.
+  3. `Camera.main` requires a camera tagged `MainCamera`.
+- **Android status: NOT VERIFIED.** No physical Android device is available in this environment. Per §12, **PC PASS ≠ Android PASS**; this remains an open Android blocker until a device run confirms touch input.
+- **Suppressing the nulls in code is explicitly rejected** per the task rules — the fallback already exists; adding null-guards would hide the ambiguity rather than fix it.
+- **State:** reclassified; not a code defect to patch. **Android validation OPEN.**
 
 ---
 

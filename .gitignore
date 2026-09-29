@@ -36,3 +36,18 @@ Desktop.ini
 # Секреты и лицензии — никогда в репозиторий
 *.env
 *.ulf
+
+# --- Phase 6 repository hygiene (2026-09-29) -----------------------------------
+# Targeted rules only. Deliberately NOT a blanket Working/ rule, so that
+# production Blender sources and authoritative QA reports stay visible.
+#
+# IGNORE: Blender auto-backups
+*.blend1
+
+# IGNORE: regenerable review renders (725 PNGs, reproducible from sources)
+Working/blender_reviews/
+
+# TRACK (intentionally NOT ignored):
+#   Working/blender_src/**/*.blend  - production Blender sources
+#   Working/reports/**/*.md         - authoritative QA reports
+# end Phase 6 hygiene

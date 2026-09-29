@@ -131,9 +131,9 @@ tree.
 - **Impact:** imported modular geometry is effectively invisible (1 cm scale). Any attempt to integrate the modular kit will place geometry at the wrong scale and orientation.
 - **State:** unfixed. Import settings are wrong; this is a source-side `.meta`/importer problem.
 
-### UNI-D07 — Android touch controls — ⚠️ RECLASSIFIED in Phase 5A
+### UNI-D07 — Android touch controls — PARTIALLY VERIFIED in Phase 5D (reclassified in Phase 5A)
 - **Previous claim:** "`MobileTouchControls` object references are all `null`" — critical for Android.
-- **Phase 5A finding:** the 3 null fields are **self-healed at runtime** in `MobileTouchControls.cs` (`Start()`):
+- **Phase 5A finding:** the 3 null fields are **self-healed at runtime** in `MobileTouchControls.cs` (**`Awake()`** — corrected in Phase 5D; there is no `Start()` method in that class):
   - `playerController` → `FindFirstObjectByType<PlayerController>()`
   - `gunController` → `FindFirstObjectByType<GunController>()`
   - `playerCamera` → `Camera.main`
@@ -218,7 +218,7 @@ retained for traceability to `AUDIT_2_RUNTIME_REPORT.md`.
 | Audit ref | Defect | Canonical ID |
 |---|---|---|
 | `RT-01` | Modular FBX import 0.01×, Z-up uncompensated | `UNI-D06` |
-| `RT-02` | `MobileTouchControls` refs null (Android-critical) | `UNI-D07` |
+| `RT-02` | `MobileTouchControls` refs null (Android-critical) — **✅ FIXED (3 refs serialized), BUILD VERIFIED 2026-09-29** | `UNI-D07` **PARTIALLY VERIFIED** — device runtime still unproven |
 | `RT-03` | Duplicate `GunController`; firing/upgrades on **different instances** — **✅ FIXED, RUNTIME VERIFIED 2026-09-29** | `ISSUE-22` **CLOSED** | Phase 5B.1: one canonical `Player#70770`; `FireButton` duplicate removed |
 | `RT-04` | `GunController.Awake` forced `damage ≥ 200` — **✅ FIXED, RUNTIME VERIFIED 2026-09-29** | `UNI-D10` **CLOSED** | Phase 5B: Player 200→100, FireButton 200→10 |
 | `RT-05` | `Rusher`/`Shooter` prefab materials wrong | `UNI-D08`, `UNI-D09` |

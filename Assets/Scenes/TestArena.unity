@@ -2592,9 +2592,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce410d889c8927144a10e4246dae057d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MobileTouchControls
-  playerController: {fileID: 0}
-  gunController: {fileID: 0}
-  playerCamera: {fileID: 0}
+  playerController: {fileID: 1483193843}
+  gunController: {fileID: 1483193849}
+  playerCamera: {fileID: 1221732974}
   movementZoneWidth: 0.5
   movementZoneHeight: 0.55
   fireZoneWidth: 0.5

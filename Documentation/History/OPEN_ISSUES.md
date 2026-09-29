@@ -18,7 +18,7 @@ closed. `RT-*` items must never be silently dropped when editing
 | Audit ref | Issue | Canonical | Status |
 |---|---|---|---|
 | **`RT-01`** | Modular FBX import at 0.01×, Z-up uncompensated (4 m wall → 4 cm tile) | `UNI-D06` | **OPEN** — blocks all environment promotion |
-| **`RT-02`** | `MobileTouchControls` all 3 refs null — inert on PC, **activates on Android** | `UNI-D07` | **OPEN** — Android blocker |
+| **`RT-02`** | `MobileTouchControls` all 3 refs null — inert on PC, **activates on Android** | `UNI-D07` | **PARTIALLY VERIFIED** (Phase 5D) — refs now serialized; PC runtime + Android build pass; **device NOT VERIFIED** |
 | `RT-03` | `FireButton`/`GunController` duplicate; `weaponPoint` → Player root; damage 10→200 | `UNI-D10` (partial) | **OPEN** — the duplicate/`weaponPoint` element has no dedicated entry |
 | **`RT-04`** | `GunController.Awake` forces `damage ≥ 200`, discarding Inspector values | `UNI-D10` | **OPEN** — code confirmed at `GunController.cs:37` |
 | **`RT-05`** | `Rusher.prefab` = `FrameDebuggerRenderTargetDisplay`; `Shooter.prefab` = `TMP_SDF-HDRP LIT` | `UNI-D08`, `UNI-D09` | **OPEN** |

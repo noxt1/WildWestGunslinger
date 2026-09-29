@@ -11,7 +11,7 @@
 | Platform | Intent | Status |
 |---|---|---|
 | **Windows PC** | primary development target | playable in editor and via IL2CPP build output |
-| **Android** | secondary target | **BLOCKED** — touch controls non-functional |
+| **Android** | secondary target | **PARTIALLY VERIFIED** — APK builds clean (IL2CPP, 0 errors); device runtime unproven (`UNI-D07`) |
 | Other platforms | not planned | — |
 
 ---
@@ -36,8 +36,8 @@
 
 | Item | Status | Evidence |
 |---|---|---|
-| `MobileTouchControls` object | ❌ **present but all references `null`** | runtime |
-| Touch input | ❌ | consequence of the above |
+| `MobileTouchControls` object | ✅ **all 3 references serialized to the canonical Player** | Phase 5D runtime + build verified |
+| Touch input | 🟡 **unproven on device** | wiring correct and compiled into the APK; no device available (`DEVICE NOT VERIFIED`) |
 | On-screen controls | ❌ | not functional |
 | APK build | ✅ artifact exists | `Desktop\WildWest.apk`, 46.2 MB, 2026-09-09 |
 
@@ -55,7 +55,7 @@
 | Layer | Status |
 |---|---|
 | Input actions / input map | not documented in the repository |
-| `MobileTouchControls` script | exists in the scene with null references |
+| `MobileTouchControls` script | exists; references now explicitly assigned in `TestArena.unity` |
 | Rebinding / accessibility | not implemented |
 
 ---

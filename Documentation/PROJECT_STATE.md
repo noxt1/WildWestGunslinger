@@ -43,7 +43,7 @@ One line per system. **Status vocabulary is strict** (`README.md` §5).
 | Broken references | **defect** | `RUNTIME VERIFIED` | 12, unidentified | `UNI-D04` |
 | Missing scripts | **defect** | `RUNTIME VERIFIED` | 4, unidentified | `UNI-D05` |
 | Modular FBX import | **broken** | `RUNTIME VERIFIED` | 0.01×, Z-up uncompensated | `UNI-D06` |
-| Android touch controls | **broken** | `RUNTIME VERIFIED` | all refs `null` | `UNI-D07` |
+| Android touch controls | **wired + build-verified** | `PC RUNTIME VERIFIED` + `ANDROID BUILD VERIFIED` | all 3 refs now serialized to canonical Player; IL2CPP build 0 errors; **device NOT VERIFIED** | `UNI-D07` partial |
 | `Shooter` material | **broken** | `RUNTIME VERIFIED` | `TMP_SDF-HDRP LIT` | `UNI-D08` |
 | `Rusher` material | **broken** | `RUNTIME VERIFIED` | `FrameDebuggerRenderTargetDisplay` | `UNI-D09` |
 | Modular integration | **not started** | `VERIFIED ABSENCE` | 0 modular meshes | `UNI-D11` |

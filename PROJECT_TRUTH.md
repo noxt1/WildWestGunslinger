@@ -14,7 +14,7 @@
 | Project | WildWestGunslinger |
 | Genre | Third-person western arena shooter |
 | Engine | Unity 6 (6000.x) |
-| Platforms | Windows PC (primary dev), Android (target) |
+| Platforms | Windows PC (primary dev) — `RUNTIME VERIFIED` · Android — `BUILD VERIFIED` (IL2CPP APK, 0 errors), **device runtime NOT VERIFIED** |
 | Stage | Pre-alpha, unreleased |
 | Canonical scene | `Assets/Scenes/TestArena.unity` |
 | Unity project root | repository root (relative: `.`) |
@@ -71,7 +71,7 @@ Confirmed by play-mode observation on 2026-09-29:
 | 7 | **`Shooter.prefab` uses `TMP_SDF-HDRP LIT`** (font material as surface) | High | Runtime |
 | 8 | **`Rusher.prefab` uses `FrameDebuggerRenderTargetDisplay`** | High | Runtime |
 | 9 | **Gun damage overwritten to 200** — **✅ FIXED, RUNTIME VERIFIED 2026-09-29** (base `100` honoured; upgrades ×1.20 cumulative land on the firing controller) | ~~High~~ → closed | Phase 5B / 5B.1 |
-| 10 | **`MobileTouchControls` references are null** — latent on PC, **critical for Android** | Critical (Android) | Runtime |
+| 10 | **`MobileTouchControls` references are null** — **✅ FIXED in Phase 5D** (all 3 serialized to the canonical `Player`); Android build passes, **device runtime still unproven** | ~~Critical (Android)~~ → partial | Phase 5D |
 | 11 | **0 destructible instances** despite controlled-fracture assets existing | Medium | Runtime |
 | 12 | **0 modular meshes integrated** in scene | High | Runtime |
 

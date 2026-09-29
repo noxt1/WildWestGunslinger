@@ -211,3 +211,55 @@ See `Documentation/History/OPEN_DECISIONS.md`.
 ---
 
 **End of `PROJECT_TRUTH.md`**
+---
+
+## CURRENT VERIFIED TECHNICAL BASELINE (Phase 5 checkpoint, 2026-09-29)
+
+Technical integration is **frozen** while art production continues. The following is proven and
+must not be re-litigated without new evidence.
+
+| Area | State |
+|---|---|
+| Core scene / reference integrity | **verified** — orphaned refs removed, duplicate controller removed, mobile refs serialized |
+| `GunController` architecture | **verified** — one canonical instance; fire path == upgrade path |
+| Gun damage model | **verified** — authored values honoured, no forced clamp (base stays `100`) |
+| XP / level progression | **RUNTIME VERIFIED** — XP source, pickup, level-up, `UpgradeManager` |
+| XP bar UI | **RUNTIME VERIFIED** — bar **exists** and tracks XP exactly |
+| Upgrade application | **verified** — one click applies one upgrade |
+| Mobile reference serialization | **verified** — all 3 `MobileTouchControls` refs -> canonical `Player` |
+| Android build | **BUILD VERIFIED** — IL2CPP APK, 0 errors, `arm64-v8a` only |
+| Android device runtime | **NOT VERIFIED** — no device available |
+| Runtime verification channel | **VERIFIED** — OpenCode -> direct Unity MCP JSON-RPC fallback |
+
+## DEFERRED — intentionally not integrated
+
+Modular environment · Character Foundation · final clothing · final weapons art ·
+enemy model replacement · full AI runtime verification · Android device verification.
+
+**DEFERRED means postponed, not cancelled.** All remain roadmap items.
+
+## ART PRODUCTION IN PROGRESS
+
+| Item | State |
+|---|---|
+| Environment wagon | `IN PROGRESS` |
+| Player Character | `IN PROGRESS` |
+| Character clothing | `IN PROGRESS` |
+| Weapons | `IN PROGRESS` |
+| Enemy characters / assets | `IN PROGRESS` |
+
+No item becomes `FINAL` because a working model exists — only its own art QA / approval gate
+can promote it.
+
+- **Character Foundation is NOT integrated into Unity.** The 51-bone rig is not claimed to be integrated.
+- **Character source exists and is backed up**; production continues.
+- **Weapons:** `GunController` integrity is fixed; weapon art assets are still in production.
+- **Enemies:** infrastructure exists and the orphaned scanner reference is fixed; art replacement pending; AI verification incomplete.
+
+## EXECUTION STATE: ART COMPLETION GATE
+
+Complete current production models and pass their asset QA / approval gates before large-scale
+Unity integration resumes. This is a **temporary scheduling state**, not a new permanent stage;
+no stage was renumbered.
+
+When models are reported complete, the next task is **ART FINALIZATION + INTEGRATION READINESS AUDIT**.

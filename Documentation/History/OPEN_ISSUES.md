@@ -19,12 +19,12 @@ closed. `RT-*` items must never be silently dropped when editing
 |---|---|---|---|
 | **`RT-01`** | Modular FBX import at 0.01×, Z-up uncompensated (4 m wall → 4 cm tile) | `UNI-D06` | **OPEN** — blocks all environment promotion |
 | **`RT-02`** | `MobileTouchControls` all 3 refs null — inert on PC, **activates on Android** | `UNI-D07` | **PARTIALLY VERIFIED** (Phase 5D) — refs now serialized; PC runtime + Android build pass; **device NOT VERIFIED** |
-| `RT-03` | `FireButton`/`GunController` duplicate; `weaponPoint` → Player root; damage 10→200 | `UNI-D10` (partial) | **OPEN** — the duplicate/`weaponPoint` element has no dedicated entry |
-| **`RT-04`** | `GunController.Awake` forces `damage ≥ 200`, discarding Inspector values | `UNI-D10` | **OPEN** — code confirmed at `GunController.cs:37` |
+| `RT-03` | `FireButton`/`GunController` duplicate; `weaponPoint` → Player root | `ISSUE-22` | **CLOSED — FIXED, RUNTIME VERIFIED (Phase 5B.1)**; duplicate removed |
+| **`RT-04`** | `GunController.Awake` forced `damage ≥ 200` via `Mathf.Max(damage, 200f)` | `UNI-D10` | **CLOSED — FIXED, RUNTIME VERIFIED (Phase 5B)**; base stays `100`, `DEC-11` OPEN |
 | **`RT-05`** | `Rusher.prefab` = `FrameDebuggerRenderTargetDisplay`; `Shooter.prefab` = `TMP_SDF-HDRP LIT` | `UNI-D08`, `UNI-D09` | **OPEN** |
-| `RT-06` | 9 missing-script warnings per spawn cycle; scales with enemy count | `UNI-D05` | **OPEN** |
+| `RT-06` | 9 missing-script warnings per spawn cycle | `UNI-D05` | **CLOSED — RUNTIME VERIFIED, 0 warnings (Phases 5A/5R)** |
 | `RT-07` | `HUDController.xpBar` / `levelText` null — level never displayed | **`UNI-D13`** | **OPEN** — added in Phase 3 |
-| `RT-08` | 12 broken references, all runtime-confirmed | `UNI-D04` | **OPEN** — unidentified |
+| `RT-08` | "12 broken references" claim reclassified; real remainder = 2 | `UNI-D04` | **PARTLY RESOLVED** — 2 remain as `ISSUE-20` |
 | `RT-09` | 4097 renderers / 1552 objects at runtime — Android perf unproven | **`UNI-D14`** | **OPEN** — added in Phase 3 |
 
 > **Phase 3 gap closed.** `RT-07` and `RT-09` were absent from the Phase 2
@@ -219,6 +219,19 @@ Combat, investigation, sound propagation, cover-taking, flanking.
 - **FIX:** removed the three `AddListener` calls from `UpgradeUI.Awake()`; `SetButton()` is now the single registration point. Pre-existing defect - `UpgradeUI.cs` was not modified before this phase
 - **VERIFICATION:** listener census 2 -> 1; `ATTACK RANGE +5` 15->20 (not 25); `FIRE RATE +15%` 0.4->0.3478 = /1.15 (not 0.3024); `DAMAGE +20%` 100->120 (not 144); canonical `Player#70770`; 0 project-origin console errors
 - **Report:** `Documentation/PHASE5C_HUD_XP_REPORT.md`
+### ISSUE-24 - Android build is arm64-v8a only
+- **Severity:** Medium (device compatibility)
+- **Found:** 2026-09-29, Phase 5D (`Documentation/PHASE5D_MOBILE_ANDROID_REPORT.md`)
+- **Detail:** the verified IL2CPP APK contains only `lib/arm64-v8a/libil2cpp.so`. 32-bit `armeabi-v7a` devices are not supported by this build. Not previously recorded anywhere
+- **Status:** **OPEN** - separate Android compatibility issue, independent of `RT-02` device verification
+- **Note:** this is a *compatibility* question, not a proof that touch controls fail. Fixing it does not close `RT-02`
+
+### ISSUE-25 - Ambient "kinematic body" warnings from enemy AI
+- **Severity:** Low (console noise, no observed gameplay defect)
+- **Found:** 2026-09-29, Phase 5D
+- **Detail:** ~34 pairs per session of `Setting linear/angular velocity of a kinematic body is not supported` from `Assets/Scripts/Enemies/EnemyController.cs:2297` (`rb.linearVelocity = Vector3.zero` on a kinematic body in the room-search path)
+- **Correction:** Phase 5C attributed similar warnings to its own test harness. They occur without any test manipulation, so that earlier attribution was incomplete
+- **Status:** **OPEN** - enemy AI, explicitly out of Phase 5D scope; needs a separate task
 ## Cross-references
 
 - `UNI-0003` — Unity defects with severity

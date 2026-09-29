@@ -94,3 +94,63 @@ One line per system. **Status vocabulary is strict** (`README.md` §5).
 ---
 
 **End of `PROJECT_STATE.md`**
+---
+
+# PHASE 5 CHECKPOINT — 2026-09-29
+
+Technical integration is frozen while art production continues. Status vocabulary below is
+deliberate: **DEFERRED** and **IN PROGRESS** must never be written as *implemented*.
+
+## VERIFIED
+
+| System | Level |
+|---|---|
+| GunController identity / fire == upgrade path | `RUNTIME VERIFIED` |
+| Gun damage model (no forced clamp, base `100`) | `RUNTIME VERIFIED` |
+| XP accumulation, pickup, level-up | `RUNTIME VERIFIED` |
+| XP **bar** (exists, tracks XP exactly) | `RUNTIME VERIFIED` |
+| Upgrade application (1 click = 1 upgrade) | `RUNTIME VERIFIED` |
+| Mobile references -> canonical Player | `RUNTIME VERIFIED` |
+| Core scene / reference integrity | verified |
+| Android **build** | `BUILD VERIFIED` (IL2CPP, 0 errors) |
+| Unity runtime channel (MCP JSON-RPC fallback) | `VERIFIED` |
+
+## PARTIALLY VERIFIED
+
+| System | Verified | Missing |
+|---|---|---|
+| Mobile / Android (`RT-02`) | PC runtime + Android build | **Android device runtime** |
+
+## OPEN
+
+| Ref | Item |
+|---|---|
+| `RT-01` | Modular FBX import 0.01x / Z-up uncompensated |
+| `RT-05` | `Rusher`/`Shooter` prefab materials wrong |
+| `RT-07` | Level readout absent (XP bar is fine) |
+| `RT-09` | Android performance unproven (4097 renderers) |
+| `ISSUE-11` | AI combat / investigation / sound / cover untested |
+| `ISSUE-14` | Shadow aliasing unfixed |
+| `ISSUE-20` | `DIAG_TEMP_*` debris, 2 missing material GUIDs |
+| `ISSUE-21` | OpenCode remote-MCP injection limitation (fallback is a workaround, not a fix) |
+| `DEC-11` | Weapon base damage value — **untouched** |
+| — | Android ABI `arm64-v8a` only; `armeabi-v7a` unsupported |
+| — | 68 `kinematic body` warnings (`EnemyController.cs:2297`) |
+
+## DEFERRED
+
+Modular environment integration · Character Foundation integration · final clothing ·
+final weapons art · enemy model replacement · full AI runtime verification · Android device
+verification. **Deferred, not cancelled.**
+
+## IN PROGRESS — art production
+
+Environment wagon · Player Character · Character clothing · Weapons · Enemy characters/assets.
+
+All `IN PROGRESS`. None is `FINAL`. **Character Foundation is NOT integrated into Unity**;
+the 51-bone rig is not claimed to be integrated.
+
+## EXECUTION STATE
+
+**ART COMPLETION GATE** — finish current production models and pass their asset QA / approval
+gates before large-scale Unity integration resumes. Temporary scheduling state, not a new stage.

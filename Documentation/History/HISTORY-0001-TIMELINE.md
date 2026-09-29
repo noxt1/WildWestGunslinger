@@ -157,6 +157,36 @@ checklist immediately before "Stage 19".
 
 ---
 
+## 2026-09-29: Phase 5 technical programme, then checkpoint freeze
+
+Append-only record. No history above this point was altered.
+
+| Phase | What changed | Status |
+|---|---|---|
+| **5R** | Unity runtime verification channel restored (direct MCP JSON-RPC fallback) | `RUNTIME VERIFIED`; `ISSUE-21` still OPEN |
+| **5A** | Orphaned deleted-scanner references removed from 4 enemy prefabs | `A-02`/`RT-06` CLOSED, runtime-verified |
+| **5A** | "12 broken references" claim reclassified; real remainder = 2 | `A-01`; remainder tracked as `ISSUE-20` |
+| **5B** | `Mathf.Max(damage, 200f)` clamp removed from `GunController.Awake` | `RT-04` CLOSED; authored base stays `100` |
+| **5B.1** | Duplicate `GunController` removed; one canonical instance on `Player` | `ISSUE-22`/`RT-03` CLOSED, identity equality verified |
+| **5C** | XP / level / upgrade flow verified; duplicate upgrade listener fixed (1 click = 1 upgrade) | `ISSUE-23` CLOSED; XP bar exists and works |
+| **5D** | All 3 `MobileTouchControls` refs serialized to canonical `Player` | `RT-02` **PARTIALLY VERIFIED** |
+| **5D** | IL2CPP Android build | **BUILD VERIFIED**, 0 errors; **device NOT VERIFIED** |
+| **5D** | New findings: `arm64-v8a`-only APK; ambient kinematic-body warnings | `ISSUE-24`, `ISSUE-25` OPEN |
+
+### Checkpoint — art production pause for integration
+
+Technical integration is **frozen** pending completion of in-flight art
+(environment wagon, Player Character, clothing, weapons, enemy assets). All are
+`IN PROGRESS`; none is `FINAL`.
+
+Deferred, not cancelled: modular environment · Character Foundation · final clothing ·
+final weapons art · enemy model replacement · full AI runtime verification · Android device
+verification. **Character Foundation is NOT integrated into Unity.**
+
+`DEC-11` (weapon base damage) remains **OPEN** and was not decided.
+See `Documentation/PHASE5_CHECKPOINT_REPORT.md`.
+
+---
 ## Key timeline conclusions
 
 1. **The build (2026-09-09) is 18 days older than the newest art work** — it

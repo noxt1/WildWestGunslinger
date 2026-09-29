@@ -17,9 +17,13 @@ This documentation set has **two strictly separate layers**.
 The documents in sections 2–4 below. They are the **operational source of truth** for ChatGPT,
 OpenCode, technical tasks, architectural decisions and current project state. Use these.
 
+> **Current documentation is authoritative for active work.**
+
 ### ARCHIVE
 
 `Archive/` — preserved history and source material. It is **not** part of current instructions.
+
+> **Archived documentation is preserved for historical context and must not be applied automatically.**
 
 > **Explicit rule:** Archived documentation is preserved for history and context only. It is not an
 > operational source of truth and **must not be applied to the current project** unless a canonical
@@ -85,7 +89,13 @@ instruction — see section 0.
 | 5 | `REQUIREMENTS.md` | requirements, explicitly separated from current state |
 | 6 | `DECISIONS.md` | decided items and the open decision register |
 | 7 | `MASTER_PLAN.md` | dependency-ordered path from current state to shippable |
-| 8 | `History/OPEN_ISSUES.md` | open defects, missing artefacts, evidence gaps |
+| 8 | `AI_PRODUCTION_METHODOLOGY.md` | **APPLY** — binding production and agent-execution rules (recon → baseline → approval → controlled production → checkpoint → numeric QA → visual QA → export → re-import → final audit → human approval → git) |
+| 9 | `DOC-0002-SUPERSEDED-DOCUMENTS.md` | **APPLY** — supersession policy and the register of superseded documents |
+| 10 | `History/OPEN_ISSUES.md` | open defects, missing artefacts, evidence gaps |
+
+> **Scope rule.** `AI_PRODUCTION_METHODOLOGY.md` defines **how** work is produced;
+> `PROJECT_TRUTH.md` defines **what is true**. Neither replaces the other, and neither replaces
+> `MASTER_PLAN.md`.
 
 ---
 
@@ -105,7 +115,7 @@ The folders are named by that scheme, not by generic topic names, so that the `G
 | Recovery, builds, security & release | `REL/` | `REL-` | `REL-0001-RECOVERY-AND-BACKUP.md` | backups, build artefacts, security/release requirements |
 | Timeline, audit history, open registers | `History/` | `HISTORY-`, `OPEN_` | `HISTORY-0001-TIMELINE.md` | timeline, legacy numbering, audit history, and the **live** `OPEN_ISSUES` / `OPEN_DECISIONS` / `OPEN_CONFLICTS` / `OPEN_RISKS` registers |
 | Cross-project index | root | `DOC-` | `DOC-0001-CANONICAL-DOCUMENTATION-INDEX.md` | canonical document index |
-| **History and source material only** | `Archive/` | — | `Archive/README.md` | archived audits, superseded docs, preserved sources — **not** current instruction |
+| **History and source material only** | `Archive/` | — | `Archive/README.md` | archived audits, historical snapshots, superseded manifests — **not** current instruction |
 
 > **Note on domain folders.** `GAME-0002` covers several of the topics above (combat, weapons,
 > progression, UI, enemy, environment). It is deliberately **not** split or duplicated across
@@ -217,8 +227,10 @@ not enumerated.
 | `Archive/Historical/RECOVERY_POINT_REPORT.md` | 2026-09-29 recovery verification | ARCHIVE |
 | `Archive/Audits/AUDIT_2_RECONCILIATION_REPORT.md` | Audit 2 documentation reconciliation | ARCHIVE |
 | `Archive/Audits/CONSOLIDATION_PRECOMMIT_VALIDATION.md` | Phase 2.5 validation (risk closure + pre-commit) | ARCHIVE |
-| `Archive/Source/AI_PRODUCTION_METHODOLOGY.md` | 52-point art production methodology (specification) | ARCHIVE (source) |
+| `AI_PRODUCTION_METHODOLOGY.md` | 52-point production methodology — **APPLY** | CURRENT |
 | `Archive/Audits/AUDIT_SESSION_CONTEXT_2026-09-28.md` | audit/session preservation record | ARCHIVE |
+| `DOC-0002-SUPERSEDED-DOCUMENTS.md` | supersession policy + superseded register — **APPLY** | CURRENT |
+| `FINAL_DOCUMENTATION_CLASSIFICATION.md` | final CURRENT/ARCHIVE classification record | CURRENT |
 | `DOCUMENTATION_ARCHIVE_MIGRATION_MAP.md` | what moved where, and why | CURRENT |
 | `STAGING_MANIFEST_PHASE6_1.md` | Phase 6.1 staging manifest | CURRENT |
 | `PHASE6_1_DOCUMENTATION_STRUCTURE_REPORT.md` | Phase 6.1 report | CURRENT |

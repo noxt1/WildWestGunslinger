@@ -1,4 +1,15 @@
-WildWestGunslinger — AI Production Methodology
+# WildWestGunslinger — AI Production Methodology
+
+> **Status:** CANONICAL — **APPLY** to production work
+> **Role:** binding production and agent-execution methodology for this project
+> **Promoted:** 2026-09-29 (Phase 6.2) from `Documentation/Archive/Source/` — classified as a
+> **current specification**, not historical material, because it states rules that govern work
+> currently in progress
+> **Authority:** this document defines *how* production is done. It does **not** define project
+> state — for that see `PROJECT_TRUTH.md`. Section 1 already states it is not a state document and
+> not a replacement for the roadmap.
+> **Note:** sections §25 (Android performance) and §26 (modular environment) are directly relevant
+> to the currently open `RT-09`/`UNI-D14` and `RT-01` findings.
 
 Document type: Production / Agent Execution Methodology
 Version: 1.0

@@ -1,3 +1,12 @@
+> **Status:** OPERATIONAL / REFERENCE LAYER - reconciled 2026-09-29 (Phase 4)
+> **Role:** agent-facing orientation. It **points to** canonical state; it does **not** define it.
+> **Canonical project state:** ../Documentation/PROJECT_STATE.md (authoritative for what exists)
+> **Canonical truth:** ../Documentation/PROJECT_TRUTH.md (repository root)
+> **Not canonical for:** requirements (../Documentation/REQUIREMENTS.md), decisions (../Documentation/DECISIONS.md), plan (../Documentation/MASTER_PLAN.md), open issues (../Documentation/History/OPEN_ISSUES.md)
+> **Reconciliation:** ../Documentation/PHASE4_AI_CONTEXT_RECONCILIATION.md · loss check ../Documentation/AI_CONTEXT_LOSS_CHECK.md
+> **Known stale items** in this file are marked inline. Do not treat any statement here as current without checking the canonical document it points to.
+> Superseded as canonical source on 2026-09-29; retained as an operational reference.
+
 # PROJECT_STATE — Текущее состояние проекта
 
 ## Общая информация
@@ -6,7 +15,7 @@
 |----------|----------|
 | Название проекта | WildWestGunslinger |
 | Движок | Unity 6000.3.23f1 (Unity 6) |
-| Путь проекта | `C:\Users\cyril\WildWestGunslinger` |
+| Путь проекта | repository root (relative: `.`) |
 | Целевые платформы | Android + Windows |
 | Язык AI-ассистента | Русский |
 
@@ -21,6 +30,93 @@
 | Назначение ветки | Подготовка зависимостей для будущих этапов: Environment assets, procedural placement, reusable prefab-ready assets, destructible environment assets, character foundation / character art |
 | Возврат к Stage-плану | После готовности необходимых assets/pipeline и отдельного решения по checkpoint. Будущие Stage 5/8/9 НЕ считаются выполненными из-за подготовки assets |
 | Art-мост | См. `AI_CONTEXT/ART_PIPELINE.md` + `.opencode/skills/wwg-character-art/SKILL.md` |
+| Параллельная работа (2026-09-27) | Визуальные исправления TestArena: белое HUD-перекрытие, A/B геометрического aliasing, 3D-кольцо и 3D-стрелки `EnemyDirectionIndicator`. Stage-номер не меняется. Детали — `CHANGELOG.md` (2026-09-27) |
+
+## Blender 3D assets — production registry (2026-09-28)
+
+Отдельная production-ветка Blender / 3D assets. **НЕ новый Stage**, номер checkpoint не меняется.
+
+| Asset | Статус | Working .blend | Final FBX | Method | Intact tris | Fragments | Fragments tris |
+|---|---|---|---|---|---|---|---|
+| Barrel_01 | **FINAL / APPROVED** | `Working\blender_src\barrel\Barrel_01_Working.blend` | `Barrel_01_Intact_FINAL.fbx` + `Barrel_01_Fragments_FINAL.fbx` | C | 580 | 12 | 900 |
+| Fence_01 | **FINAL / APPROVED** | `Working\blender_src\fence\Fence_01_Working.blend` | `Fence_01_Intact_FINAL.fbx` + `Fence_01_Fragments_FINAL.fbx` | C | 668 | 13 | 1500 |
+| Crate_01 | **CP1 COMPLETE — AWAITING APPROVAL** | `Working\blender_src\crate\Crate_01_Working.blend` | нет (CP1 без экспорта) | C (fracture не выполнялся) | 740 | — | — |
+
+Final FBX лежат в `Assets\Art\Props\Destructible\`. Ранее экспортированные `Barrel_01_*.fbx` (без суффикса) и `*_r2.fbx` сохранены и не перезаписываются.
+
+### Presentation state (обязательное)
+
+| Collection | `hide_viewport` | `hide_render` |
+|---|---|---|
+| `<Name>_Intact` | FALSE | FALSE |
+| `<Name>_Fragments` | **TRUE** | FALSE |
+
+Подтверждённый root cause «дёрганья» wood surface при вращении вьюпорта: **одновременное отображение intact и reassembled fragments на совпадающих поверхностях**. Не material, не геометрия, не TAA. Fragments остаются в blend (нужны для exploded QA и export).
+
+### Принятые технические решения (прецеденты для следующих assets)
+
+| Параметр | Значение |
+|---|---|
+| Vertex attribute | `Col` = **FLOAT_COLOR / CORNER** (`BYTE_COLOR` использовать нельзя — sRGB-ловушка, ~12× потемнение) |
+| Семантика `Col` | RGB = тон элемента, A = metal mask (0 wood / 1 metal) |
+| Dark old iron | линейный `(0.0785, 0.0794, 0.0830)` — одинаков для всех assets |
+| Dark oak | hue ratio ≈ `1 : 0.77 : 0.567`, линейный 0.064–0.082 |
+| Wood render value | sRGB p50 ≈ 0.41–0.49 (Barrel 0.414, Fence 0.482, Crate 0.493) |
+| UV | world-proportional, U вдоль длинной оси элемента; зерно непрерывно между fragments |
+| Material slots | ровно 1 на каждый объект |
+| Image textures | запрещены (M2 = vertex attributes + simple PBR) |
+| FBX contract | frozen: `use_selection=True`, `use_visible` **не использовать**, `mesh_smooth_type='OFF'`, `axis -Z/Y`, `colors_type='SRGB'`, `bake_space_transform=False` |
+
+### Unity integration — пакетно, не поштучно
+
+```
+Blender model → Blender QA (NUMERIC + VISION) → fracture preparation → final FBX → [ПАКЕТНЫЙ ЭТАП] Unity integration
+```
+
+Поштучная интеграция запрещена. Один отдельный пакетный этап для всех готовых assets: FBX import, normals/smoothing, materials, vertex colors, colliders, prefabs, destructible setup, runtime destruction, gameplay integration, performance validation.
+
+### Новая архитектура: модульный environment kit (план, не реализовано)
+
+| Kit | Модуль | Runtime-представление |
+|---|---|---|
+| Western log/timber wall | `WallSegment ≈ 4 m` | 1 mesh → 1 MeshRenderer → 1 shared material → 1 simple collider |
+| Western plank floor | `FloorSegment ≈ 4 × 4 m` | 1 mesh → 1 MeshRenderer → 1 shared material → 1 simple collider |
+
+**Критическое правило:** не «1 log = 1 GameObject» и не «1 floorboard = 1 GameObject». Генератор размещает переиспользуемые модули. Android perf — ограничение с самого начала. `ArenaGenerator` не переписывать до settled material и kit design. Детали — `ART_PIPELINE.md`.
+
+## Визуальные исправления TestArena (2026-09-27)
+
+### Белое HUD-перекрытие — исправлено (постоянно)
+Источник: `TestArena → MobileUI → HUD → Image` — fullscreen-компонент `Image` с белым полупрозрачным цветом `RGBA(1, 1, 1, 0.392)`.
+Исправление: `m_Enabled: 0` для этого компонента в `Assets/Scenes/TestArena.unity` (fileID 2096943043). `MobileUI`, `HUD`, `Canvas` и все дочерние элементы HUD сохранены и работают; `MobileTouchControls` не изменялся. Подтверждено двумя прогонами `Main Menu → Play → TestArena`.
+
+### Rendering / Quality (актуальные значения)
+
+| Параметр | Значение | Примечание |
+|----------|----------|------------|
+| Активный URP asset (Quality Mobile) | `Mobile_RPAsset` | `m_RendererType: 1` = Deferred |
+| `Mobile_RPAsset` renderScale | **1** | A/B: 0.8 → 1 уменьшил stair-stepping геометрии |
+| `Mobile_RPAsset` MSAA | **4** | A/B: 1 → 4 улучшил сглаживание Cube/Capsule |
+| `QualitySettings.antiAliasing` | 0 (оба уровня: Mobile, PC) | **не ошибка**, в этом этапе не менялось; сглаживание даёт URP MSAA |
+| `PC_RPAsset` colorGradingMode | 1 (HighDynamicRange) | изменено 2026-09-27 при диагностике выбеленного вида |
+| FPS runtime | ~56.4 (renderScale 0.8) → ~60 (после) | регрессии нет |
+
+### Shadow Aliasing — ОТКРЫТАЯ ПРОБЛЕМА (НЕ решена)
+
+| Параметр | Значение |
+|----------|----------|
+| Main Light Shadow Resolution | **1024** |
+| Shadow Cascade Count | **1** |
+| Shadow Distance | **50** |
+| Качество фильтрации | PC_RPAsset `m_SoftShadowsSupported: 1`, фильтр PCF |
+
+Наблюдается блочность / aliasing теней. В этапе 2026-09-27 **не исправлялось**. Следующий тест должен менять **одну** shadow-настройку за раз; первый кандидат — `1024 → 2048`.
+
+### TODO / Next Step (визуальное)
+
+- **Положение стрелок на кольце — открытый визуальный вопрос.** Стрелки сейчас располагаются у внешнего радиуса кольца (`radius = 0.835`), что визуально воспринимается как внутренний контур. Требуется следующий визуальный A/B-тест для выбора оптимального положения: внутренний контур / середина толщины кольца / внешний контур. Логику направления, размер кольца, высоту и остальные параметры без необходимости не менять. **Это не баг направления и не ошибка привязки к Enemy.**
+- **Shadow Aliasing** — см. выше.
+- Диагностика квадратных/блочных теней — отдельным шагом после определения оптимального положения стрелок.
 
 ## Структура проекта
 

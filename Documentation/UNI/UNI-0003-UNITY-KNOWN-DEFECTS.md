@@ -82,7 +82,19 @@ tree.
 ### UNI-D05 — 4 missing Mono Script references
 - **Observed:** 4 components show `Missing (Mono Script)`.
 - **Impact:** the owning GameObjects have lost their logic entirely; behaviour is silently absent.
-- **State:** unfixed. Must be identified by GUID before any repair.
+- **ROOT CAUSE IDENTIFIED in Phase 4** (verified against the filesystem, 2026-09-29): the diagnostic script `Assets/Scripts/Enemies/EnemyTacticalEnvironmentScanner_TEST.cs` was deleted as temporary cleanup. Its `.meta` is gone, but **4 enemy prefabs still hold a serialized reference to script GUID `809b48f6d9f34f34d90ca85975a9c332`**:
+
+  | Prefab | Dangling reference |
+  |---|---|
+  | `Assets/Prefabs/Enemies/Bandit.prefab` | ✅ confirmed |
+  | `Assets/Prefabs/Enemies/Rusher.prefab` | ✅ confirmed |
+  | `Assets/Prefabs/Enemies/Shooter.prefab` | ✅ confirmed |
+  | `Assets/Prefabs/Enemies/Tactical.prefab` | ✅ confirmed |
+
+  The component slot sits **between `EnemyHealth` and `EnemyTacticalPlanner`**. All references in `EnemyTacticalPlanner.cs` to the deleted type were already removed, so **the project compiles with 0 errors** — only the orphaned prefab slots remain.
+- **Observable symptom:** Play Mode prints `The referenced script (Unknown) on this Behaviour is missing!` for spawned enemies — measured **7 warnings on one `Bandit`**. This is the source of `RT-06` ("9 missing-script warnings per spawn cycle, scales with enemy count").
+- **Fix required:** remove the empty component slot from the 4 prefabs in the Unity Editor. This is a **prefab edit** and therefore **out of scope for documentation work** — see `../History/OPEN_DECISIONS.md` (no decision entry yet; recorded as `ISSUE-13`).
+- **State:** root cause **KNOWN**, not fixed. This is no longer an "unidentified defect".
 
 ### UNI-D06 — Modular FBX imported at 0.01× scale
 - **Observed:** modular environment FBX import scale resolves to `0.01×`; Z-up is not compensated.

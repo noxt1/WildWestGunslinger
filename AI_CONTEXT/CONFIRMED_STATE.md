@@ -1,3 +1,11 @@
+> **Status:** HISTORICAL CONFIRMATIONS - reconciled 2026-09-29 (Phase 4)
+> **Role:** records systems the **project owner explicitly confirmed** in earlier sessions. These are *dated historical confirmations*, not 2026-09-29 runtime evidence.
+> **Canonical current state:** ../Documentation/PROJECT_STATE.md (runtime-verified) · ../Documentation/GAME/GAME-0002-GAMEPLAY-SYSTEMS-STATE.md section 3.2
+> **CONFLICTS:** this file's mobile-UI confirmation conflicts with UNI-D07; see ../Documentation/History/OPEN_CONFLICTS.md CONFLICT-13. Script-inventory claims here are stale - see CONFLICT-11.
+> **Only the user may set CONFIRMED** (VERIFICATION.md).
+> **Reconciliation:** ../Documentation/PHASE4_AI_CONTEXT_RECONCILIATION.md
+> Superseded as canonical state on 2026-09-29. Retained as the **confirmation record**.
+
 # CONFIRMED_STATE — Подтверждённые системы
 
 ## Важно
@@ -51,6 +59,19 @@ Collider травы отключён только на инстансах, пр�
 
 Подтверждённые практикой элементы (не путать с формальным Confirmed): стартовое распределение по разным комнатам, самостоятельные переходы, A* между комнатами, индивидуальные следующие цели, `visitedRooms`, учёт чужих targetRoom, восстановление лидера, ускоренный пустой поиск (0.5 с / 0.3 с), корректный детект (промах вне взгляда + детект при досканировании).
 
+## Blender 3D assets (подтверждено пользователем)
+
+Подтверждение относится **только к Blender-части** (model + QA + final FBX). Unity-интеграция этих assets **не выполнялась** и подтверждением не покрывается.
+
+| Asset | Статус | Состав | Подтверждённые результаты |
+|---|---|---|---|
+| **Barrel_01** | **CONFIRMED (Blender asset FINAL)** | stylized low-poly western, dark oak, dark old iron, rivets; Method C | 12 независимых fragments; intact 580 tris, fragments 900 tris; strict FBX separation, reimport validation, reassembly — PASS |
+| **Fence_01** | **CONFIRMED (Blender asset FINAL)** | stylized low-poly western, dark oak, dark old iron, nails; Method C | 13 независимых fragments; intact 668 tris, fragments 1500 tris; strict FBX separation, reimport validation, reassembly — PASS |
+
+Файлы и полные числа — `AI_CONTEXT/ART_PIPELINE.md` → «Blender asset registry».
+
+**Подтверждённое правило presentation state** (выведено из практики и подтверждено пользователем): fragments скрыты во вьюпорте (`hide_viewport = TRUE`), `hide_render = FALSE`, intact видим. Одновременное отображение intact и reassembled fragments на совпадающих поверхностях вызывает «дёрганье» wood surface — это подтверждённый root cause, а не гипотеза.
+
 ## Игровые системы
 
 Ниже перечислены системы, которые работают на основе подтверждений пользователя в предыдущих сессиях.
@@ -96,6 +117,10 @@ Collider травы отключён только на инстансах, пр�
 ## НЕ подтверждено (не переносить в CONFIRMED без пользователя)
 
 - Stage 3 baseline, Fence/Destructible/пулы, 7 Blender FBX→prefabs, стены PREPARED, character/blender plans, Stage 4.4.5 и будущие Stage 5/8/9. Техническая готовность ≠ подтверждение.
+- **CRATE_01** — CP1 COMPLETE, но **пользователем не подтверждён** (AWAITING APPROVAL). Не вносить в подтверждённые.
+- **CRATE_01 CP2 (fracture)** — не авторизован.
+- **Unity-интеграция Barrel_01 / Fence_01** — не выполнялась; ждёт отдельного пакетного этапа.
+- **Модульный wall/floor kit** (`WallSegment ≈ 4 m`, `FloorSegment ≈ 4 × 4 m`) и WESTERN WALL / FLOOR материалы — план, не реализовано.
 
 ## Статусы
 

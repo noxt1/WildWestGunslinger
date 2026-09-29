@@ -91,10 +91,12 @@ closed. `RT-*` items must never be silently dropped when editing
 - Only the index survives. Provenance for those 14 items is descriptive only
 - **Note:** this does not affect the vest itself, whose measurements are recorded in `Doomy_vest_measurements.md`
 
-### ISSUE-05 — Unity version not pinned
-- **Severity:** Medium
-- The exact Unity 6 version is not recorded in any project document
-- Should be read from `ProjectSettings/ProjectVersion.txt` and pinned, because package resolution depends on it
+### ISSUE-05 — Unity version not pinned — ✅ RESOLVED 2026-09-29 (Phase 4)
+- **Severity:** Medium → **RESOLVED**
+- The version **is** recorded: `ProjectSettings/ProjectVersion.txt` contains `m_EditorVersion: 6000.3.23f1` and `m_EditorVersionWithRevision: 6000.3.23f1 (09d2ecc7fb28)`
+- Phase 2/2.5 wrongly recorded this as "not recorded in any project document" — the check was run against documentation, not against `ProjectSettings/`
+- Now documented in `../UNI/UNI-0001-UNITY-PROJECT-STATE.md` §1
+- **Residual:** whether the version should additionally be *asserted* (e.g. a CI guard against accidental Editor upgrade) is still undecided
 
 ### ISSUE-06 — Character FBX not present in `Assets/`
 - **Severity:** High
@@ -135,6 +137,53 @@ Combat, investigation, sound propagation, cover-taking, flanking.
 - The `Z:` art copy holds 161 files; the live source holds 307
 - The manifest does not record the exclusion criteria
 - **Ref:** `CONFLICT-10` / `RISK-01`
+
+---
+
+## Phase 4 discoveries — new open issues
+
+### ISSUE-13 — 4 enemy prefabs hold a dangling script reference
+- **Severity:** High (console noise; **not** a functional break)
+- **Root cause of:** `UNI-D05` (4 missing Mono Scripts) and `RT-06` (9 warnings per spawn cycle)
+- **Detail:** `Assets/Scripts/Enemies/EnemyTacticalEnvironmentScanner_TEST.cs` was deleted as temporary diagnostic cleanup. Its `.meta` is gone, but `Bandit.prefab`, `Rusher.prefab`, `Shooter.prefab` and `Tactical.prefab` still reference script GUID `809b48f6d9f34f34d90ca85975a9c332` in the component slot between `EnemyHealth` and `EnemyTacticalPlanner`
+- **Symptom:** `The referenced script (Unknown) on this Behaviour is missing!` — 7 warnings on one `Bandit`; scales with enemy count
+- **Not a compile error:** all code references to the deleted type were already removed; project compiles with 0 errors
+- **Fix:** remove the empty component slot from the 4 prefabs in the Editor. **A prefab edit — out of scope for documentation work**
+- **Verified:** 2026-09-29 against the filesystem
+
+### ISSUE-14 — Shadow Aliasing is an open, unfixed rendering problem
+- **Severity:** Medium (visual quality)
+- **Detail:** blocky/aliased shadows observed. **Not fixed** in the 2026-09-27 phase
+- **Current settings:** Main Light shadow resolution **1024**, cascade count **1**, shadow distance **50**, PCF filter
+- **Next test discipline:** change **one** shadow setting at a time; first candidate `1024 → 2048`
+- **Must not** be reported as resolved
+
+### ISSUE-15 — Square/blocky shadow diagnosis queued behind the arrow A/B test
+- **Severity:** Low
+- **Recorded by:** the project owner as a separate observation
+- **Sequencing:** performed as a separate step **after** the arrow-position A/B test is decided
+
+### ISSUE-16 — `EnemyDirectionIndicator` arrow radial position is an open visual question
+- **Severity:** Low (cosmetic)
+- **Detail:** arrows are placed at `worldRingRadius = 0.835` but visually read as sitting on the ring's *inner* contour. An A/B test must choose: inner contour / mid-thickness (`0.785`) / outer contour (`0.835`)
+- **Explicitly NOT a bug:** direction logic is mathematically verified (`dot = 1.000000`, angular error `0.0000°`). Do not change direction logic, ring size, or `worldRingHeightOffset = 0.02` without cause
+
+### ISSUE-17 — Duplicate scene root cause now known
+- **Severity:** Low, but it caused data loss
+- **Root cause:** an MCP scene save was written to `Assets/TestArena.unity` instead of `Assets/Scenes/TestArena.unity`. Some object deletions saved into the duplicate **never reached the real scene**
+- **Status:** duplicate still present, untracked, **cleanup forbidden** pending `DEC-09`
+- **Consequence to remember:** edits made through MCP may have silently gone to the wrong file. Any past "missing object" report should be re-checked against this
+
+### ISSUE-18 — `AI_CONTEXT/ARCHITECTURE.md` contains a corrupted token
+- **Severity:** Low (documentation)
+- **Detail:** line reads `Другие EnemyController блокируют视线` — Chinese characters embedded in Russian text
+- **Action:** corrected in the Phase 4 rewrite of `AI_CONTEXT/ARCHITECTURE.md`
+
+### ISSUE-19 — `AI_CONTEXT` was never reconciled with canonical docs
+- **Severity:** High (process)
+- **Detail:** Phase 2/2.5 prepended `SUPERSEDED` headers to `AI_CONTEXT` files **without reading their content**. As a result the canonical set was wrong on: asset approvals, `CRATE_01` CP1/CP2, Unity version, script inventory, XP/progression status, and the `UNI-D05` root cause — while 763 lines of real project documentation sat uncommitted and unreconciled
+- **Lesson:** superseding a document requires **reading** it first
+- **Status:** corrected in Phase 4 — see `../../PHASE4_AI_CONTEXT_RECONCILIATION.md`
 
 ---
 

@@ -1,3 +1,10 @@
+> **Status:** HISTORICAL - reconciled 2026-09-29 (Phase 4)
+> **Role:** **append-only record of what actually changed, with dates and status.** History is not rewritten retrospectively.
+> **Canonical timeline:** ../Documentation/History/HISTORY-0001-TIMELINE.md
+> **Canonical truth about current state:** ../Documentation/PROJECT_TRUTH.md - this changelog does NOT define current state
+> **Reconciliation:** ../Documentation/PHASE4_AI_CONTEXT_RECONCILIATION.md
+> Superseded as canonical state on 2026-09-29. Retained as the **historical record**.
+
 # CHANGELOG — Хронология AI-разработки
 
 ## Формат записей
@@ -456,7 +463,7 @@ private IEnumerator StartFirstWaveNextFrame()
 
 ## 2026-09-21: Blender environment props — Unity-интеграция 7 реальных FBX
 
-**Описание:** Отдельный Blender-проход создал 7 ассетов (`C:\Users\cyril\Documents\WildWestGunslinger art\art\Environment\<Name>\`: FBX + `_Source.blend` + `textures/Albedo + Normal`). В Unity скопированы только FBX+текстуры (`Assets/Art/Environment/<Name>/`, `.blend` не импортировались). Все 7 FBX: scale 1, Import normals, структурные части сохранены, Camera/Light/Collider внутри — нет. **Критическая находка: все 7 экспортированы Z-up** (фонарь «лежал» 0.82×0.37×2.67) — исправлено на уровне prefab (`Model` с rotation −90° X, геометрия FBX не тронута); проверка: все стоят на minY=0.00. Все 8 Albedo байт-идентичны (SHA256 `5F3921E1…`), все 8 Normal байт-идентичны (`4455C48E…`) — единый атлас сета. Все 7 `*_Normal.png` переключены на NormalMap. Созданы 4 shared-материала `Assets/Art/Environment/Shared/Materials/` (Wood_Western_Planks / Wood_Western_Dark / Metal_Dark_Western / Glass_Lantern_Warm, URP Lit; Glass — transparent + warm emission, realtime Light — 0). Prefab'ы (`Assets/Prefabs/Environment/`): Lantern (15 частей, HP 40, без CoverPoint), Barrel (6 частей, HP 30), Crate (10 частей, HP 40), Cover (8 частей, HP 50), Wagon (14 частей, HP 80, 2 BoxCollider), Log Wall (8 частей, HP 60), Plank Wall (14 частей, HP 60); у всех — DestructibleObject с массивами hide/show на структурных частях, 1 BoxCollider (wagon 2), CoverPoints (везде по 2, кроме lantern). **Замена primitive:** Barrel/Crate/Log/Plank перезаписаны по тем же путям с сохранением GUID (`1bbb3e2e`, `50242a99`, `3d75465e`, `df2cd228`); отсутствие ссылок из сцен проверено grep по `*.unity`. Генератор: пулы Props (Barrel/Crate/Cover, max 10), Lanterns (max 6), Wagons (max 4) — все вне комнат с keep-out/exit-защитой. Стены — PREPARED (prefab'ы готовы, стыковка plank-wall gap=0.000), НЕ scattered, в ручную сцену НЕ интегрированы. Розовых материалов нет. Сцена сохранена, временных объектов не осталось.
+**Описание:** Отдельный Blender-проход создал 7 ассетов (external source: `~/Documents/WildWestGunslinger art/art/Environment/<Name>/`: FBX + `_Source.blend` + `textures/Albedo + Normal`). В Unity скопированы только FBX+текстуры (`Assets/Art/Environment/<Name>/`, `.blend` не импортировались). Все 7 FBX: scale 1, Import normals, структурные части сохранены, Camera/Light/Collider внутри — нет. **Критическая находка: все 7 экспортированы Z-up** (фонарь «лежал» 0.82×0.37×2.67) — исправлено на уровне prefab (`Model` с rotation −90° X, геометрия FBX не тронута); проверка: все стоят на minY=0.00. Все 8 Albedo байт-идентичны (SHA256 `5F3921E1…`), все 8 Normal байт-идентичны (`4455C48E…`) — единый атлас сета. Все 7 `*_Normal.png` переключены на NormalMap. Созданы 4 shared-материала `Assets/Art/Environment/Shared/Materials/` (Wood_Western_Planks / Wood_Western_Dark / Metal_Dark_Western / Glass_Lantern_Warm, URP Lit; Glass — transparent + warm emission, realtime Light — 0). Prefab'ы (`Assets/Prefabs/Environment/`): Lantern (15 частей, HP 40, без CoverPoint), Barrel (6 частей, HP 30), Crate (10 частей, HP 40), Cover (8 частей, HP 50), Wagon (14 частей, HP 80, 2 BoxCollider), Log Wall (8 частей, HP 60), Plank Wall (14 частей, HP 60); у всех — DestructibleObject с массивами hide/show на структурных частях, 1 BoxCollider (wagon 2), CoverPoints (везде по 2, кроме lantern). **Замена primitive:** Barrel/Crate/Log/Plank перезаписаны по тем же путям с сохранением GUID (`1bbb3e2e`, `50242a99`, `3d75465e`, `df2cd228`); отсутствие ссылок из сцен проверено grep по `*.unity`. Генератор: пулы Props (Barrel/Crate/Cover, max 10), Lanterns (max 6), Wagons (max 4) — все вне комнат с keep-out/exit-защитой. Стены — PREPARED (prefab'ы готовы, стыковка plank-wall gap=0.000), НЕ scattered, в ручную сцену НЕ интегрированы. Розовых материалов нет. Сцена сохранена, временных объектов не осталось.
 
 | Статус | Значение |
 |--------|----------|
@@ -466,6 +473,169 @@ private IEnumerator StartFirstWaveNextFrame()
 | Confirmed | **NO** |
 
 **Ручные проверки (ожидают пользователя):** Play `TestArena_Preview`; визуал всех 7 моделей; стрельба по destructible-пропам; использование wagon/cover AI как укрытий; стыковка 2–3 сегментов стен. **Не подтверждено и не исправлено:** intermittent FPS ~30 (в этой сессии не наблюдался); гипотеза про CoverPoint sphere-маркеры — неподтверждена.
+
+---
+
+## 2026-09-27: Белое HUD-перекрытие в TestArena — постоянное исправление
+
+**Описание:** После устранения выбеленного вида сцены выявлен оставшийся источник белой дымки поверх игровой сцены. Источник подтверждён вручную пользователем и через Play Mode: объект `TestArena → MobileUI → HUD` содержал fullscreen-компонент `Image` с полупрозрачным белым цветом `RGBA(1, 1, 1, 0.392)` (anchorMin 0,0 / anchorMax 1,1, sizeDelta 0×0 — то есть растянут на весь Canvas).
+
+**Исправление:** у компонента `Image` на объекте `HUD` установлено `m_Enabled: 0`. Объект `HUD`, объект `MobileUI`, компонент `Canvas` и все дочерние элементы HUD (HealthBar, XPBar, JoystickBackground, FireButton, WaveText, PauseButton) **сохранены и работают**. `MobileUI` целиком не отключался, `MobileTouchControls` не изменялся.
+
+**Подтверждение сохранения:** изменение выполнено через `EditorSceneManager.MarkSceneDirty` + `EditorSceneManager.SaveScene`; в `Assets/Scenes/TestArena.unity` для компонента `Image` (fileID 2096943043) зафиксировано `m_Enabled: 0`. Повторная проверка через `Main Menu → Play → TestArena` подтвердила `Image.enabled = False` дважды, включая перезагрузку сцены с диска.
+
+**Runtime:** белёсого overlay нет; HP Bar, XP Bar, WaveText, Joystick, Fire Button, Menu Button отображаются; FPS 60.0; Console errors = 0.
+
+| Статус | Значение |
+|--------|----------|
+| Implemented | YES |
+| Compiled | YES (0 errors) |
+| Tested | YES (runtime, Main Menu → Play → TestArena, два прогона) |
+| Confirmed | **NO** (ожидает визуального подтверждения пользователя) |
+
+---
+
+## 2026-09-27: A/B-тесты геометрического aliasing (renderScale, MSAA)
+
+**Описание:** Диагностика выявила две независимые проблемы: Shadow Aliasing и Geometry/Edge Aliasing. Выполнено два изолированных A/B-теста, каждый — одно изменение.
+
+**Тест 1 — Geometry/Edge Aliasing, `renderScale`:** `Mobile_RPAsset` `m_RenderScale` 0.8 → 1. Измеренный эффект: stair-stepping краёв Cube/Capsule уменьшился, FPS вырос 56.4 → ~60. Значение оставлено = 1. Побочно подтверждено, что `renderScale` был одной из причин лесенки; остаточная лесенка сохраняется (см. Shadow Aliasing и `antiAliasing = 0` в QualitySettings).
+
+**Тест 2 — Geometry/Edge Aliasing, `MSAA`:** `Mobile_RPAsset` `m_MSAA` 1 → 4. Применимость подтверждена: `m_RendererType: 1` (Deferred), MSAA в URP работает. Capsule и Cube стали заметно глаже; FPS 59.2–60.0, регрессии нет.
+
+**Отдельно зафиксировано:** `QualitySettings.antiAliasing = 0` для обоих уровней качества (Mobile, PC). Это НЕ ошибка и в данном этапе не менялось — сглаживание обеспечивается URP MSAA.
+
+| Статус | Значение |
+|--------|----------|
+| Implemented | YES |
+| Compiled | YES (config-only) |
+| Tested | YES (runtime, скриншоты) |
+| Confirmed | **NO** |
+
+---
+
+## 2026-09-27: 3D-кольцо EnemyDirectionIndicator (Player ground ring)
+
+**Описание:** Кольцо индикатора направления переведено из `ScreenSpaceOverlay` UI в обычный 3D-объект мира под ногами игрока. Реализация в `Assets/Scripts/UI/EnemyDirectionIndicator.cs`.
+
+**Реализация:** объект `EnemyDirectionWorldRing` — дочерний элемент `EnemyDirectionIndicator` (не Canvas), компоненты `MeshFilter` + `MeshRenderer`, процедурный плоский annulus в плоскости XZ (98 вершин / 96 треугольников). Материал `Universal Render Pipeline/Unlit`, Transparent, `_ZWrite = 0`, `_Cull = Off`, `renderQueue = 3000`, `_BaseColor = RGBA(1, 1, 1, 0.450)` — совпадает с прежним UI-цветом. Collider отсутствует, `shadowCastingMode = Off`, `receiveShadows = false`, light probe / reflection probe usage выключены.
+
+**Определение поверхности:** `Physics.RaycastNonAlloc` вниз из `player.position + up * 3f`, дистанция 40, `Physics.DefaultRaycastLayers`, `QueryTriggerInteraction.Ignore`, предвыделенный буфер `RaycastHit[8]` (без аллокаций в кадре). Собственные коллайдеры индикатора и коллайдеры игрока исключаются фильтрами. Берётся ближайший валидный hit.
+
+**Параметры:** `worldRingRadius = 0.835`, `worldRingThickness = 0.1`, `worldRingHeightOffset = 0.02`, `groundProbeStartHeight = 3`, `groundProbeDistance = 40`. Высота: `groundY + 0.02` (измерено Y кольца = 0.0200 при `Floor` y = 0, зазор 0.0200).
+
+**Установлено:** transform игрока — центр капсулы (height 2, radius 0.5), а не ступни; ground raycast автоматически приземляет кольцо на нижнюю грань капсулы.
+
+**Ориентация:** для ровного пола горизонтальная; при `Vector3.Angle(up, normal) > 0.1°` ориентируется по нормали поверхности (`Quaternion.FromToRotation`).
+
+**Runtime-проверка:** кольцо строго под игроком (XZ delta = 0.0000), следует за движением, перекрывается геометрией мира (укрытия, стены — подтверждено скриншотами), z-fighting не обнаружен, FPS 59.6–60.0, Console errors = 0.
+
+**Rollback:** переключатель `useWorldRing` (bool, SerializeField); UI-вариант остаётся созданным, его `Image.enabled = !useWorldRing`. Исходный файл сохранён в `%TEMP%/opencode/wwg_backup/EnemyDirectionIndicator.cs.bak`; файл также отслеживается git.
+
+| Статус | Значение |
+|--------|----------|
+| Implemented | YES |
+| Compiled | YES (0 errors) |
+| Tested | YES (runtime) |
+| Confirmed | **NO** |
+
+---
+
+## 2026-09-27: World-space стрелки EnemyDirectionIndicator
+
+**Описание:** Стрелки индикатора переведены из `ScreenSpaceOverlay` UI в 3D-объекты, чтобы стрелки и кольцо находились в одной 3D-плоскости под ногами игрока. Изменён только `Assets/Scripts/UI/EnemyDirectionIndicator.cs`.
+
+**Без изменений (сохранено):** логика выбора врагов, сортировка `visibleEnemies` по дистанции, вычисление `worldDirection`, вычисление `screenDirection` (используется в сохранённой UI-ветке), эквивалентная формула поворота. Поправки угла +90/−90/180 **не добавлялись**.
+
+**Реализация:** объекты `EnemyDirectionWorldArrow_0..5` — дочерние элементы `EnemyDirectionIndicator` (вне Canvas), `MeshFilter` + `MeshRenderer`, процедурный mesh из **одного треугольника** (остриё `+length * 0.44` по локальной +X, основание `-length * 0.56`, полуширина по Z). Размер: `arrowWorldLength = 0.30`, `arrowWorldHalfWidth = 0.094`. Материал общий на все стрелки: `Universal Render Pipeline/Unlit`, Transparent, `_ZWrite = 0`, `_Cull = Off`, `renderQueue = 3000`, цвет `RGBA(1, 0.18, 0.05, 0.95)` — совпадает с прежним UI-цветом стрелки. Collider отсутствует, `shadowCastingMode = Off`.
+
+**Позиция:** `player.position + worldDirection * worldRingRadius`, `Y = currentGroundY + worldRingHeightOffset`. Используется та же ground-точка и та же высота, что и у кольца (`currentGroundY` записывается в `UpdateWorldRing`). Радиус измерен 0.8350, Y = 0.0200 — совпадает с кольцом. `midRingRadius = 0.785` в 3D-ветке **не используется**.
+
+**Поворот:** остриё треугольника лежит вдоль локальной оси +X, поэтому `rotY = Atan2(-worldDirection.z, worldDirection.x)`.
+
+**Математическая проверка направления:** для каждой активной стрелки вычислен world-space вектор от основания к острию и сопоставлен с направлением на её конкретного `Enemy`: `dot = 1.000000`, угловая ошибка `0.0000°` для всех трёх проверенных стрелок (второй временной срез — также `0.000°` расхождения при разошедшихся врагах). Сортировка подтверждена: слоты 0/1/2 = 34.83 / 36.20 / 41.33 units (возрастание).
+
+**Диагностика направления (отдельный тест, файлы не изменялись):** подтверждено, что каждая UI-стрелка указывала на своего врага (`delta rotZ = 0.000°`), `visibleEnemies` сортируется по дистанции, `worldDirection` и `screenDirection` вычисляются корректно. Определено, что исходный arrow sprite направлен остриём вдоль локальной оси **+X** (подтверждено профилем высот колонок текстуры: высота монотонно убывает 59 → 1 к правому краю). Поэтому поворот `Atan2(screenDir.y, screenDir.x)` корректен и угловой поправки не требует. Разброс ~2° в одном из замеров объяснялся временной кластеризацией трёх врагов на близких направлениях, а не дефектом.
+
+**Occlusion:** depth test включён (`ZTest = LEqual`, `ZWrite = 0`, Transparent). Подтверждено скриншотом — при виде через укрытие кольцо и стрелки скрываются геометрией идентично.
+
+**Runtime:** FPS 59.2–62.0, Console errors = 0, 3 активные стрелки (врагов 3, `maxArrows = 6`), позиции и повороты динамически обновляются при движении врагов.
+
+**Rollback:** переключатель `useWorldArrows`; UI-стрелки сохранены, их `Image.enabled = !useWorldArrows`.
+
+| Статус | Значение |
+|--------|----------|
+| Implemented | YES |
+| Compiled | YES (0 errors) |
+| Tested | YES (runtime) |
+| Confirmed | **NO** |
+
+---
+
+## 2026-09-27 (документационный этап): синхронизация MD-файлов по итогам работ
+
+**Описание:** Выполнена сверка фактического состояния проекта (`git status` / `git diff` / текущие значения в файлах) с ранее выданными отчётами и обновлены существующие MD-документы `AI_CONTEXT/`. Код, сцены, материалы и настройки проекта **не изменялись**.
+
+**Обновлённые документы:** `CHANGELOG.md` (4 новые записи + сводная таблица), `PROJECT_STATE.md` (визуальные исправления, Rendering/Quality, Shadow Aliasing, TODO), `CURRENT_TASK.md` (открытые задачи, фактические изменённые файлы), `ARCHITECTURE.md` (раздел `EnemyDirectionIndicator`).
+
+**Отдельно зафиксировано при сверке:**
+
+1. `CHATGPT_PROJECT_STATE.md`, `CHATGPT_WORK_QUEUE.md`, `CHATGPT_CHECKLIST.md` **в проекте отсутствуют** — документация ведётся в `AI_CONTEXT/*.md`. Новые дублирующие MD-файлы не создавались.
+2. **Висячие ссылки на удалённый диагностический скрипт.** `Assets/Scripts/Enemies/EnemyTacticalEnvironmentScanner_TEST.cs` (+ `.meta`) удалён; ссылки из `EnemyTacticalPlanner.cs` убраны, компиляция чистая. Но 4 префаба врагов (`Bandit`, `Rusher`, `Shooter`, `Tactical`, GUID `809b48f6d9f34f34d90ca85975a9c332`, строка 301) всё ещё содержат сериализованную ссылку на удалённый скрипт → в Play Mode идут предупреждения `The referenced script (Unknown) on this Behaviour is missing!` (7 на `Bandit` в замере). **НЕ исправлено.**
+3. **Дубликат файла сцены** `Assets/TestArena.unity` рядом с настоящим `Assets/Scenes/TestArena.unity` (untracked) — следствие сохранения сцены через MCP по пути `Assets/`. **НЕ исправлено** (cleanup запрещён).
+4. `QualitySettings.antiAliasing = 0` для обоих уровней (Mobile, PC) — зафиксировано как **не ошибка**; сглаживание обеспечивается URP MSAA.
+5. `Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset` изменён Unity автоматически, не вручную.
+
+**Диагностический тест направления стрелок (выполнен ранее) файлов не изменял** — зафиксирован только его результат, как отдельная запись без кода.
+
+| Статус | Значение |
+|--------|----------|
+| Implemented | YES |
+| Compiled | N/A (docs-only) |
+| Tested | N/A |
+| Confirmed | **NO** |
+
+---
+
+## 2026-09-28 (документационный этап): синхронизация Blender 3D asset production + модульный environment kit
+
+**Описание:** Выполнена документационная синхронизация `AI_CONTEXT/*.md` под фактическое состояние Blender 3D asset production и зафиксированы новые архитектурные решения по environment. **Код, сцены, Unity, модели, FBX, материалы и настройки проекта НЕ изменялись.** Новые MD-файлы не создавались. Blender/Unity работа не выполнялась.
+
+**Синхронизированные документы:** `ART_PIPELINE.md` (asset registry, Method C, technical decisions, FBX contract, viewport rule, Unity batch policy, wall kit, floor kit, performance principle, material direction), `CURRENT_TASK.md` (точка остановки, registry, batch policy, kit plan, 2 новые открытые задачи), `PROJECT_STATE.md` (production registry, presentation state, decisions, batch policy, kit plan), `CONFIRMED_STATE.md` (Barrel_01 / Fence_01 как подтверждённые Blender assets; Crate_01 в «не подтверждено»), `RULES.md` (новые правила 7/8/9), `ARCHITECTURE.md` (batched Unity integration, runtime contract), `CHANGELOG.md` (эта запись + Итого).
+
+### Зафиксированные подтверждённые Blender assets
+
+| Asset | Статус | Intact / Fragments tris | Fragments |
+|---|---|---|---|
+| Barrel_01 | FINAL / APPROVED (пользователь) | 580 / 900 | 12 |
+| Fence_01 | FINAL / APPROVED (пользователь) | 668 / 1500 | 13 |
+| Crate_01 | **CP1 COMPLETE — AWAITING APPROVAL** | 740 / — | — (fracture не авторизован) |
+
+**Подтверждённый root cause «дёрганья» wood surface:** одновременное отображение intact и reassembled fragments на совпадающих поверхностях во вьюпорте. Не material, не геометрия, не TAA. Отсюда закреплено presentation state: `Fragments.hide_viewport = TRUE`, `hide_render = FALSE`.
+
+### Новые зафиксированные решения
+
+1. **Unity-интеграция — только пакетная.** Поштучная запрещена. Один отдельный этап после завершения набора environment-моделей: FBX import, normals/smoothing, materials, vertex colors, colliders, prefabs, destructible setup, runtime destruction, gameplay integration, performance validation. Asset FINAL ≠ повод начинать интеграцию.
+2. **Модульный western log/timber wall kit.** `WallSegment ≈ 4 m`; несколько горизонтальных брёвен в одном меше, видимые швы, low-poly bevel, контролируемая вариация. Unity: 1 mesh → 1 MeshRenderer → 1 shared material → 1 simple collider.
+3. **Модульный western plank floor kit.** `FloorSegment ≈ 4 × 4 m`; несколько досок в одном меше, швы, вариация ширины и тона. То же runtime-представление.
+4. **Критическое performance-правило:** не «1 log = 1 GameObject» и не «1 floorboard = 1 GameObject». Генератор размещает переиспользуемые модули; коридоры переиспользуют то же семейство. Android perf — ограничение с самого начала; визуальное богатство из модульности/силуэта/материала/вариации, **не** из числа объектов.
+5. **Material direction:** авторские WESTERN WALL и WESTERN FLOOR материалы (weathered timber / planks, тот же visual family, что Barrel_01 / Fence_01), а не перекраска placeholder `GeneratedArena_URP_Material`. `ArenaGenerator` **не переписывать** до settled material и kit design.
+6. **Технические прецеденты для будущих assets:** `Col` только `FLOAT_COLOR` (BYTE_COLOR даёт ~12× потемнение из-за sRGB), семантика `Col` = RGB тон / A metal mask, единый dark old iron `(0.0785, 0.0794, 0.0830)`, dark oak hue ratio ≈ `1 : 0.77 : 0.567`, UV world-proportional с U вдоль длинной оси элемента, 1 material slot, image textures запрещены, frozen FBX-контракт без `use_visible`.
+
+### Точка остановки
+
+```
+CRATE_01 CP1 COMPLETE — AWAITING USER APPROVAL
+```
+
+`CRATE_01 CP2` (fracture) **не авторизован** — не начинать без явного решения пользователя.
+
+| Статус | Значение |
+|--------|----------|
+| Implemented | YES |
+| Compiled | N/A (docs-only) |
+| Tested | N/A |
+| Confirmed | **NO** |
 
 ---
 
@@ -493,3 +663,16 @@ private IEnumerator StartFirstWaveNextFrame()
 | Blender props: 7 FBX → Unity prefabs (rep. 4 primitives, GUID kept) | YES | YES | PARTIAL (Edit-mode) | **NO** |
 | Generator pools Props/Lanterns/Wagons + shared materials | YES | YES | PARTIAL (Edit-mode) | **NO** |
 | Wall segments modular (PREPARED, not scattered) | YES | YES | PARTIAL (joint gap=0.000) | **NO** |
+| HUD Image overlay fix (TestArena, `MobileUI → HUD → Image` disabled) | YES | YES | YES (2 прогона) | **NO** |
+| A/B: `renderScale` 0.8 → 1 (Mobile_RPAsset) | YES | YES (config) | YES | **NO** |
+| A/B: `MSAA` 1 → 4 (Mobile_RPAsset, Deferred) | YES | YES (config) | YES | **NO** |
+| 3D ground ring (`EnemyDirectionWorldRing`) | YES | YES | YES | **NO** |
+| World-space arrows (`EnemyDirectionWorldArrow_0..5`) | YES | YES | YES | **NO** |
+| Blender asset `Barrel_01` (Method C, 12 fragments, final FBX) | YES | N/A (Blender) | YES (NUMERIC+VISION) | **YES** (asset FINAL, пользователь) |
+| Blender asset `Fence_01` (Method C, 13 fragments, final FBX) | YES | N/A (Blender) | YES (NUMERIC+VISION) | **YES** (asset FINAL, пользователь) |
+| Blender asset `Crate_01` CP1 intact (740 tris, no fracture) | YES | N/A (Blender) | YES (NUMERIC+VISION) | **NO** (ожидает одобрения) |
+| Blender asset `Crate_01` CP2 fracture | **NO** (не авторизован) | — | — | **NO** |
+| Unity integration environment assets (batch phase) | **NO** (не начата) | — | — | **NO** |
+| Modular wall/floor kit (`WallSegment ≈ 4 m`, `FloorSegment ≈ 4 × 4 m`) | **NO** (план) | — | — | **NO** |
+| WESTERN WALL / WESTERN FLOOR materials | **NO** (план) | — | — | **NO** |
+| AI_CONTEXT sync 2026-09-28 (docs-only) | YES | N/A (docs-only) | N/A | **NO** |

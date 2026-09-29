@@ -111,7 +111,44 @@ Preserved from the legacy operational documents.
 
 > **WC-03 mapping:** ✅ *user-confirmed* corresponds to `APPROVED` in the
 > canonical state machine. 🔵 *technically done, awaiting user check* is
-> **`QA PASS`** — which is exactly where the entire art programme sits.
+> **`QA PASS`** — which is exactly where most of the project sits.
+
+### 5.1 Operational rules — binding on how work is executed
+
+**Added in Phase 4.** These govern *process*, not project reality. They belong to
+the operational layer and are **not** duplicated into `PROJECT_TRUTH.md`. The
+authoritative text remains `AI_CONTEXT/RULES.md`; this is the canonical index.
+
+| # | Rule | Where authoritative |
+|---|---|---|
+| OR-01 | **Do not break what works.** No rewriting of working code, no deleting existing logic, no whole-file overwrites, without justified need and explicit permission | `AI_CONTEXT/RULES.md` §1 |
+| OR-02 | **No new AI states, new scripts, or edits outside the allowed file list** without agreement | `AI_CONTEXT/RULES.md` §3 |
+| OR-03 | **Do not duplicate.** Check for an existing system before creating code | `AI_CONTEXT/RULES.md` §4 |
+| OR-04 | **Data accuracy.** Never record assumptions as facts. Always separate *implemented / compiled / tested / confirmed*. Cite exact files and lines | `AI_CONTEXT/RULES.md` §5 |
+| OR-05 | **Only the user sets `CONFIRMED` / `PASS` / `FINAL`.** An agent may not self-report these | `AI_CONTEXT/VERIFICATION.md` |
+| OR-06 | **Evidence requirements** per task type: C# → real compile output; Unity behaviour → Play test with quoted observation; visual/Blender → numeric **and** visual evidence, neither alone suffices; regressions → state what was checked against `CONFIRMED_STATE` | `AI_CONTEXT/VERIFICATION.md` |
+| OR-07 | **Blender 3D assets:** Method C (constructive assembly from real parts; Cell/Voronoi fracture, add-ons and physics sim are **prohibited**); every CP ends with a report and **waits for explicit authorisation** before the next CP | `AI_CONTEXT/ART_PIPELINE.md`, `AI_CONTEXT/RULES.md` §7 |
+| OR-08 | **Unity integration of environment assets is BATCH ONLY.** Per-asset integration is prohibited. A single batch stage runs after the model set completes and after a separate user decision. `Asset FINAL ≠ reason to start Unity integration` | `AI_CONTEXT/ART_PIPELINE.md` |
+| OR-09 | **Modular environment kit performance rule.** Never "1 log = 1 GameObject" or "1 floorboard = 1 GameObject" in ordinary procedural generation. Modules: `WallSegment ≈ 4 m`, `FloorSegment ≈ 4 × 4 m` → 1 mesh → 1 MeshRenderer → 1 shared material → 1 simple collider. Android performance is a constraint from the start. **`ArenaGenerator` is not to be rewritten** before material and kit design are settled | `AI_CONTEXT/ART_PIPELINE.md`, `AI_CONTEXT/RULES.md` §9 |
+| OR-10 | **Do not rewrite working code**; Stage 1, Stage 2, A\*, `RefreshPathIfBetter()` (0.85f), individual targets, `visitedRooms`, `EnsureLeaderExists()`, Vision/LOS, Hearing/Noise, Combat/Investigation, accelerated empty search are all protected | `AI_CONTEXT/PROJECT_STATE.md`, `AI_CONTEXT/RULES.md` |
+| OR-11 | **Post-change procedure:** compile → report with Implemented/Compiled/Tested/Confirmed → **do not consider the task done before a Unity test** → wait for user confirmation → then update `CONFIRMED_STATE`, `CHANGELOG`, `CURRENT_TASK` | `AI_CONTEXT/RULES.md` §Workflow |
+| OR-12 | Independent reviewer (Gemma, filesystem-blind) is **candidate-only** by trigger; its findings are defects only after VERIFY by the main agent. It never sets `CONFIRMED`/`PASS`/`FINAL` | `AI_CONTEXT/VERIFICATION.md` |
+
+### 5.2 Files that must not be changed without explicit permission
+
+Recorded in `AI_CONTEXT/RULES.md`. Listed here so the canonical set exposes the
+blast radius of an accidental edit.
+
+`ArenaTacticalMap.cs` · `ArenaGenerator.cs` · `ArenaModule.cs` · `EnemySpawner.cs` ·
+`EnemyTacticalVision.cs` · `EnemyHearing.cs` · `CoverSystem.cs` · `CoverPoint.cs` ·
+`NoiseSystem.cs` · `PlayerController.cs` · `PlayerHealth.cs` · `WaveManager.cs` ·
+`MainMenuController.cs` · `PauseMenuController.cs`
+
+> **⚠️ Contradiction to note.** `EnemyTacticalPlanner.cs`, `ArenaGenerator.cs`
+> and `EnemyDirectionIndicator.cs` are on this protected list **and** are
+> currently **modified in the working tree** (2026-09-27/28 work, uncommitted).
+> Their changes were made under a different authorisation path. Recorded as
+> `CONFLICT-16`.
 
 ---
 

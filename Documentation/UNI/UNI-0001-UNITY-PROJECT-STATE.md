@@ -11,12 +11,14 @@
 
 | Field | Value |
 |---|---|
-| Engine | Unity 6 (6000.x series) |
+| Engine | **Unity 6000.3.23f1** (Unity 6) — verified in `ProjectSettings/ProjectVersion.txt` (`m_EditorVersionWithRevision: 6000.3.23f1 (09d2ecc7fb28)`) |
 | Project root | repository root (relative: `.`) |
 | Active scene | `Assets/Scenes/TestArena.unity` |
 | Stage | Pre-alpha, unreleased |
 | Primary platform | Windows PC |
 | Secondary platform | Android (blocked — see `UNI-0003`) |
+| Render pipeline | **URP** — `Mobile_RPAsset` (Deferred, `m_RendererType: 1`), `PC_RPAsset` (HighDynamicRange color grading) |
+| Platform note | `AI_CONTEXT/RULES.md` states Android is the **primary** platform and Windows secondary — a project-level statement, not yet reflected in a canonical decision |
 
 ---
 
@@ -72,11 +74,55 @@ untracked, 2 differing lines) exists. **REVIEW — do not delete.**
 | Item | Value |
 |---|---|
 | Assembly | `Assembly-CSharp` (managed DLL of 2026-09-02 exists in the IL2CPP build) |
-| Missing Mono Scripts | **4** |
-| Broken object references | **12** |
+| **Total `.cs` files** | **42** in **10** subdirectories of `Assets/Scripts/` |
+| Missing Mono Scripts | **4** — root cause identified, see `UNI-D05` |
+| Broken object references | **12** — still unidentified, see `UNI-D04` |
 | Custom pathfinding | A\*-based, functional, not NavMesh |
 | Enemy FSM states verified | `Searching` only |
 | Enemy FSM states unverified | combat, investigation, sound, cover, flanking |
+
+### 5.1 Verified script inventory
+
+Line counts are **measured on 2026-09-29**, not copied from any document.
+
+| Script | Lines | Folder |
+|---|---|---|
+| `EnemyController.cs` | 3 738 | `Enemies/` |
+| `EnemyTacticalVision.cs` | 2 268 | `Enemies/` |
+| `EnemyDirector`/`EnemyTacticalPlanner.cs` | **1 416** | `Enemies/` |
+| `EnemyHearing.cs` | 342 | `Enemies/` |
+| `NoiseSystem.cs` | 557 | `Enemies/` |
+| `ArenaTacticalMap.cs` | 1 770 | `Procedural/` |
+| `ArenaGenerator.cs`, `ArenaModule.cs` | — | `Procedural/` |
+| `CoverSystem.cs` | 514 | `Enemies/Cover/` |
+| `CoverPoint.cs` | 486 | `Enemies/Cover/` |
+| `EnemySpawner.cs` | 1 623 | `Level/` |
+| `WaveManager.cs` | 162 | `Level/` |
+| `DestructibleObject.cs` | 376 | `Environment/` |
+| `WildWestEnvironmentGenerator.cs` | 1 431 | `Environment/` |
+| `EnemyDirectionIndicator.cs` | 2 052 | `UI/` |
+| `HUDController.cs`, `DeathUIController.cs`, `SettingsUIManager.cs` | — | `UI/` |
+| `GunController.cs`, `Bullet.cs` | — | `Weapons/` |
+| `XPManager.cs`, `XPOrb.cs`, `XPBarController.cs`, `UpgradeManager.cs`, `UpgradeUI.cs` | — | `Player/` |
+| `PlayerController.cs`, `PlayerHealth.cs`, `CameraFollow.cs`, `MobileJoystick.cs`, `MobileTouchControls.cs` | — | `Player/` |
+| `GameSettings.cs`, `DifficultyManager.cs`, `MainMenuController.cs`, `PauseMenuController.cs`, `SettingsController.cs` | — | `Core/` |
+| `MobilePerformanceTest.cs` | — | `Performance/` |
+
+> Folder counts: Core 5 · Cover 2 · Enemies 9 · Environment 2 · Level 4 ·
+> Performance 1 · Player 10 · Procedural 3 · UI 4 · Weapons 2 = **42**.
+>
+> **`AI_CONTEXT/PROJECT_STATE.md` claims "41 .cs in 8 subdirectories" and omits
+> the `Environment/` folder entirely. Both figures are stale** — see
+> `../History/OPEN_CONFLICTS.md` `CONFLICT-11`.
+
+### 5.2 Systems present in code but absent from the scene
+
+| System | Script exists | In scene |
+|---|---|---|
+| XP / level up | ✅ 5 scripts in `Player/` | ❌ `UNI-D13` — `HUDController.xpBar` / `levelText` null |
+| Destructibles | ✅ `DestructibleObject.cs` (376 lines) | ❌ 0 instances (`UNI-D12`) |
+| `WildWestEnvironment` | ✅ 1 431 lines | ⚠️ confirmed working in `TestArena_Preview.unity` (`Stage 4.4.4` CONFIRMED) |
+| `EnemyDirectionIndicator` | ✅ 2 052 lines | ✅ runtime-created via `[RuntimeInitializeOnLoadMethod]`, not serialized |
 
 **Never claim the unverified FSM states as working.**
 

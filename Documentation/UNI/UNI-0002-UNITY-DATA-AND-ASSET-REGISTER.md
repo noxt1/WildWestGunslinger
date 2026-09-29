@@ -64,6 +64,88 @@ Rusher. Neither has a valid character texture applied.
 
 ---
 
+## 5a. Environment prefab registry
+
+**Added in Phase 4.** Recovered from `AI_CONTEXT/PROJECT_STATE.md`; integration
+dated 2026-09-21, recorded as *prepared, not user-confirmed*.
+
+| Prefab (`Assets/Prefabs/Environment/`) | Parts | HP | CoverPoints |
+|---|---|---|---|
+| `Fence_Western_Wooden.prefab` — states INTACT 12 / DAMAGED 4 / DESTROYED 2 debris | 18 (~504 v) | 50 | 2 |
+| `Lantern_Post_Western.prefab` — Glass/Bulb/frame, **no light** | 15 (338 v / 160 t) | 40 | 0 (decor) |
+| `Barrel_Western_Wooden.prefab` — Staves/Hoops/Lids | 6 (456 v / 268 t) | 30 | 2 |
+| `Crate_Western_Wooden.prefab` — Corners/Panels | 10 (230 v / 110 t) | 40 | 2 |
+| `Cover_Western_Wooden.prefab` — Posts/Feet/Planks/TopLog | 8 (221 v / 113 t) | 50 | 2 |
+| `Wagon_Western_Wooden.prefab` — Wheels/Axles/Bed/Walls/Bench/Shafts, 2 BoxCollider | 14 (568 v / 320 t) | 80 | 2 |
+| `Western_Log_Wall_Segment.prefab` — **PREPARED, not scattered** | 8 (416 v / 236 t) | 60 | 2 |
+| `Western_Plank_Wall_Segment.prefab` — **PREPARED, not scattered** | 14 (322 v / 154 t) | 60 | 2 |
+
+**Integration facts (2026-09-21):**
+
+- All 7 source FBX were **Z-up** → corrected at prefab level with `Model` rotation **−90° X**; `minY = 0.00` on all
+- Albedo byte-identical across props; normal maps byte-identical; normal importers set to NormalMap
+- 4 shared URP Lit materials in `Art/Environment/Shared/Materials/`
+- No Camera/Light inside any FBX; **realtime lights = 0**
+- Colliders minimal for Android: 1 Box per prop (wagon 2); Rigidbody only on 2 fence-debris (kinematic, parked)
+- Generator pools: Fences max 12 · Props max 10 · Lanterns max 6 · Wagons max 4, all outside rooms
+- **No per-frame destruction logic**
+- FPS ~30 intermittent, **NOT confirmed**; CoverPoint-marker hypothesis unconfirmed
+- Manual Play test (visual, shooting, cover-AI, wall seams) **awaits the user**
+
+> These prefabs exist and are wired, but **0 destructible instances and 0 modular
+> meshes** appear in the runtime scene census (`UNI-D11`, `UNI-D12`). Wall
+> segments are explicitly **PREPARED, not DONE** — preparation for a future
+> environment stage, not completion of one.
+
+## 5b. `WildWestEnvironment` — confirmed working in the Preview scene
+
+| Field | Value |
+|---|---|
+| Script | `Assets/Scripts/Environment/WildWestEnvironmentGenerator.cs` (1 431 lines) |
+| Root | `WildWestEnvironment` (sibling of `GeneratedArena`) |
+| Seed | own `System.Random`, deterministic |
+| Data source (read-only) | `ArenaTacticalMap.Rooms`, `RoomMap.Module.GetWorldBounds()`, `RoomMap.Exits` |
+| Ordering | created after `ArenaTacticalMap.Build()`; objects lie **outside** room bounds; **does not affect navigation** |
+| Preview scene | `Assets/Scenes/TestArena_Preview.unity` — the working `TestArena` was not modified |
+
+**Runtime composition (Stage 4.4.4, user-CONFIRMED):** Ground 1
+(`M_Ground_Desert`, 152×156 m, y = −0.05) · Cliffs 6 (`UNS_Rock_Cliff_*`) ·
+Rocks 32 · Trees 16 (`UNS_Spruce_01/02`) · Bushes 48 (`UNS_Bush`) ·
+Grass 255 (`UNS_Grass`, collider disabled on instances). Vegetation sampled from
+the bounds boundary, independent per-category spacing. `rockMaxDistance`
+fixed 45 → 75.
+
+> Background is **not implemented** (Stage 4.4.5 FROZEN / PAUSED).
+> Desert Pack is dormant pending URP conversion of `Mat_01`.
+
+## 5c. Render settings (set 2026-09-27, still uncommitted)
+
+| Asset | Setting | Value | Note |
+|---|---|---|---|
+| `Mobile_RPAsset` | renderer type | Deferred (`m_RendererType: 1`) | |
+| `Mobile_RPAsset` | `m_RenderScale` | **1** (was 0.8) | A/B: 0.8 → 1 reduced stair-stepping |
+| `Mobile_RPAsset` | `m_MSAA` | **4** (was 1) | A/B: 1 → 4 improved Cube/Capsule AA |
+| `PC_RPAsset` | `m_ColorGradingMode` | **1** HighDynamicRange (was 0) | set during washed-out-scene diagnosis |
+| Quality settings | `antiAliasing` | 0 on both levels | **not an error**; URP MSAA provides AA |
+| — | FPS | ~56.4 (renderScale 0.8) → ~60 after | no regression |
+
+> **Shadow Aliasing remains OPEN** — shadow resolution 1024, 1 cascade, distance
+> 50. See `../History/OPEN_ISSUES.md` `ISSUE-14`. Not fixed in that phase.
+
+## 5d. Destructibles — foundation exists, zero instances
+
+| Field | Value |
+|---|---|
+| Script | `Assets/Scripts/Environment/DestructibleObject.cs` (376 lines) |
+| Scope | the single destructibility core: HP, INTACT → DAMAGED → DESTROYED, hide/show arrays, UnityEvents, **no `Update()`** |
+| Integration | `Bullet` / `EnemyBullet` call `TakeDamage` via `GetComponentInParent<DestructibleObject>()`; `CoverSystem` has an `isActiveAndEnabled` guard |
+| Instances in scene | **0** (`UNI-D12`) |
+| Intent | controlled partial destruction; separate parts may detach; physics only locally; Android performance considered |
+| Status | **foundation prepared — Stage 8 NOT performed** |
+
+> This refines `UNI-D12`: the *system* is implemented, the *placement* is not.
+> The defect is zero instances, not a missing implementation.
+
 ## 6. Characters
 
 | Path | State |

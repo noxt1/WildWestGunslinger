@@ -1,3 +1,12 @@
+> **Status:** OPERATIONAL / REFERENCE LAYER - reconciled 2026-09-29 (Phase 4)
+> **Role:** component-level engineering reference for the AI and environment systems.
+> **Canonical architecture:** ../Documentation/ARCHITECTURE.md (authoritative for as-built system shape)
+> **Code inventory with current line counts:** ../Documentation/UNI/UNI-0001-UNITY-PROJECT-STATE.md section 5.1
+> **Not canonical for:** project state, requirements, decisions, or plan.
+> **Line counts in this file are STALE** - measured values live in UNI-0001 section 5.1.
+> **Reconciliation:** ../Documentation/PHASE4_AI_CONTEXT_RECONCILIATION.md
+> Superseded as canonical source on 2026-09-29; retained as an operational reference.
+
 # ARCHITECTURE — Архитектура AI-системы
 
 ## Обзор компонентов
@@ -36,6 +45,43 @@
 ```
 
 ## Компоненты
+
+---
+
+### EnemyDirectionIndicator (2026-09-27)
+
+**Файл:** `Assets/Scripts/UI/EnemyDirectionIndicator.cs`
+**Ответственность:** Индикатор направления к врагам для игрока. Кольцо и стрелки расположены на полу под ногами игрока как 3D-объекты, участвуют в глубине сцены и перекрываются геометрией мира.
+
+**Важно:** объект создаётся в runtime через `[RuntimeInitializeOnLoadMethod]` (`Bootstrap`), в сцене не сериализуется. Создаётся один экземпляр, `DontDestroyOnLoad`.
+
+**Инициализация:** `Canvas` (`ScreenSpaceOverlay`, `sortingOrder = 5000`) для UI-стрелок (сохранены для отката, выключены при `useWorldArrows`) + 3D-объекты `EnemyDirectionWorldRing` и `EnemyDirectionWorldArrow_0..5` как дочерние элементы самого индикатора (вне Canvas).
+
+**3D-кольцо (`EnemyDirectionWorldRing`):**
+- `MeshFilter` + `MeshRenderer`, процедурный плоский annulus в XZ (98 вершин / 96 треугольников)
+- Параметры: `worldRingRadius = 0.835`, `worldRingThickness = 0.1`, `worldRingHeightOffset = 0.02`
+- Материал: `Universal Render Pipeline/Unlit`, Transparent, `_ZWrite = 0`, `_Cull = Off`, `renderQueue = 3000`, `_BaseColor = RGBA(1, 1, 1, 0.45)`
+- Collider отсутствует; `shadowCastingMode = Off`, `receiveShadows = false`, light/reflection probe usage выключены
+
+**3D-стрелки (`EnemyDirectionWorldArrow_0..5`):**
+- По одному треугольнику на стрелку; остриё вдоль локальной +X, основание сзади
+- Параметры: `arrowWorldLength = 0.30`, `arrowWorldHalfWidth = 0.094`
+- Позиция: `player.position + worldDirection * worldRingRadius`, `Y = currentGroundY + worldRingHeightOffset` (та же точка и высота, что у кольца)
+- Поворот: `rotY = Atan2(-worldDirection.z, worldDirection.x)` — остриё совмещается с направлением на врага
+- Материал общий на все стрелки: URP Unlit Transparent, `RGBA(1, 0.18, 0.05, 0.95)`; `shadowCastingMode = Off`; Collider отсутствует
+
+**Определение поверхности (`TryGetGroundUnderPlayer`):**
+- `Physics.RaycastNonAlloc` вниз из `player.position + up * groundProbeStartHeight (3)`, дистанция `groundProbeDistance (40)`, `Physics.DefaultRaycastLayers`, `QueryTriggerInteraction.Ignore`
+- Предвыделенный статический буфер `RaycastHit[8]` — без аллокаций в кадре
+- Исключаются собственные трансформы индикатора и коллайдеры игрока; берётся ближайший валидный hit
+- Результат кэшируется в `currentGroundY` и используется и кольцом, и стрелками
+- Ориентация: ровный пол → горизонтально; наклон > 0.1° → `Quaternion.FromToRotation(up, normal)`
+
+**Выбор врагов (не изменялось):** `visibleEnemies` собирается из `EnemyController`, сортируется по дистанции к игроку; стрелка с индексом `i` соответствует `visibleEnemies[i]`. Активных стрелок — `min(maxArrows, visibleEnemies.Count)`.
+
+**Rollback:** `useWorldRing` и `useWorldArrows` (bool, SerializeField) — при `false` восстанавливается прежнее UI-представление (объекты остаются созданными, отключаются через `enabled`).
+
+---
 
 ### EnemyController (3738 строк)
 
@@ -261,6 +307,40 @@
 ### Blender production → Unity prefab pipeline (вне Stage-номера)
 
 Источник: `Documents\WildWestGunslinger art\art\Environment\<Name>\` (FBX + `_Source.blend` + `textures/`); в Unity — только FBX+текстуры. FBX Z-up → prefab-level `Model` rotation −90° X, minY=0.00. Shared URP Lit материалы `Art/Environment/Shared/Materials/` (4 шт.), realtime lights 0, коллайдеры минимальны (1 Box, wagon 2). Детали art-фокуса — `AI_CONTEXT/ART_PIPELINE.md`; character-стандарт — `.opencode/skills/wwg-character-art/SKILL.md`.
+
+### Blender-authored destructible assets → batched Unity integration (2026-09-28)
+
+Второй, независимый от legacy-пайплайна поток. Ассеты создаются **с нуля** в `Working\blender_src\<name>\<Name>_01_Working.blend` по Method C; legacy FBX используются только как read-only baseline и основой не являются.
+
+**Двухэтапная схема (Unity-интеграция отложена):**
+
+```
+Этап Blender (текущий)                        Этап Unity (отложен)
+─────────────────────────────                 ────────────────────────
+model → QA (NUMERIC + VISION)                 FBX import
+→ controlled fracture → final FBX             normals/smoothing verification
+                                             materials, vertex colors
+                                             colliders, prefabs
+                                             destructible setup
+                                             runtime destruction
+                                             gameplay integration
+                                             performance validation
+```
+
+**Жёсткое правило:** поштучная Unity-интеграция запрещена. Один отдельный **пакетный** этап выполняется только после завершения набора environment-моделей и отдельного решения пользователя. Статус отдельного asset `FINAL` означает «Blender-часть завершена и подтверждена» и **не** является поводом начинать Unity-интеграцию.
+
+**Runtime-контракт destructible asset:**
+
+| Collection | `hide_viewport` | `hide_render` | Роль |
+|---|---|---|---|
+| `<Name>_Intact` | FALSE | FALSE | default presentation |
+| `<Name>_Fragments` | **TRUE** | FALSE | доступны для exploded QA / inspection / FBX export |
+
+Причина правила: одновременное отображение intact и reassembled fragments на совпадающих поверхностях вызывает «дёрганье» wood surface во вьюпорте (подтверждённый root cause на Barrel_01). Fragments остаются в blend и в рендере.
+
+**Material contract (M2):** один material slot на объект; `Col` = `FLOAT_COLOR` / `CORNER`, RGB = тон элемента, A = metal mask; `Metallic` из A; общий dark old iron `(0.0785, 0.0794, 0.0830)`; UV world-proportional, U вдоль длинной оси элемента; image textures не используются.
+
+**Планируемая модульная архитектура окружения (ещё не реализована):** `WallSegment ≈ 4 m` и `FloorSegment ≈ 4 × 4 m` — каждый = 1 mesh + 1 MeshRenderer + 1 shared material + 1 simple collider. Запрещено «1 log = 1 GameObject» / «1 floorboard = 1 GameObject»: генератор размещает переиспользуемые модули. Android perf — ограничение с самого начала; `ArenaGenerator` не переписывается до settled material и kit design.
 
 ---
 

@@ -1,6 +1,6 @@
 # PHASE 6 — GITHUB RECONCILIATION + REPOSITORY HYGIENE
 
-**Status:** RECONCILED LOCALLY — **PUSH NOT PERFORMED** (awaits human APPROVE)
+**Status:** **RECONCILED AND PUSHED** — 2026-09-29 on explicit human APPROVE
 **Date:** 2026-09-29
 **Remote:** `https://github.com/noxt1/WildWestGunslinger.git`
 **Scope:** Git / documentation / security verification only. **No product work** (§27 respected).
@@ -236,12 +236,56 @@ See **`Documentation/PHASE6_PUSH_PREVIEW.md`** — 11 commits, 75 files (66 `.md
 
 ## 14. Push Result
 
-**NOT PUSHED.** Awaiting explicit human APPROVE (§21). No `git push` of any form was executed.
+**PUSHED** — 2026-09-29, on explicit human APPROVE.
+
+| Field | Value |
+|---|---|
+| command | `git push origin main` (plain; no force, no force-with-lease, no mirror) |
+| result | `f932fcc..c294904  main -> main` |
+| exit code | 0 |
+| **local `main`** | `c2949045d979b243307f9ecb1561acdc2dc9e03a` |
+| **`origin/main`** | `c2949045d979b243307f9ecb1561acdc2dc9e03a` |
+| **GitHub `main`** (`ls-remote`) | `c2949045d979b243307f9ecb1561acdc2dc9e03a` |
+| **all three identical** | **YES** |
+| divergence after push | **0 behind / 0 ahead** |
+| subject on GitHub `main` | `docs: finalize canonical methodology classification` |
+
+### Post-push verification (all 10 points)
+
+| # | Check | Result |
+|---|---|---|
+| 1 | local `main` HEAD | `c294904` |
+| 2 | `origin/main` | `c294904` |
+| 3 | GitHub `main` | `c294904` |
+| 4 | all three on one commit | **YES** |
+| 5 | `Documentation/README.md` on GitHub | **OK** (241 lines served) |
+| 6 | `PROJECT_TRUTH.md` on GitHub | **OK** |
+| 7 | `Documentation/AI_PRODUCTION_METHODOLOGY.md` on GitHub | **OK** |
+| 8 | Archive structure on GitHub | **OK** — 23 files: `Audits` 14, `Historical` 4, `Superseded` 2, `Source` 1, `Legacy` 1, `README.md` 1 |
+| 9 | product worktree not lost | **YES** — `Assets` tracked mods 10 → 10, untracked 66 → 66, foreign Documentation work 17 → 17, staged 0 |
+| 10 | recovery branch/tag accessible | **YES, locally** — see note below |
+
+> **Note on point 10.** `recovery/checkpoint-2026-09-29-audit2` (branch) and the tag
+> `recovery-2026-09-29-audit2` both resolve to `040651b1d8963231b814217319b099b7ab5ef16d`, and the
+> commit object exists and is reachable. They are **local-only and were never pushed** — GitHub
+> carries `refs/heads/main` alone. That is their intended state; pushing them was neither approved
+> nor required, and the approved push was `main` only.
+> `backup-pre-lfs` = `f9f4899`, also local-only.
 
 ## 15. GitHub Verification
 
-**Deferred** until after the push. Post-push verification is scripted in the Phase 6 checklist:
-`local main == origin/main == GitHub main` at `52e716d`.
+| Check | Result |
+|---|---|
+| `local main == origin/main == GitHub main` | **YES**, all at `c294904` |
+| Canonical documentation reachable | **YES** — README, `PROJECT_TRUTH`, `PROJECT_STATE`, `ARCHITECTURE`, `REQUIREMENTS`, `DECISIONS`, `MASTER_PLAN`, `OPEN_ISSUES`, `AI_PRODUCTION_METHODOLOGY`, `DOC-0002`, `FINAL_DOCUMENTATION_CLASSIFICATION` |
+| Domain folders reachable | `GAME/` `UNI/` `ART/` `REL/` `AI/` `Character/` `History/` |
+| Archive reachable | **YES** — 23 files incl. `Archive/README.md` |
+| Remote-only history preserved | **YES** — `41da361` and `f932fcc` are ancestors of GitHub `main` via merge `52e716d` |
+| Files deleted from GitHub | **0** |
+| Secrets exposed | **0** |
+| `.apk` on GitHub | **0** (never tracked) |
+| Product worktree | intact, untouched, not pushed |
+| Recovery refs | intact, local |
 
 ## 16. Remaining Risks
 
@@ -259,9 +303,9 @@ See **`Documentation/PHASE6_PUSH_PREVIEW.md`** — 11 commits, 75 files (66 `.md
 
 | Field | Value |
 |---|---|
-| local `main` | `52e716d` |
-| `origin/main` | `f932fcc` (**behind 11**) |
-| divergence | 0 behind / 11 ahead |
+| local `main` | **`c294904`** (post-push) |
+| `origin/main` | **`c294904`** (synchronised) |
+| divergence | **0 behind / 0 ahead** |
 | conflicts | 0 |
 | deleted files | 0 |
 | worktree entries | **94 — identical before and after merge (0 differences)** |
@@ -270,6 +314,6 @@ See **`Documentation/PHASE6_PUSH_PREVIEW.md`** — 11 commits, 75 files (66 `.md
 | secret scan | 0 candidates |
 | recovery refs | intact |
 | `.gitignore` | extended append-only, 0 deletions |
-| push | **NOT PERFORMED** |
+| push | **PERFORMED** — `f932fcc..c294904 main -> main` |
 
 **Working tree product changes were not lost, not modified, and not accidentally committed.**

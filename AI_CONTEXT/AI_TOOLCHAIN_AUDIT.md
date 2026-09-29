@@ -1,3 +1,14 @@
+> **SUPERSEDED** — not authoritative. Canonical replacements:
+> `Documentation/AI/AI-0001-AI-AGENT-STATE.md`,
+> `Documentation/AI/AI-0002-AI-TOOLING-AND-PRODUCTION-METHOD.md`,
+> `Documentation/REL/REL-0002-BUILD-ARTIFACTS.md`.
+> Retained for history; see `Documentation/DOC-0002-SUPERSEDED-DOCUMENTS.md` (S-02).
+> Superseded on 2026-09-29.
+> **Known false claims in this document:** "no release build exists" (a
+> 46.2 MB `WildWest.apk` exists, 2026-09-09); character blend sources are
+> "in project" (they live in `Documents\WildWestGunslinger art`). See
+> `Documentation/History/HISTORY-0003-AUDIT-HISTORY.md`.
+
 # AI Toolchain Audit — WildWestGunslinger
 
 Дата: 2026-09-25

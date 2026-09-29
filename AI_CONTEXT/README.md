@@ -1,3 +1,8 @@
+> **SUPERSEDED** — not authoritative. Canonical entry point:
+> `Documentation/DOC-0001-CANONICAL-DOCUMENTATION-INDEX.md`.
+> Retained for history; see `Documentation/DOC-0002-SUPERSEDED-DOCUMENTS.md` (S-05).
+> Superseded on 2026-09-29.
+
 # AI_CONTEXT — Постоянная память проекта WildWestGunslinger
 
 ## Назначение

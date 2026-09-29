@@ -1,3 +1,9 @@
+> **SUPERSEDED** — not authoritative. Canonical replacement:
+> `Documentation/History/OPEN_DECISIONS.md`,
+> `Documentation/DOC-0004-OPEN-QUESTIONS.md`.
+> Retained for history; see `Documentation/DOC-0002-SUPERSEDED-DOCUMENTS.md` (S-05).
+> Superseded on 2026-09-29.
+
 # SPEC IDEAS — применимые идеи Spec Kit (без установки, workflow не заменяется)
 
 WWG workflow остаётся: АНАЛИЗ → ПЛАН → СОГЛАСОВАНИЕ → ИМПЛЕМЕНТАЦИЯ → ПРОВЕРКА → ДОКАЗАТЕЛЬСТВА → CONFIRMED.

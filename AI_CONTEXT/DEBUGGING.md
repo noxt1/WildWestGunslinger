@@ -1,3 +1,9 @@
+> **SUPERSEDED** — not authoritative. Canonical replacement:
+> `Documentation/UNI/UNI-0003-UNITY-KNOWN-DEFECTS.md`,
+> `Documentation/History/OPEN_ISSUES.md`.
+> Retained for history; see `Documentation/DOC-0002-SUPERSEDED-DOCUMENTS.md` (S-05).
+> Superseded on 2026-09-29.
+
 # DEBUGGING — систематическая отладка (адаптация systematic-debugging)
 
 ## Цикл (по порядку, без пропусков)

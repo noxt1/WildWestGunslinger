@@ -1,0 +1,204 @@
+# UNI-0003 — Unity Known Defects
+
+**Document ID:** `UNI-0003`
+**Status:** CANONICAL
+**Date:** 2026-09-29
+**Evidence class:** runtime observation (U-12, 2026-09-29)
+
+Every defect below was **observed in play mode**, not inferred from documentation.
+
+---
+
+## 1.0 Runtime fixes verified on 2026-09-27 (pre-existing, recorded)
+
+**Added in Phase 3.** These fixes were made and runtime-verified on 2026-09-27
+and are recorded in `AI_CONTEXT/CHANGELOG.md`. They are listed here as **resolved
+runtime evidence**, kept separate from the open defects below and from later
+audit assumptions.
+
+### FIX-01 — White HUD overlay in `TestArena` (permanent fix)
+
+| Field | Value |
+|---|---|
+| Symptom | Persistent white haze over the playable scene after an earlier washed-out-scene fix |
+| Cause | Object `TestArena → MobileUI → HUD` held a fullscreen `Image` component, semi-transparent white `RGBA(1, 1, 1, 0.392)`, `anchorMin 0,0` / `anchorMax 1,1` / `sizeDelta 0×0` — stretched across the whole Canvas |
+| Fix | `m_Enabled: 0` on that `Image` component, saved via `EditorSceneManager.MarkSceneDirty` + `SaveScene`; recorded in `Assets/Scenes/TestArena.unity` at fileID `2096943043` |
+| Preserved | `HUD`, `MobileUI`, the `Canvas`, and all children — `HealthBar`, `XPBar`, `JoystickBackground`, `FireButton`, `WaveText`, `PauseButton`. `MobileUI` was **not** disabled wholesale; `MobileTouchControls` was **not** modified |
+| Runtime verification | `Main Menu → Play → TestArena`, **two runs**, including a scene reload from disk. `Image.enabled = False` both times |
+| Measured result | No white overlay; HP Bar, XP Bar, WaveText, Joystick, Fire Button, Menu Button all display; **FPS 60.0; Console errors = 0** |
+| Status | Implemented YES · Compiled YES (0 errors) · Tested YES (runtime, 2 runs) · **Confirmed NO** — awaiting user visual confirmation |
+
+> **`Confirmed = NO` is the recorded status.** The runtime evidence is real and
+> reproducible, but the user has not visually signed it off. This is the correct
+> distinction between *tested* and *confirmed*.
+
+### FIX-02 — Geometry aliasing A/B tests (renderScale, MSAA)
+
+Diagnostic A/B testing of render scale and MSAA against Shadow Aliasing and
+Geometry/Edge Aliasing, recorded 2026-09-27. Relevant to `Assets/Settings/Mobile_RPAsset.asset`
+and `PC_RPAsset.asset`, which remain **modified and uncommitted** in the working
+tree.
+
+> Scope note: these are **2026-09-27 records**. They are not superseded by the
+> 2026-09-29 U-12 audit, which did not evaluate render settings. Both are
+> retained; neither overrides the other.
+
+---
+
+## 1. Open defects
+
+### Severity scale
+
+| Severity | Meaning |
+|---|---|
+| **Critical** | Blocks release, or blocks a target platform |
+| **High** | Visible wrong behaviour in the core loop |
+| **Medium** | Feature absent or degraded but not blocking |
+
+---
+
+## Critical
+
+### UNI-D01 — Zero NavMesh
+- **Observed:** 0 agents, 0 triangulation.
+- **Impact:** any NavMesh-based agent is non-functional. Current enemy movement depends entirely on the custom A\* pathfinder, which means the baked navigation asset is missing, not merely unconfigured.
+- **State:** unfixed.
+
+### UNI-D02 — No character rig integrated
+- **Observed:** 0 `Animator`, 0 `Avatar`, 0 `AnimatorController`, 0 `SkinnedMeshRenderer`.
+- **Impact:** characters cannot be animated. No animation state is reachable in game.
+- **State:** unfixed. Character source work exists (see `ART-0001`) but nothing is integrated.
+
+### UNI-D03 — Player and enemies are Capsules
+- **Observed:** both actor types use primitive capsule geometry.
+- **Impact:** no visual character in the playable build.
+- **State:** unfixed, downstream of `UNI-D02`.
+
+### UNI-D04 — 12 broken object references
+- **Observed:** 12 references resolve to `None` at runtime.
+- **Impact:** undefined behaviour in whichever systems consume them; likely a direct contributor to non-functional features.
+- **State:** unfixed. Must be enumerated per-object before repair.
+
+### UNI-D05 — 4 missing Mono Script references
+- **Observed:** 4 components show `Missing (Mono Script)`.
+- **Impact:** the owning GameObjects have lost their logic entirely; behaviour is silently absent.
+- **State:** unfixed. Must be identified by GUID before any repair.
+
+### UNI-D06 — Modular FBX imported at 0.01× scale
+- **Observed:** modular environment FBX import scale resolves to `0.01×`; Z-up is not compensated.
+- **Impact:** imported modular geometry is effectively invisible (1 cm scale). Any attempt to integrate the modular kit will place geometry at the wrong scale and orientation.
+- **State:** unfixed. Import settings are wrong; this is a source-side `.meta`/importer problem.
+
+### UNI-D07 — Android touch controls broken
+- **Observed:** `MobileTouchControls` object references are all `null`.
+- **Impact:** latent on PC, **critical for Android**. The Android target cannot be played.
+- **State:** unfixed.
+
+---
+
+## High
+
+### UNI-D08 — `Shooter.prefab` has a font material as its surface
+- **Observed:** material `TMP_SDF-HDRP LIT` (a TextMeshPro font material) applied to the mesh renderer.
+- **Impact:** the Shooter renders as a font atlas surface, not a character texture.
+- **State:** unfixed.
+
+### UNI-D09 — `Rusher.prefab` has a debug material
+- **Observed:** material `FrameDebuggerRenderTargetDisplay` applied.
+- **Impact:** the Rusher renders with a frame-debugger display material. Indicates a material that was never replaced before the prefab was saved.
+- **State:** unfixed.
+
+### UNI-D10 — Gun damage overwritten to 200 at runtime
+- **Observed:** both `GunController` instances report `200` damage at runtime while the Inspector shows 10 (one prefab) and 100 (the other).
+- **Static evidence (confirmed by Phase 3):** `Assets/Scripts/Weapons/GunController.cs` line 37, inside `Awake()`:
+  ```csharp
+  damage = Mathf.Max(damage, 200f);
+  ```
+  This clamps damage to a **minimum** of 200, so any authored value below 200 is silently raised to 200. The serialized field default is also `damage = 200f` (line 14).
+- **Impact:** weapon balance is not authorable from the Inspector; the effective value is set in code. Two orders of magnitude discrepancy versus the intended 10.
+- **State:** unfixed. Runtime audit ref `RT-04`; also `RT-03` (duplicate `FireButton/GunController` and `weaponPoint` resolving to the Player root).
+- **Never present the Inspector value as the runtime value.** The Inspector shows the *authored* value; the runtime value is always ≥ 200.
+
+### UNI-D11 — Zero modular environment meshes integrated
+- **Observed:** 0 modular meshes in the scene despite the kit existing in `Assets/Art/Environment/Modular/`.
+- **Impact:** the environment kit is unusable. Interacts with `UNI-D06` — integration cannot proceed until import is fixed.
+- **State:** unfixed, blocked by `UNI-D06`.
+
+---
+
+## Medium
+
+### UNI-D12 — Zero destructible instances
+- **Observed:** 0 destructible objects in the scene, although controlled-fracture assets exist in `Assets/Art/Props/`.
+- **Impact:** a designed feature is entirely absent from the playable build.
+- **State:** unfixed.
+
+### UNI-D13 — HUD level/XP fields are null
+- **Observed:** `HUDController.xpBar` and `HUDController.levelText` are null at runtime; the level is never displayed.
+- **Static evidence:** `Assets/Scripts/UI/HUDController.cs` lines 12–13 declare both as `[SerializeField]`, and both are unassigned in the scene.
+- **Impact:** the level/XP readout is permanently absent. Also means the XP system has **no UI surface**, reinforcing that XP is unimplemented (`GAME-0004` §3).
+- **State:** unfixed. Runtime audit ref `RT-07`.
+- **Note:** this is a *separate* null reference from the 12 in `UNI-D04`; it was not counted in that total.
+
+### UNI-D14 — Android performance unproven
+- **Observed:** 4097 renderers across 1552 objects at runtime.
+- **Impact:** Android frame rate, memory and thermal behaviour are **unknown**. No device test has been performed (`ISSUE-11`, `GAME-0003` §3).
+- **State:** unfixed / unverified.
+- **Constraint:** this must be measured on a physical device. It cannot be closed on desktop editor numbers.
+
+---
+
+## 1.1 Runtime-audit ref mapping (`RT-*` → `UNI-D*`)
+
+The U-12 runtime audit numbered issues `RT-01`…`RT-09`. Those identifiers are
+retained for traceability to `AUDIT_2_RUNTIME_REPORT.md`.
+
+| Audit ref | Defect | Canonical ID |
+|---|---|---|
+| `RT-01` | Modular FBX import 0.01×, Z-up uncompensated | `UNI-D06` |
+| `RT-02` | `MobileTouchControls` refs null (Android-critical) | `UNI-D07` |
+| `RT-03` | `FireButton`/`GunController` duplicate; `weaponPoint` → Player root; damage 10→200 | `UNI-D10` (partial — the duplicate/`weaponPoint` element has no dedicated entry) |
+| `RT-04` | `GunController.Awake` forces `damage ≥ 200` | `UNI-D10` |
+| `RT-05` | `Rusher`/`Shooter` prefab materials wrong | `UNI-D08`, `UNI-D09` |
+| `RT-06` | 9 missing-script warnings per spawn cycle | `UNI-D05` |
+| `RT-07` | `HUDController.xpBar` / `levelText` null | **`UNI-D13`** |
+| `RT-08` | 12 broken references | `UNI-D04` |
+| `RT-09` | 4097 renderers / 1552 objects, Android perf unproven | **`UNI-D14`** |
+
+> `UNI-D13` and `UNI-D14` were **added in Phase 3** because the Phase 2 register
+> omitted `RT-07` and `RT-09`. The gap is closed; all nine audit refs are now mapped.
+
+---
+
+## Untested — must not be reported as working
+
+These systems were **not** exercised at runtime and must not be described as
+functional in any document:
+
+- AI combat behaviour
+- AI investigation behaviour
+- AI sound propagation / reaction
+- AI cover-taking
+- AI flanking
+
+---
+
+## Repair ordering guidance
+
+Blocking dependencies, in order:
+
+```
+UNI-D05 (missing scripts)  ─┐
+UNI-D04 (broken refs)      ─┴─→ restore logic ─→ UNI-D02/D03 (character) ─→ UNI-D01 (NavMesh)
+UNI-D06 (import scale)     ───→ UNI-D11 (modular integration)
+UNI-D07 (touch)            ───→ Android target
+UNI-D10 (damage)           ───→ weapon balance
+UNI-D08/D09 (materials)    ───→ visual correctness
+```
+
+`UNI-D04` and `UNI-D05` should be enumerated first, because both silently
+disable behaviour and may account for other apparent defects.
+
+---
+
+**End of `UNI-0003-UNITY-KNOWN-DEFECTS.md`**

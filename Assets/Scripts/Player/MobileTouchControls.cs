@@ -60,11 +60,7 @@ public class MobileTouchControls : MonoBehaviour
                 FindFirstObjectByType<PlayerController>();
         }
 
-        if (gunController == null)
-        {
-            gunController =
-                FindFirstObjectByType<GunController>();
-        }
+        ResolveGunController();
 
         if (playerCamera == null)
         {
@@ -97,6 +93,43 @@ public class MobileTouchControls : MonoBehaviour
         {
             KeepFiring();
         }
+    }
+
+    /*
+     * PHASE 5B.1 (ISSUE-22):
+     * Канонический GunController — тот, что висит
+     * на Player. Раньше здесь стоял
+     * FindFirstObjectByType<GunController>(), который
+     * возвращал произвольный экземпляр: в сцене их было
+     * два, и выбор падал на дубль на UI-кнопке FireButton
+     * (MobileUI/HUD/FireButton), а не на оружие игрока.
+     * Из-за этого стрельба шла через один инстанс,
+     * а UpgradeManager умножал урон на другом.
+     *
+     * Теперь резолвим детерминированно:
+     * PlayerController -> его GunController.
+     * Порядок обхода сцены больше не влияет на выбор.
+     */
+    private GunController ResolveGunController()
+    {
+        if (gunController != null)
+        {
+            return gunController;
+        }
+
+        if (playerController == null)
+        {
+            playerController =
+                FindFirstObjectByType<PlayerController>();
+        }
+
+        if (playerController != null)
+        {
+            gunController =
+                playerController.GetComponent<GunController>();
+        }
+
+        return gunController;
     }
 
     private void FindCanvas()
@@ -773,13 +806,7 @@ public class MobileTouchControls : MonoBehaviour
         fireHeld =
             true;
 
-        if (gunController == null)
-        {
-            gunController =
-                FindFirstObjectByType<
-                    GunController
-                >();
-        }
+        ResolveGunController();
 
         if (gunController == null)
         {
@@ -800,13 +827,7 @@ public class MobileTouchControls : MonoBehaviour
             return;
         }
 
-        if (gunController == null)
-        {
-            gunController =
-                FindFirstObjectByType<
-                    GunController
-                >();
-        }
+        ResolveGunController();
 
         if (gunController == null)
         {

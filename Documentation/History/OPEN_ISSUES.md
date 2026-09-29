@@ -202,15 +202,14 @@ Combat, investigation, sound propagation, cover-taking, flanking.
 - **Workaround (documented and proven):** direct JSON-RPC to `http://127.0.0.1:8080/mcp`. See `../PHASE5R_UNITY_RUNTIME_CHANNEL_REPORT.md` section 6 for the exact procedure, including the mandatory `Mcp-Session-Id` header and the SSE `data:` frame extraction
 - **Status:** **MITIGATED** - runtime verification is fully possible via the fallback. The underlying OpenCode integration issue remains open upstream
 ### ISSUE-22 - Duplicate `GunController`: firing and upgrades bound to different instances
-- **Severity:** **High** (damage upgrades do not reach the weapon that fires)
-- **Confirmed at runtime (2026-09-29, Phase 5B):**
-  - `FindFirstObjectByType<GunController>()` -> `FireButton` controller, base damage **10** (this is what `MobileTouchControls` and any touch-fire path use)
-  - `UpgradeManager.gunController` (`GetComponent<GunController>()` on the Player) -> `Player` controller, base damage **100**
-  - `SPLIT = true`
-- **Impact:** the player fires with damage 10 while every Damage upgrade multiplies damage on a *different* controller. Upgrades are effectively not delivered to the weapon in use
-- **Was masked** while `Awake()` forced both to 200, making them indistinguishable
-- **Status:** **OPEN** - recorded only in Phase 5B per task scope. Not fixed
-- **Decision needed:** see `DEC-11`
+- **Severity:** ~~High~~ -> **RESOLVED**
+- **Status:** **CLOSED - FIXED, RUNTIME VERIFIED 2026-09-29 (Phase 5B.1)**
+- **BEFORE:** fire controller `67492` (`MobileUI/HUD/FireButton`) != upgrade controller `67864` (`Player`); `SPLIT = True`
+- **ROOT CAUSE:** `MobileTouchControls.gunController` was never assigned in the scene (`fileID: 0`); the class compensated with unordered `FindFirstObjectByType<GunController>()`, which returned a `GunController` handle that had been attached to the `FireButton` UI control. That duplicate was mis-configured (weaponPoint -> Player root, `playerController` = NULL). The real weapon controller on `Player` already existed but was referenced by nothing in the fire path
+- **AFTER:** one canonical instance `Player#70770` for both fire and upgrade paths; `FireButton` holds no `GunController`; `FindFirstObjectByType<GunController>()` removed from the codebase
+- **VERIFICATION:** `TEST4_IDENTITY_EQUAL = True` (70770 == 70770), controller count 2 -> 1, 0 project-origin console errors
+- **Damage values:** Player `100` unchanged; the duplicate's `10` was deleted together with the obsolete component. Final balance value remains **`DEC-11` (still OPEN)**
+- **Report:** `Documentation/PHASE5B1_GUNCONTROLLER_IDENTITY_REPORT.md`
 ## Cross-references
 
 - `UNI-0003` — Unity defects with severity

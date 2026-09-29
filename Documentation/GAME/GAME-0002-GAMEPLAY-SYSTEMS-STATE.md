@@ -26,7 +26,7 @@ is inferred from documentation.
 | Player exists | ✅ | instantiated at runtime |
 | Player representation | ❌ | **Capsule**, not a character |
 | Player movement | ✅ | movement observed |
-| Player weapon use | ✅ | firing confirmed |
+| Player weapon use | ✅ **RUNTIME VERIFIED** | one canonical `GunController` on `Player`; fire and upgrade paths share it |
 | Player health / damage | ❓ | not tested |
 | Player animation | ❌ | 0 Animator, 0 Avatar, 0 Controller, 0 SkinnedMeshRenderer |
 | Touch controls | ❌ | `MobileTouchControls` refs all `null` (`UNI-D07`) |
@@ -116,7 +116,7 @@ project owner in earlier sessions. They are **historical confirmations**, not
 |---|---|---|
 | `Shooter.prefab` fires | ✅ | observed |
 | `Rusher.prefab` fires | ✅ | observed |
-| Damage value correct | ✅ **RUNTIME VERIFIED** | authored values honoured: Player **100**, FireButton **10**; upgrades ×1.20 cumulative (`UNI-D10` fixed Phase 5B) |
+| Damage value correct | ✅ **RUNTIME VERIFIED** | authored base **100** honoured; upgrades ×1.20 cumulative land on the firing controller (`UNI-D10` Phase 5B, `ISSUE-22` Phase 5B.1) |
 | Damage model / hit detection | ❓ | not tested |
 | Hit feedback | ❓ | not tested |
 | Destructibles | ❌ | 0 instances in scene |

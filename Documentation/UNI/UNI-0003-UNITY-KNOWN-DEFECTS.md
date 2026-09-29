@@ -140,7 +140,7 @@ tree.
 
   Additional `playerController == null` guards exist at usage sites. **Therefore the nulls are not a functional break on PC** — they are unassigned serialized fields with runtime fallback.
 - **Latent risks that remain real:**
-  1. **Instance ambiguity** — `FindFirstObjectByType<GunController>()` returns the *first* match. `RT-03` records a duplicate `FireButton`/`GunController`, so the wrong weapon could be bound on device.
+  1. **Instance ambiguity — ✅ RESOLVED (Phase 5B.1).** `FindFirstObjectByType<GunController>()` returned the *first* match; the duplicate `FireButton`/`GunController` could bind the wrong weapon on device. All `FindFirstObjectByType<GunController>()` lookups were removed and replaced with a deterministic `PlayerController → GetComponent<GunController>()` resolution.
   2. **Initialisation order** — if the Player or its `GunController` does not exist yet when `Start()` runs, the lookup returns `null` and there is no retry.
   3. `Camera.main` requires a camera tagged `MainCamera`.
 - **Android status: NOT VERIFIED.** No physical Android device is available in this environment. Per §12, **PC PASS ≠ Android PASS**; this remains an open Android blocker until a device run confirms touch input.
@@ -176,8 +176,8 @@ tree.
   - Upgrade matrix confirmed: 100 → ×1.20 → **120** → **144** → **172.8** (cumulative, multiplicative); a `0` multiplier is correctly ignored.
   - Firing confirmed: bullets spawned continuously carrying `damage = 10`; after 4 s of fire an enemy died (3 → 2). `10 damage × 10 hits = 100 = EnemyHealth.maxHealth`.
   - **0 project-origin errors in 500 console entries.**
-- **⚠️ Exposed a separate, still-open defect:** the weapon that *fires* and the object that receives *upgrades* are **different `GunController` instances** (`FindFirstObjectByType` → `FireButton`; `UpgradeManager` → `Player`). This was invisible while both were clamped to 200. Recorded as `ISSUE-22` / `RT-03`.
-- **Balance consequence (accepted, needs a decision):** the firing weapon is now 10× slower to kill than before (10 hits instead of 1). Restoring authored intent is correct, but the authored value now needs balancing — `DEC-11`.
+- **✅ Subsequent defect found and now also fixed (Phase 5B.1, `ISSUE-22` / `RT-03`):** removing the clamp exposed that the weapon that *fires* and the object that receives *upgrades* were **different `GunController` instances** (`FindFirstObjectByType` → `FireButton`; `UpgradeManager` → `Player`). Unified onto one canonical `Player` instance (runtime-verified `70770 == 70770`); the `FireButton` duplicate was removed.
+- **Balance consequence (accepted, needs a decision):** after unification the firing weapon uses its authored `100` damage. The final gameplay value is `DEC-11` — **still OPEN**, deliberately not decided in Phase 5B.1.
 - **State:** **✅ FIXED — RUNTIME VERIFIED.**
 ### UNI-D11 — Zero modular environment meshes integrated
 - **Observed:** 0 modular meshes in the scene despite the kit existing in `Assets/Art/Environment/Modular/`.
@@ -217,7 +217,7 @@ retained for traceability to `AUDIT_2_RUNTIME_REPORT.md`.
 |---|---|---|
 | `RT-01` | Modular FBX import 0.01×, Z-up uncompensated | `UNI-D06` |
 | `RT-02` | `MobileTouchControls` refs null (Android-critical) | `UNI-D07` |
-| `RT-03` | Duplicate `GunController`; firing and upgrades bound to **different instances** — **CONFIRMED at runtime** | `ISSUE-22` | `FIRE = FindFirst → FireButton(10)` vs `UPGRADE = GetComponent → Player(100)` |
+| `RT-03` | Duplicate `GunController`; firing/upgrades on **different instances** — **✅ FIXED, RUNTIME VERIFIED 2026-09-29** | `ISSUE-22` **CLOSED** | Phase 5B.1: one canonical `Player#70770`; `FireButton` duplicate removed |
 | `RT-04` | `GunController.Awake` forced `damage ≥ 200` — **✅ FIXED, RUNTIME VERIFIED 2026-09-29** | `UNI-D10` **CLOSED** | Phase 5B: Player 200→100, FireButton 200→10 |
 | `RT-05` | `Rusher`/`Shooter` prefab materials wrong | `UNI-D08`, `UNI-D09` |
 | `RT-06` | 9 missing-script warnings per spawn cycle — **RUNTIME VERIFIED: 0 warnings** (Phase 5R) | `UNI-D05` **CLOSED** |

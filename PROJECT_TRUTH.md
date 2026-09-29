@@ -52,7 +52,7 @@ Confirmed by play-mode observation on 2026-09-29:
 | Enemy spawning | Enemies instantiate at runtime |
 | Enemy FSM | Reaches `Searching` state; vision scanning active |
 | Enemy navigation | Custom A\* pathfinder produces non-null paths; movement observed |
-| Weapons | Both `GunController` prefabs fire |
+| Weapons | Both `GunController` prefabs fire; **single canonical controller** on `Player` shared by fire and upgrade paths (`ISSUE-22` closed) |
 
 ---
 
@@ -68,7 +68,7 @@ Confirmed by play-mode observation on 2026-09-29:
 | 6 | **Modular FBX import at 0.01× scale**, Z-up not compensated | Critical | Runtime |
 | 7 | **`Shooter.prefab` uses `TMP_SDF-HDRP LIT`** (font material as surface) | High | Runtime |
 | 8 | **`Rusher.prefab` uses `FrameDebuggerRenderTargetDisplay`** | High | Runtime |
-| 9 | **Gun damage overwritten to 200** — **✅ FIXED, RUNTIME VERIFIED 2026-09-29** (Player 200→100, FireButton 200→10; upgrades ×1.20 cumulative) | ~~High~~ → closed | Phase 5B |
+| 9 | **Gun damage overwritten to 200** — **✅ FIXED, RUNTIME VERIFIED 2026-09-29** (base `100` honoured; upgrades ×1.20 cumulative land on the firing controller) | ~~High~~ → closed | Phase 5B / 5B.1 |
 | 10 | **`MobileTouchControls` references are null** — latent on PC, **critical for Android** | Critical (Android) | Runtime |
 | 11 | **0 destructible instances** despite controlled-fracture assets existing | Medium | Runtime |
 | 12 | **0 modular meshes integrated** in scene | High | Runtime |

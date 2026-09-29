@@ -264,7 +264,6 @@ GameObject:
   - component: {fileID: 128583258}
   - component: {fileID: 128583257}
   - component: {fileID: 128583256}
-  - component: {fileID: 128583255}
   - component: {fileID: 128583259}
   m_Layer: 5
   m_Name: FireButton
@@ -293,27 +292,6 @@ RectTransform:
   m_AnchoredPosition: {x: -171, y: 224}
   m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 1, y: 0}
---- !u!114 &128583255
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 128583253}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f83175fe70aa91649888220dfafc1977, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GunController
-  weaponPoint: {fileID: 1483193848}
-  bulletPrefab: {fileID: 1770948070792823172, guid: 78e9d4d1a49f05443a95a31f1137703d, type: 3}
-  fireRate: 0.35
-  attackRange: 20
-  damage: 10
-  targetHeight: 1.1
-  targetRadius: 0.8
-  targetLineWidth: 0.06
-  rotateWeaponToTarget: 1
 --- !u!114 &128583256
 MonoBehaviour:
   m_ObjectHideFlags: 0

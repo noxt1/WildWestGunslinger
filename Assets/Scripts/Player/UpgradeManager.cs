@@ -41,8 +41,23 @@ public class UpgradeManager : MonoBehaviour
         if (gunController == null)
             gunController = GetComponent<GunController>();
 
+        /*
+         * PHASE 5B.1 (ISSUE-22):
+         * GetComponent РІС‹С€Рµ СѓР¶Рµ РґР°С‘С‚ РєР°РЅРѕРЅРёС‡РµСЃРєРёР№
+         * GunController РёРіСЂРѕРєР°. Fallback РЅРёР¶Рµ Р±РѕР»СЊС€Рµ РЅРµ
+         * РёС‰РµС‚ GunController РїРѕ РІСЃРµР№ СЃС†РµРЅРµ: FindFirstObjectByType
+         * РїСЂРё РґРІСѓС… РёРЅСЃС‚Р°РЅСЃР°С… РѕС‚РґР°РІР°Р» РїСЂРѕРёР·РІРѕР»СЊРЅС‹Р№.
+         * РРґС‘Рј РѕС‚ PlayerController вЂ” СЌС‚Рѕ РґРµС‚РµСЂРјРёРЅРёСЂРѕРІР°РЅРѕ.
+         */
         if (gunController == null)
-            gunController = FindFirstObjectByType<GunController>();
+        {
+            var owner =
+                FindFirstObjectByType<PlayerController>();
+
+            if (owner != null)
+                gunController =
+                    owner.GetComponent<GunController>();
+        }
 
         if (upgradeUI == null)
         {
@@ -61,7 +76,7 @@ public class UpgradeManager : MonoBehaviour
         else
         {
             Debug.LogWarning(
-                "UpgradeManager: XPManager не найден."
+                "UpgradeManager: XPManager пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ."
             );
         }
     }
@@ -77,7 +92,7 @@ public class UpgradeManager : MonoBehaviour
     private void HandleLevelUp()
     {
         Debug.Log(
-            "LEVEL UP! Открываем выбор улучшения."
+            "LEVEL UP! пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ."
         );
 
         if (upgradeUI == null)
@@ -90,7 +105,7 @@ public class UpgradeManager : MonoBehaviour
         if (upgradeUI == null)
         {
             Debug.LogError(
-                "UpgradeManager: UpgradeUI не найден!"
+                "UpgradeManager: UpgradeUI пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ!"
             );
 
             return;
@@ -179,7 +194,7 @@ public class UpgradeManager : MonoBehaviour
         if (gunController == null)
         {
             Debug.LogWarning(
-                "UpgradeManager: GunController не найден."
+                "UpgradeManager: GunController пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ."
             );
 
             return;
@@ -197,7 +212,7 @@ public class UpgradeManager : MonoBehaviour
         if (gunController == null)
         {
             Debug.LogWarning(
-                "UpgradeManager: GunController не найден."
+                "UpgradeManager: GunController пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ."
             );
 
             return;
@@ -215,7 +230,7 @@ public class UpgradeManager : MonoBehaviour
         if (playerHealth == null)
         {
             Debug.LogWarning(
-                "UpgradeManager: PlayerHealth не найден."
+                "UpgradeManager: PlayerHealth пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ."
             );
 
             return;
@@ -233,7 +248,7 @@ public class UpgradeManager : MonoBehaviour
         if (gunController == null)
         {
             Debug.LogWarning(
-                "UpgradeManager: GunController не найден."
+                "UpgradeManager: GunController пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ."
             );
 
             return;
@@ -251,7 +266,7 @@ public class UpgradeManager : MonoBehaviour
         if (playerHealth == null)
         {
             Debug.LogWarning(
-                "UpgradeManager: PlayerHealth не найден."
+                "UpgradeManager: PlayerHealth пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ."
             );
 
             return;

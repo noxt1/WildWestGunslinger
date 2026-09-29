@@ -143,7 +143,7 @@ Combat, investigation, sound propagation, cover-taking, flanking.
 ## Phase 4 discoveries — new open issues
 
 ### ISSUE-13 — 4 enemy prefabs hold a dangling script reference
-- **Severity:** High (console noise; **not** a functional break) — **CLOSED (static) 2026-09-29**
+- **Severity:** High (console noise) — **✅ CLOSED, RUNTIME VERIFIED 2026-09-29 (Phase 5R)**
 - **Root cause of:** `UNI-D05` (4 missing Mono Scripts) and `RT-06` (9 warnings per spawn cycle)
 - **Detail:** `Assets/Scripts/Enemies/EnemyTacticalEnvironmentScanner_TEST.cs` was deleted as temporary diagnostic cleanup. Its `.meta` is gone, but `Bandit.prefab`, `Rusher.prefab`, `Shooter.prefab` and `Tactical.prefab` still reference script GUID `809b48f6d9f34f34d90ca85975a9c332` in the component slot between `EnemyHealth` and `EnemyTacticalPlanner`
 - **Symptom:** `The referenced script (Unknown) on this Behaviour is missing!` — 7 warnings on one `Bandit`; scales with enemy count
@@ -194,6 +194,13 @@ Combat, investigation, sound propagation, cover-taking, flanking.
 - **These are the only 2 genuinely broken asset references in the scene** (Phase 5A reclassified the former ""12 broken references"")
 - **Action:** removal is a destructive scene edit and requires a user decision. **Not removed**
 - **Status:** REVIEW - awaiting decision
+### ISSUE-21 - Unity MCP tools not injected into the agent session
+- **Severity:** Medium (blocks `RUNTIME VERIFIED`; workaround exists)
+- **Detail:** `mcp-for-unity-server` v3.4.7 runs correctly on `127.0.0.1:8080` and `unityMCP` is correctly configured in `opencode.json` (`type: remote`, `url: http://127.0.0.1:8080/mcp`, `enabled: true`). However the Unity tools are **absent from the agent's toolset** for the session, while the `local`-type `blenderMCP` tools load normally
+- **Rejected causes (with evidence):** server not running, port unavailable, config mismatch, transport failure, protocol init failure - all disproved by a successful `initialize` + `tools/list` (48 tools)
+- **Confirmed cause:** OpenCode-side MCP client session initialisation for **remote** type servers
+- **Workaround (documented and proven):** direct JSON-RPC to `http://127.0.0.1:8080/mcp`. See `../PHASE5R_UNITY_RUNTIME_CHANNEL_REPORT.md` section 6 for the exact procedure, including the mandatory `Mcp-Session-Id` header and the SSE `data:` frame extraction
+- **Status:** **MITIGATED** - runtime verification is fully possible via the fallback. The underlying OpenCode integration issue remains open upstream
 ## Cross-references
 
 - `UNI-0003` — Unity defects with severity

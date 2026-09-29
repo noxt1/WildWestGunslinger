@@ -16,6 +16,7 @@ One line per system. **Status vocabulary is strict** (`README.md` §5).
 | Shippable | **NO** — 7 critical defects open |
 | Canonical scene | `Assets/Scenes/TestArena.unity` |
 | Git | `main` @ `7ad314c`, **ahead 1 / behind 2** vs `origin/main`, 0 staged |
+| Runtime verification channel | **AVAILABLE** | RUNTIME VERIFIED attainable | Unity MCP 3.4.7 on 127.0.0.1:8080; Play Mode + Console proven 2026-09-29 | PHASE5R |
 | Asset approval state | **`BARREL_01` and `FENCE_01` = `APPROVED`** (user-confirmed). `CRATE_01` = `QA PASS`, CP2 not authorized. **Nothing is `PROMOTED`/`INTEGRATED`/`RUNTIME VERIFIED`** |
 | Character art | complete, measured, **backed up (CLOSED)**, **not integrated** |
 | Ready for consolidation commit | **YES**, pending human `APPROVE` |

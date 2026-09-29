@@ -159,3 +159,30 @@ clone would not reproduce the scene:
 ---
 
 **End of `UNI-0001-UNITY-PROJECT-STATE.md`**
+
+## 9. Runtime verification channel — ✅ AVAILABLE (Phase 5R, 2026-09-29)
+
+A working `OpenCode -> Unity MCP -> Editor -> Play Mode -> Console -> Runtime inspection`
+channel exists. This is what makes `RUNTIME VERIFIED` attainable.
+
+| Field | Value |
+|---|---|
+| Unity Editor | 6000.3.23f1, project `Assets/Scenes/TestArena.unity` |
+| MCP server | `mcp-for-unity-server` **3.4.7** on `http://127.0.0.1:8080/mcp` |
+| Transport | Streamable HTTP; `Mcp-Session-Id` header required after `initialize` |
+| Tools available | **48** (`manage_editor`, `read_console`, `manage_scene`, `find_gameobjects`, ...) |
+| Proven operations | connect · editor state · scene state · hierarchy · **Play Mode in/out** · Console read · runtime object enumeration |
+| Known limitation | tools are not auto-injected into the agent toolset; the direct JSON-RPC fallback is used instead - `ISSUE-21` |
+
+Full procedure: `../PHASE5R_UNITY_RUNTIME_CHANNEL_REPORT.md` section 6.
+
+### 9.1 Reusable JSON-RPC procedure
+
+1. `POST http://127.0.0.1:8080/mcp` with
+   `Accept: application/json, text/event-stream` and `Content-Type: application/json`,
+   body `{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{...}}}`
+2. Capture the `Mcp-Session-Id` **response header** - mandatory on every later call.
+3. `POST {"jsonrpc":"2.0","method":"notifications/initialized"}` -> HTTP 202.
+4. Call tools with `{"jsonrpc":"2.0","id":N,"method":"tools/call","params":{"name":"<tool>","arguments":{...}}}`
+5. Responses are SSE-framed - read the line starting `data: `.
+6. Send **raw JSON strings**. Do not build the body with `ConvertTo-Json` on nested hashtables - it produces a payload the server rejects with `-32602 Invalid request parameters`.

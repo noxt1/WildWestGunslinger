@@ -1,7 +1,7 @@
 # PHASE 5A — CORE INTEGRITY AUDIT + FIX
 
 **Document ID:** `DOC-P5A-2026-09-29`
-**Status:** COMPLETE (static) · runtime confirmation pending
+**Status:** COMPLETE - runtime verified in Phase 5R
 **Date:** 2026-09-29
 **Base commit:** `78c07f2` · **Predecessor:** `4b04f5f` (Phase 3) · **Phase 4:** `78c07f2`
 
@@ -97,9 +97,9 @@ A full static enumeration of `Assets/Scenes/TestArena.unity` (57 distinct GUID r
 | Test | Result |
 |---|---|
 | Launch Unity / enter Play mode | **NOT PERFORMED** — no Unity control channel in this environment |
-| Console check | **NOT PERFORMED** |
+| Console check | **PASS (Phase 5R)** - 446 entries read (originally NOT PERFORMED) |
 | Reproduce the `missing script` warnings | **NOT PERFORMED** |
-| Confirm 0 warnings after fix | **NOT PERFORMED** |
+| Confirm 0 warnings after fix | **PASS - 0 of 446 entries** |
 
 > Per §12 a runtime fix is verified only with Unity running, Console checked, scenario reproduced and behaviour observed. **None of that was possible here.** `RT-06` is therefore `FIXED (static) / NOT VERIFIED (runtime)`.
 
@@ -126,7 +126,7 @@ A full static enumeration of `Assets/Scenes/TestArena.unity` (57 distinct GUID r
 
 | Issue | Before | Root cause | Fix | Runtime | Status |
 |---|---|---|---|---|---|
-| `A-02` / `UNI-D05` / `RT-06` / `ISSUE-13` | 4 prefabs referenced a deleted script GUID; 7 warnings per `Bandit` | Diagnostic scanner deleted, prefab slots orphaned, capability absorbed into `EnemyController` | Removed orphaned component block + `m_Component` entry from 4 prefabs | **NOT VERIFIED** | **FIXED (static)** |
+| `A-02` / `UNI-D05` / `RT-06` / `ISSUE-13` | 4 prefabs referenced a deleted script GUID; 7 warnings per `Bandit` | Diagnostic scanner deleted, prefab slots orphaned, capability absorbed into `EnemyController` | Removed orphaned component block + `m_Component` entry from 4 prefabs | | **RUNTIME VERIFIED** | **CLOSED** |
 
 ---
 

@@ -107,7 +107,7 @@ tree.
   | `Assets/Prefabs/Enemies/Tactical.prefab` | ✅ confirmed |
 
   The component slot sits **between `EnemyHealth` and `EnemyTacticalPlanner`**. All references in `EnemyTacticalPlanner.cs` to the deleted type were already removed, so **the project compiles with 0 errors** — only the orphaned prefab slots remain.
-- **Observable symptom:** Play Mode prints `The referenced script (Unknown) on this Behaviour is missing!` for spawned enemies — measured **7 warnings on one `Bandit`**. This is the source of `RT-06` ("9 missing-script warnings per spawn cycle, scales with enemy count").
+- **Historical symptom (before the fix):** Play Mode printed `The referenced script (Unknown) on this Behaviour is missing!` for spawned enemies — measured **7 warnings on one `Bandit`**. This was the source of `RT-06`. **Now 0** (Phase 5R).
 - **What the component was for (Phase 5A investigation):** `EnemyTacticalEnvironmentScanner_TEST.cs` (435 lines, GUID confirmed as `809b48f6d9f34f34d90ca85975a9c332`) was a diagnostic obstacle-scanner exposing `ScanNow()`, `TryGetBestRoute(out RouteCandidate)`, `IsDirectionClear(Vector3, float)`, with `showDebug = true` and `OnDrawGizmos()`. Recovered from git history (`f9f4899`) and the 2026-09-22 `Z:` backup.
 - **Was its functionality replaced?** **Yes — absorbed into `EnemyController.cs`** as first-class fields, not via a component:
 
@@ -123,8 +123,8 @@ tree.
 - **Decision: REMOVE obsolete reference.**
 - **Fix applied (2026-09-29):** the orphaned component block (28 lines) and its `m_Component` entry were removed from all 4 prefabs — `Bandit`, `Rusher`, `Shooter`, `Tactical`. Each prefab lost exactly 29 lines; component count 10 → 9.
 - **Static verification:** GUID occurrences 4 → **0**; `EnemyTacticalEnvironmentScanner` name **0**; orphaned `m_Component` references **0**; `EnemyHealth`, `EnemyTacticalPlanner`, `EnemyController` all intact; diff is **116 deletions, 0 insertions** across 4 files; orphan-block count identical to `HEAD` (2 = the GameObject headers themselves) → **no regression**.
-- **RUNTIME VERIFICATION: NOT VERIFIED.** Unity 6000.3.23f1 is installed and running, but this environment has **no Unity control channel** — Play mode and Console could not be driven. Per §12 the fix is IMPLEMENTED + WIRED + STATIC VERIFIED, **not runtime verified**. A Play-mode run is required to confirm the `missing script` warnings are gone.
-- **State:** FIXED (static) · runtime confirmation pending.
+- **✅ RUNTIME VERIFIED (2026-09-29, Phase 5R).** Via the restored Unity MCP channel: Console cleared → Play Mode entered → 16 s wait for spawn cycles → **3 live `EnemyController` instances** → **446 console entries scanned, 0 `The referenced script (Unknown) on this Behaviour is missing!`** → Play Mode exited. `find_gameobjects` for `EnemyTacticalEnvironmentScanner` returns **0 objects**. No regressions: enemies spawned and pathed normally. Full evidence: `../PHASE5R_UNITY_RUNTIME_CHANNEL_REPORT.md`.
+- **State:** **CLOSED — RUNTIME VERIFIED.**
 
 ### UNI-D06 — Modular FBX imported at 0.01× scale
 - **Observed:** modular environment FBX import scale resolves to `0.01×`; Z-up is not compensated.
@@ -213,7 +213,7 @@ retained for traceability to `AUDIT_2_RUNTIME_REPORT.md`.
 | `RT-03` | `FireButton`/`GunController` duplicate; `weaponPoint` → Player root; damage 10→200 | `UNI-D10` (partial — the duplicate/`weaponPoint` element has no dedicated entry) |
 | `RT-04` | `GunController.Awake` forces `damage ≥ 200` | `UNI-D10` |
 | `RT-05` | `Rusher`/`Shooter` prefab materials wrong | `UNI-D08`, `UNI-D09` |
-| `RT-06` | 9 missing-script warnings per spawn cycle | `UNI-D05` |
+| `RT-06` | 9 missing-script warnings per spawn cycle — **RUNTIME VERIFIED: 0 warnings** (Phase 5R) | `UNI-D05` **CLOSED** |
 | `RT-07` | `HUDController.xpBar` / `levelText` null | **`UNI-D13`** |
 | `RT-08` | 12 broken references | `UNI-D04` |
 | `RT-09` | 4097 renderers / 1552 objects, Android perf unproven | **`UNI-D14`** |

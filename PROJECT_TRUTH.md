@@ -53,6 +53,8 @@ Confirmed by play-mode observation on 2026-09-29:
 | Enemy FSM | Reaches `Searching` state; vision scanning active |
 | Enemy navigation | Custom A\* pathfinder produces non-null paths; movement observed |
 | Weapons | Both `GunController` prefabs fire; **single canonical controller** on `Player` shared by fire and upgrade paths (`ISSUE-22` closed) |
+| XP / level progression | **RUNTIME VERIFIED** — `EnemyHealth.SpawnXP` → `XPOrb` → `XPManager`; level-up deterministic; XP bar fill 0 → 0.5 → 0.8723 |
+| Level readout UI | **VERIFIED ABSENT** — XP bar works, level text missing; not implemented (`UNI-D13` / `RT-07` OPEN) |
 
 ---
 
@@ -135,11 +137,17 @@ investigation, sound propagation, cover-taking behaviour, flanking.
 | Head Z range | 1537–1818 mm | `Doomy_measurements.md` |
 | Head height / width / depth | 281.1 / 198.2 / 255.4 mm | `Doomy_measurements.md` |
 | Chest | **100** (size-50 table: chest width 21) | `Doomy_measurements.md` + vest reference |
-| Armature | `WWG_Template_Armature`, **51 bones** | `Doomy_measurements.md` |
+| Armature | **`WWG_Rig`, 53 bones** (52 deform + 1 non-deform `B-root`) | `AI_CONTEXT/CHARACTER_FOUNDATION_CONTRACT.md`; F2/F3 evidence |
 
 > **CORRECTION:** `AUDIT_2_RECONCILIATION_REPORT.md` states `Chest=141cm` and
-> `Skeleton=62 bones`. **Both are false.** Chest is 100 (size 50), skeleton is
-> 51 bones. The audit's "foundation identified" conclusion must be re-derived.
+> `Skeleton=62 bones`. **Both are false.** Chest is 100 (size 50).
+>
+> **SUPERSEDED (2026-09-29):** the former `Skeleton=51 bones`
+> (`WWG_Template_Armature`, `Doomy_measurements.md`) is no longer current. The active
+> Character Foundation is `WWG_Rig` with **53 bones**. The 51-bone material is
+> **HISTORICAL / NON-CANONICAL / NON-PRODUCTION** and must not be used as a source of
+> bone lengths, skinning or deformation authority. See
+> `AI_CONTEXT/CHARACTER_FOUNDATION_CONTRACT.md`.
 
 ---
 

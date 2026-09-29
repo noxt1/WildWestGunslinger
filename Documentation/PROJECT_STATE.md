@@ -54,7 +54,8 @@ One line per system. **Status vocabulary is strict** (`README.md` §5).
 | AI sound reaction | `NOT VERIFIED` | — | untested | `GAME-0002` |
 | AI cover-taking | `NOT VERIFIED` | — | untested | `GAME-0002` |
 | AI flanking | `NOT VERIFIED` | — | untested | `GAME-0002` |
-| XP / economy / cards / shop | `NOT VERIFIED` | — | no evidence at all | `GAME-0004` |
+| XP / level progression | **working** | `RUNTIME VERIFIED` | `EnemyHealth.SpawnXP` → `XPOrb` → `XPManager`; level-up deterministic (9 sequential level-ups, exact `req×1.35`); XP bar fill 0→0.5→0.8723 | `GAME-0002` |
+| XP / level **readout** | level readout **absent** | `VERIFIED ABSENCE` | XP bar works; only the level text is missing. Not implemented (Phase 5C §6) | `UNI-D13` **OPEN** |
 | Build from current code | **never attempted** | `VERIFIED FACT` | last build 2026-09-09 | `REL-0002` |
 | CI / tests / build pipeline | **absent** | `VERIFIED ABSENCE` | none exist | `ISSUE-09` |
 

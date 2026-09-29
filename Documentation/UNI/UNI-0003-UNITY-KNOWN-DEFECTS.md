@@ -193,11 +193,13 @@ tree.
 - **Impact:** a designed feature is entirely absent from the playable build.
 - **State:** unfixed.
 
-### UNI-D13 — HUD level/XP fields are null
+### UNI-D13 — HUD level readout absent (XP **bar** is NOT affected)
 - **Observed:** `HUDController.xpBar` and `HUDController.levelText` are null at runtime; the level is never displayed.
-- **Static evidence:** `Assets/Scripts/UI/HUDController.cs` lines 12–13 declare both as `[SerializeField]`, and both are unassigned in the scene.
-- **Impact:** the level/XP readout is permanently absent. Also means the XP system has **no UI surface**, reinforcing that XP is unimplemented (`GAME-0004` §3).
-- **State:** unfixed. Runtime audit ref `RT-07`.
+- **Static evidence:** `Assets/Scripts/UI/HUDController.cs` lines 12–13 declare both as `[SerializeField]`, and both are unassigned in the scene. `UpdateHealth()` reads only `healthBar` / `healthText`.
+- **⚠️ Corrected in Phase 5C (2026-09-29):** the earlier claim that "the XP system has **no UI surface**" was **factually wrong**. A real, working XP bar exists: `XPBar` (GameObject) → `XPBarController` → child `XPFill` (`Image.fillAmount`). Runtime-verified 0 → 0.5 (5/10 XP) → 0.8723 (246/282).
+- **Narrowed scope:** only the **level readout** is missing. `HUDController.xpBar` is dead precisely *because* the bar role is served by `XPBarController`, not because no bar exists.
+- **Impact:** the level number is never shown to the player. The XP bar itself is fine.
+- **State:** unfixed. Runtime audit ref `RT-07`. Per Phase 5C §6 the UI was **not** auto-created; a separate UI implementation task is required.
 - **Note:** this is a *separate* null reference from the 12 in `UNI-D04`; it was not counted in that total.
 
 ### UNI-D14 — Android performance unproven

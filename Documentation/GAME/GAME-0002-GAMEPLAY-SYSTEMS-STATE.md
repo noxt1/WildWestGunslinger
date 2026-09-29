@@ -60,10 +60,10 @@ is inferred from documentation.
 
 | System | Status | Evidence |
 |---|---|---|
-| XP accumulation | **EXISTS, user-confirmed (earlier session)** | ⚠️ see note |
-| Level up | **EXISTS, user-confirmed (earlier session)** | ⚠️ see note |
+| XP accumulation | **✅ RUNTIME VERIFIED (Phase 5C)** | `EnemyHealth.SpawnXP()` → `XPOrb` → `XPManager.AddXP`; 0→5 verified |
+| Level up | **✅ RUNTIME VERIFIED (Phase 5C)** | 1→2 deterministic; `AddXP(1000)` gave 9 sequential level-ups with exact `req×1.35` arithmetic |
 | `UpgradeManager` / `UpgradeUI` | **EXISTS, user-confirmed (earlier session)** | ⚠️ see note |
-| XP **readout** | ❌ **broken** | `UNI-D13` — `HUDController.xpBar` / `levelText` are null |
+| XP **bar** | **✅ RUNTIME VERIFIED (Phase 5C)** | `XPBar`/`XPFill` via `XPBarController` — fill 0→0.5→0.8723. **The earlier "no XP UI exists" claim was wrong** |
 | Economy (currency, shop, cards) | ❓ | **not tested** — no runtime evidence |
 | Run progression | ❓ | **not tested** |
 

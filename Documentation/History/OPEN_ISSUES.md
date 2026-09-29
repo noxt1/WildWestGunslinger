@@ -210,6 +210,15 @@ Combat, investigation, sound propagation, cover-taking, flanking.
 - **VERIFICATION:** `TEST4_IDENTITY_EQUAL = True` (70770 == 70770), controller count 2 -> 1, 0 project-origin console errors
 - **Damage values:** Player `100` unchanged; the duplicate's `10` was deleted together with the obsolete component. Final balance value remains **`DEC-11` (still OPEN)**
 - **Report:** `Documentation/PHASE5B1_GUNCONTROLLER_IDENTITY_REPORT.md`
+### ISSUE-23 - Every upgrade choice was applied twice - RESOLVED
+- **Severity:** High (progression balance silently doubled)
+- **Status:** **CLOSED - FIXED, RUNTIME VERIFIED 2026-09-29 (Phase 5C)**
+- **Symptom:** one click on `DAMAGE +20%` produced x1.44 instead of x1.20
+- **Proof (not inference):** `ApplyUpgrade(Damage)` called directly gave ratio 1.2 (UpgradeManager correct); one button click gave 1.44; after `RemoveAllListeners()` one click gave no change; with exactly one listener the ratio was 1.2
+- **ROOT CAUSE:** `UpgradePanel` is inactive at scene start, so `UpgradeUI.Awake()` does not run during scene load (runtime listener census = 0). It runs later from inside `Show()` at `upgradePanel.SetActive(true)` - **after** `Show()` already called `SetButton()` for all three buttons. `SetButton()` does `RemoveAllListeners()` + `AddListener()`; `Awake()` then appended a **second** identical listener. One click = two applications
+- **FIX:** removed the three `AddListener` calls from `UpgradeUI.Awake()`; `SetButton()` is now the single registration point. Pre-existing defect - `UpgradeUI.cs` was not modified before this phase
+- **VERIFICATION:** listener census 2 -> 1; `ATTACK RANGE +5` 15->20 (not 25); `FIRE RATE +15%` 0.4->0.3478 = /1.15 (not 0.3024); `DAMAGE +20%` 100->120 (not 144); canonical `Player#70770`; 0 project-origin console errors
+- **Report:** `Documentation/PHASE5C_HUD_XP_REPORT.md`
 ## Cross-references
 
 - `UNI-0003` — Unity defects with severity

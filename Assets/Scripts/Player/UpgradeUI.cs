@@ -28,14 +28,21 @@ public class UpgradeUI : MonoBehaviour
         Debug.Log("Max Health Button: " + (maxHealthButton != null));
         Debug.Log("XP Bar: " + (xpBar != null));
 
-        if (damageButton != null)
-            damageButton.onClick.AddListener(ChooseDamage);
-
-        if (fireRateButton != null)
-            fireRateButton.onClick.AddListener(ChooseFireRate);
-
-        if (maxHealthButton != null)
-            maxHealthButton.onClick.AddListener(ChooseMaxHealth);
+        /*
+         * PHASE 5C:
+         * Button listeners are deliberately NOT registered here.
+         *
+         * UpgradePanel starts inactive, so this Awake() never runs during
+         * scene load. It runs later from inside Show() at
+         * upgradePanel.SetActive(true) - i.e. AFTER Show() already called
+         * SetButton() for all three buttons. Awake() used to append a
+         * second identical listener on top, so a single click applied the
+         * upgrade twice (x1.20 -> effectively x1.44).
+         *
+         * SetButton() is now the single registration point; it already
+         * calls RemoveAllListeners() before AddListener(). The buttons are
+         * only ever used through Show(), so this is sufficient.
+         */
     }
 
     private void OnDestroy()

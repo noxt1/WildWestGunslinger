@@ -317,3 +317,55 @@ See **`Documentation/PHASE6_PUSH_PREVIEW.md`** — 11 commits, 75 files (66 `.md
 | push | **PERFORMED** — `f932fcc..c294904 main -> main` |
 
 **Working tree product changes were not lost, not modified, and not accidentally committed.**
+---
+
+## 18. Final GitHub state (after Phase 6.3 push)
+
+A second and final documentation push completed the reconciliation. This section supersedes the
+provisional push details in §14 where they differ.
+
+| Field | Value |
+|---|---|
+| command | `git push origin main` (plain; no force, no force-with-lease, no mirror, no merge, rebase, reset, clean or stash) |
+| result | `c294904..e902e95  main -> main` |
+| exit code | 0 |
+| **local `main`** | `e902e956016a08834bc12e10f2da4e6709c5dd1b` |
+| **`origin/main`** | `e902e956016a08834bc12e10f2da4e6709c5dd1b` |
+| **GitHub `main`** (`ls-remote`) | `e902e956016a08834bc12e10f2da4e6709c5dd1b` |
+| **all three identical** | **YES** |
+| divergence after push | **0 behind / 0 ahead** |
+| subject on GitHub `main` | `docs: finalize repository documentation architecture` |
+
+### Commits in this push (2, both documentation-only)
+
+| Hash | Subject | Product files |
+|---|---|---|
+| `b5d4dbe` | `docs: record GitHub push result in reconciliation report` | 0 |
+| `e902e95` | `docs: finalize repository documentation architecture` | 0 |
+
+25 files changed, **0 deletions**, **0 non-`.md` files**, **0 `.apk`**.
+
+### Post-push confirmation
+
+| Check | Result |
+|---|---|
+| `Documentation/README.md` available on GitHub | **OK** |
+| Core -> Domains -> Archive structure available | **OK** - 73 documentation files |
+| `AI_PRODUCTION_METHODOLOGY.md` in Current | **OK** - at `Documentation/`, confirmed absent from `Archive/` |
+| Archive contains historical documents | **OK** - Audits 15, Historical 4, Superseded 2, Legacy 1, Source 1 |
+| All canonical documentation on GitHub | **OK** - 30 core + domain documents verified present |
+| Domain READMEs on GitHub | **OK** - Art, AI, Character, UI, Engineering, GAME, Archive |
+| Product changes included | **NO** - 0 product files in the pushed commits |
+| Product worktree preserved | **YES** - 9 Assets modifications, 66 untracked, 17 foreign Documentation files, all intact |
+| Recovery branch/tag | **still local, NOT pushed** - GitHub carries `refs/heads/main` only |
+
+### Recovery references (unchanged, local-only)
+
+| Ref | Commit | On GitHub |
+|---|---|---|
+| `recovery/checkpoint-2026-09-29-audit2` (branch) | `040651b` | no |
+| `recovery-2026-09-29-audit2` (tag) | `040651b` | no |
+| `backup-pre-lfs` (branch) | `f9f4899` | no |
+
+This is the intended state. The recovery points were never remote, and the approved push was
+`main` only.

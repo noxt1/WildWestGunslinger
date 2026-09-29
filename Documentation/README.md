@@ -99,7 +99,58 @@ instruction — see section 0.
 
 ---
 
-## 4. Domain folders
+## 4. Documentation architecture
+
+```
+Documentation/
+├── CORE            cross-project canonical documents (this list below)
+├── DOMAINS         Character, GAME, UI, Art, AI, Engineering, History
+└── ARCHIVE         history and evidence only
+```
+
+### CORE — cross-project canonical
+
+| Document | Authority |
+|---|---|
+| `../PROJECT_TRUTH.md` | current project reality |
+| `PROJECT_STATE.md` | domain state pointers |
+| `ARCHITECTURE.md` | system architecture and boundaries |
+| `REQUIREMENTS.md` | current requirements |
+| `DECISIONS.md` | approved decisions |
+| `MASTER_PLAN.md` | current roadmap |
+| `AI_PRODUCTION_METHODOLOGY.md` | **APPLY** - binding production rules |
+| `DOC-0001` / `DOC-0002` / `DOC-0003` / `DOC-0004` | index, supersession register, ID scheme, open questions |
+| `History/OPEN_ISSUES.md` + `OPEN_DECISIONS` + `OPEN_CONFLICTS` + `OPEN_RISKS` | live registers |
+
+### DOMAINS — detailed domain knowledge
+
+| Domain | Folder | Entry | Covers |
+|---|---|---|---|
+| Character | `Character/` | `README.md` | source lineage, rig, backup, integration contract |
+| Gameplay, design, requirements | `GAME/` | `README.md` | design state, gameplay systems, requirements register |
+| UI and input | `UI/` | `README.md` | controls, input architecture, platform targets |
+| Art | `Art/` | `README.md` | art state, asset register, pipeline and QA gates |
+| AI | `AI/` | `README.md` | AI architecture, agent state, tooling |
+| Engineering | `Engineering/` | `README.md` | Unity state, defects, toolchain, builds, security/release |
+| History and live registers | `History/` | - | timeline, audit history, `OPEN_*` registers |
+
+Domains with **no standalone document** (Combat, Progression, Enemy, Environment, Weapons) are
+covered by `GAME/` and the CORE documents. No empty folders were created for them; the mapping is
+recorded in `GAME/README.md`.
+
+### ARCHIVE — history and evidence only
+
+`Archive/` with `Legacy/`, `Audits/`, `Historical/`, `Superseded/`, `Source/`. See
+`Archive/README.md`.
+
+### Also outside this tree
+
+`AI_CONTEXT/` is the **operational/reference layer** for agent working rules. It is separate from
+canonical documentation and is not a substitute for it.
+
+---
+
+## 5. Domain folders
 
 Domain documents use the project's identifier scheme (`DOC-0003-IDENTIFIER-SYSTEM.md`).
 The folders are named by that scheme, not by generic topic names, so that the `GAME-0002` /
@@ -107,13 +158,13 @@ The folders are named by that scheme, not by generic topic names, so that the `G
 
 | Domain topic | Folder | Prefix | Entry document | Read it for |
 |---|---|---|---|---|
-| Art pipeline, QA gates, asset lifecycle | `ART/` | `ART-` | `ART-0001-ART-STATE.md` | art state, asset register, pipeline and QA gates |
-| Unity project, tooling, defects | `UNI/` | `UNI-` | `UNI-0001-UNITY-PROJECT-STATE.md` | Unity runtime state, asset register, known defects, toolchain |
-| **Combat**, **Weapons**, **Progression**, **UI**, **Enemy**, **Environment** | `GAME/` | `GAME-` | `GAME-0001-GAME-DESIGN-STATE.md` | design state, gameplay systems (damage, firing, projectile, XP, upgrades, arena, enemy spawning), controls and platform targets, requirements |
-| AI architecture and agent tooling | `AI/` | `AI-` | `AI-0001-AI-AGENT-STATE.md` | AI agent state, tooling and production method |
-| **Character** | `Character/` | — | `CHARACTER_SOURCE_BACKUP.md` | character source lineage, rig, backup state |
-| Recovery, builds, security & release | `REL/` | `REL-` | `REL-0001-RECOVERY-AND-BACKUP.md` | backups, build artefacts, security/release requirements |
-| Timeline, audit history, open registers | `History/` | `HISTORY-`, `OPEN_` | `HISTORY-0001-TIMELINE.md` | timeline, legacy numbering, audit history, and the **live** `OPEN_ISSUES` / `OPEN_DECISIONS` / `OPEN_CONFLICTS` / `OPEN_RISKS` registers |
+| Art pipeline, QA gates, asset lifecycle | `Art/` | `ART-` | `Art/ART-0001-ART-STATE.md` | art state, asset register, pipeline and QA gates |
+| Unity project, tooling, defects | `UNI/` | `UNI-` | `Engineering/UNI-0001-UNITY-PROJECT-STATE.md` | Unity runtime state, asset register, known defects, toolchain |
+| **Combat**, **Weapons**, **Progression**, **UI**, **Enemy**, **Environment** | `GAME/` | `GAME-` | `GAME/GAME-0001-GAME-DESIGN-STATE.md` | design state, gameplay systems (damage, firing, projectile, XP, upgrades, arena, enemy spawning), requirements |
+| AI architecture and agent tooling | `AI/` | `AI-` | `AI/AI-0001-AI-AGENT-STATE.md` | AI agent state, tooling and production method |
+| **Character** | `Character/` | — | `Character/CHARACTER_SOURCE_BACKUP.md` | character source lineage, rig, backup state |
+| Recovery, builds, security & release | `REL/` | `REL-` | `Engineering/REL-0001-RECOVERY-AND-BACKUP.md` | backups, build artefacts, security/release requirements |
+| Timeline, audit history, open registers | `History/` | `HISTORY-`, `OPEN_` | `History/HISTORY-0001-TIMELINE.md` | timeline, legacy numbering, audit history, and the **live** `OPEN_ISSUES` / `OPEN_DECISIONS` / `OPEN_CONFLICTS` / `OPEN_RISKS` registers |
 | Cross-project index | root | `DOC-` | `DOC-0001-CANONICAL-DOCUMENTATION-INDEX.md` | canonical document index |
 | **History and source material only** | `Archive/` | — | `Archive/README.md` | archived audits, historical snapshots, superseded manifests — **not** current instruction |
 
@@ -223,7 +274,7 @@ not enumerated.
 | `../Working/reports/*.md` | 22 Blender QA reports | CURRENT (source, uncommitted) |
 | `Archive/Audits/AUDIT_2_RUNTIME_REPORT.md` | runtime audit — historical highest-authority evidence | ARCHIVE |
 | `Archive/Historical/ART_DELTA_AFTER_RECOVERY.md` | proof of zero art change after the recovery point | ARCHIVE |
-| `Archive/Historical/Documentation/Archive/Historical/RECONCILIATION_SOURCE_INVENTORY.md` | every source discovered on the machine | ARCHIVE |
+| `Archive/Historical/RECONCILIATION_SOURCE_INVENTORY.md` | every source discovered on the machine | ARCHIVE |
 | `Archive/Historical/RECOVERY_POINT_REPORT.md` | 2026-09-29 recovery verification | ARCHIVE |
 | `Archive/Audits/AUDIT_2_RECONCILIATION_REPORT.md` | Audit 2 documentation reconciliation | ARCHIVE |
 | `Archive/Audits/CONSOLIDATION_PRECOMMIT_VALIDATION.md` | Phase 2.5 validation (risk closure + pre-commit) | ARCHIVE |
@@ -234,7 +285,7 @@ not enumerated.
 | `DOCUMENTATION_ARCHIVE_MIGRATION_MAP.md` | what moved where, and why | CURRENT |
 | `STAGING_MANIFEST_PHASE6_1.md` | Phase 6.1 staging manifest | CURRENT |
 | `PHASE6_1_DOCUMENTATION_STRUCTURE_REPORT.md` | Phase 6.1 report | CURRENT |
-| `PHASE6_PUSH_PREVIEW.md` | pre-push preview (**push not performed**) | CURRENT |
+| `Archive/Audits/PHASE6_PUSH_PREVIEW.md` | the Phase 6 push preview, retained as evidence | ARCHIVE |
 
 ---
 

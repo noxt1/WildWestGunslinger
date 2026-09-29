@@ -1,7 +1,7 @@
 > **SUPERSEDED** — not authoritative. Canonical replacements:
 > `Documentation/AI/AI-0001-AI-AGENT-STATE.md`,
 > `Documentation/AI/AI-0002-AI-TOOLING-AND-PRODUCTION-METHOD.md`,
-> `Documentation/REL/REL-0002-BUILD-ARTIFACTS.md`.
+> `Documentation/Engineering/REL-0002-BUILD-ARTIFACTS.md`.
 > Retained for history; see `Documentation/DOC-0002-SUPERSEDED-DOCUMENTS.md` (S-02).
 > Superseded on 2026-09-29.
 > **Known false claims in this document:** "no release build exists" (a

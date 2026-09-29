@@ -1,7 +1,7 @@
 > **Status:** OPERATIONAL / REFERENCE LAYER - reconciled 2026-09-29 (Phase 4)
 > **Role:** component-level engineering reference for the AI and environment systems.
 > **Canonical architecture:** ../Documentation/ARCHITECTURE.md (authoritative for as-built system shape)
-> **Code inventory with current line counts:** ../Documentation/UNI/UNI-0001-UNITY-PROJECT-STATE.md section 5.1
+> **Code inventory with current line counts:** ../Documentation/Engineering/UNI-0001-UNITY-PROJECT-STATE.md section 5.1
 > **Not canonical for:** project state, requirements, decisions, or plan.
 > **Line counts in this file are STALE** - measured values live in UNI-0001 section 5.1.
 > **Reconciliation:** ../Documentation/Archive/Audits/PHASE4_AI_CONTEXT_RECONCILIATION.md

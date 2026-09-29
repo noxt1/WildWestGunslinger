@@ -20,6 +20,8 @@ preference.
 
 ## 2. Phase A — Documentation consolidation *(ready now)*
 
+> **This is the current roadmap.** Historical roadmaps and old Stage numbering are preserved in `Documentation/Archive/` (see `Archive/Historical/HISTORY-LEGACY-STAGE-NUMBERING`) and must **not** be treated as current planning identifiers.
+
 | Step | Action | State |
 |---|---|---|
 | A1 | Consolidate canonical documentation | **DONE** — Phase 2 |
@@ -100,7 +102,7 @@ Derived from `UNI-0003` and `ARCHITECTURE.md` §6.
 
 - `Documentation/**`
 - `ART_DELTA_AFTER_RECOVERY.md`
-- `RECONCILIATION_SOURCE_INVENTORY.md`
+- `Documentation/Archive/Historical/RECONCILIATION_SOURCE_INVENTORY.md`
 - `PROJECT_TRUTH.md`
 - `CONSOLIDATION_VALIDATION_REPORT.md`
 - `CONSOLIDATION_PRECOMMIT_VALIDATION.md`

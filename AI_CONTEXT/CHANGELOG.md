@@ -1,8 +1,8 @@
 > **Status:** HISTORICAL - reconciled 2026-09-29 (Phase 4)
 > **Role:** **append-only record of what actually changed, with dates and status.** History is not rewritten retrospectively.
 > **Canonical timeline:** ../Documentation/History/HISTORY-0001-TIMELINE.md
-> **Canonical truth about current state:** ../Documentation/PROJECT_TRUTH.md - this changelog does NOT define current state
-> **Reconciliation:** ../Documentation/PHASE4_AI_CONTEXT_RECONCILIATION.md
+> **Canonical truth about current state:** ../PROJECT_TRUTH.md - this changelog does NOT define current state
+> **Reconciliation:** ../Documentation/Archive/Audits/PHASE4_AI_CONTEXT_RECONCILIATION.md
 > Superseded as canonical state on 2026-09-29. Retained as the **historical record**.
 
 # CHANGELOG — Хронология AI-разработки

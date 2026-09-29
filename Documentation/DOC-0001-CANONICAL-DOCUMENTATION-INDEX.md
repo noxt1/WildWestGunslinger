@@ -101,7 +101,7 @@ These are **evidence, not governance**, and remain at the repository root:
 | File | Role |
 |---|---|
 | `ART_DELTA_AFTER_RECOVERY.md` | Zero art delta proof after the 2026-09-29 recovery point |
-| `RECONCILIATION_SOURCE_INVENTORY.md` | Every documentation/art/backup source discovered |
+| `Documentation/Archive/Historical/RECONCILIATION_SOURCE_INVENTORY.md` | Every documentation/art/backup source discovered |
 | `RECOVERY_POINT_REPORT.md` | 2026-09-29 recovery construction and verification |
 | `AUDIT_2_RECONCILIATION_REPORT.md` | Audit 2 static reconciliation |
 | `AUDIT_2_RUNTIME_REPORT.md` | U-12 runtime audit evidence |

@@ -15,6 +15,8 @@ are **preserved** here and mapped to the canonical `UNI-D*` register. None is
 closed. `RT-*` items must never be silently dropped when editing
 `UNI/UNI-0003-UNITY-KNOWN-DEFECTS.md`.
 
+> **This is the current issue registry.** Closed issues remain in history but are **not** active work unless reopened with new evidence. The registers `OPEN_DECISIONS.md`, `OPEN_CONFLICTS.md` and `OPEN_RISKS.md` in this folder follow the same rule.
+
 | Audit ref | Issue | Canonical | Status |
 |---|---|---|---|
 | **`RT-01`** | Modular FBX import at 0.01×, Z-up uncompensated (4 m wall → 4 cm tile) | `UNI-D06` | **OPEN** — blocks all environment promotion |
@@ -209,7 +211,7 @@ Combat, investigation, sound propagation, cover-taking, flanking.
 - **AFTER:** one canonical instance `Player#70770` for both fire and upgrade paths; `FireButton` holds no `GunController`; `FindFirstObjectByType<GunController>()` removed from the codebase
 - **VERIFICATION:** `TEST4_IDENTITY_EQUAL = True` (70770 == 70770), controller count 2 -> 1, 0 project-origin console errors
 - **Damage values:** Player `100` unchanged; the duplicate's `10` was deleted together with the obsolete component. Final balance value remains **`DEC-11` (still OPEN)**
-- **Report:** `Documentation/PHASE5B1_GUNCONTROLLER_IDENTITY_REPORT.md`
+- **Report:** `Documentation/Archive/Audits/PHASE5B1_GUNCONTROLLER_IDENTITY_REPORT.md`
 ### ISSUE-23 - Every upgrade choice was applied twice - RESOLVED
 - **Severity:** High (progression balance silently doubled)
 - **Status:** **CLOSED - FIXED, RUNTIME VERIFIED 2026-09-29 (Phase 5C)**
@@ -218,10 +220,10 @@ Combat, investigation, sound propagation, cover-taking, flanking.
 - **ROOT CAUSE:** `UpgradePanel` is inactive at scene start, so `UpgradeUI.Awake()` does not run during scene load (runtime listener census = 0). It runs later from inside `Show()` at `upgradePanel.SetActive(true)` - **after** `Show()` already called `SetButton()` for all three buttons. `SetButton()` does `RemoveAllListeners()` + `AddListener()`; `Awake()` then appended a **second** identical listener. One click = two applications
 - **FIX:** removed the three `AddListener` calls from `UpgradeUI.Awake()`; `SetButton()` is now the single registration point. Pre-existing defect - `UpgradeUI.cs` was not modified before this phase
 - **VERIFICATION:** listener census 2 -> 1; `ATTACK RANGE +5` 15->20 (not 25); `FIRE RATE +15%` 0.4->0.3478 = /1.15 (not 0.3024); `DAMAGE +20%` 100->120 (not 144); canonical `Player#70770`; 0 project-origin console errors
-- **Report:** `Documentation/PHASE5C_HUD_XP_REPORT.md`
+- **Report:** `Documentation/Archive/Audits/PHASE5C_HUD_XP_REPORT.md`
 ### ISSUE-24 - Android build is arm64-v8a only
 - **Severity:** Medium (device compatibility)
-- **Found:** 2026-09-29, Phase 5D (`Documentation/PHASE5D_MOBILE_ANDROID_REPORT.md`)
+- **Found:** 2026-09-29, Phase 5D (`Documentation/Archive/Audits/PHASE5D_MOBILE_ANDROID_REPORT.md`)
 - **Detail:** the verified IL2CPP APK contains only `lib/arm64-v8a/libil2cpp.so`. 32-bit `armeabi-v7a` devices are not supported by this build. Not previously recorded anywhere
 - **Status:** **OPEN** - separate Android compatibility issue, independent of `RT-02` device verification
 - **Note:** this is a *compatibility* question, not a proof that touch controls fail. Fixing it does not close `RT-02`

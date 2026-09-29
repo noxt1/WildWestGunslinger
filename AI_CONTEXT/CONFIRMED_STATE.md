@@ -3,7 +3,7 @@
 > **Canonical current state:** ../Documentation/PROJECT_STATE.md (runtime-verified) · ../Documentation/GAME/GAME-0002-GAMEPLAY-SYSTEMS-STATE.md section 3.2
 > **CONFLICTS:** this file's mobile-UI confirmation conflicts with UNI-D07; see ../Documentation/History/OPEN_CONFLICTS.md CONFLICT-13. Script-inventory claims here are stale - see CONFLICT-11.
 > **Only the user may set CONFIRMED** (VERIFICATION.md).
-> **Reconciliation:** ../Documentation/PHASE4_AI_CONTEXT_RECONCILIATION.md
+> **Reconciliation:** ../Documentation/Archive/Audits/PHASE4_AI_CONTEXT_RECONCILIATION.md
 > Superseded as canonical state on 2026-09-29. Retained as the **confirmation record**.
 
 # CONFIRMED_STATE — Подтверждённые системы

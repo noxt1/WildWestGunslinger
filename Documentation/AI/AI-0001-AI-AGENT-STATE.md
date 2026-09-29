@@ -111,7 +111,7 @@ the working tree. They are **superseded** by this `Documentation/` tree
 | 5 | `Skeleton=62 bones` | Armature has **51 bones** |
 | 6 | Only one backup exists (2026-09-29) | A **12.16 GB dated backup** exists at `Z:` from 2026-09-22 |
 
-Full detail in `RECONCILIATION_SOURCE_INVENTORY.md` §13.
+Full detail in `Documentation/Archive/Historical/RECONCILIATION_SOURCE_INVENTORY.md` §13.
 
 ---
 

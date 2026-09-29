@@ -220,7 +220,7 @@ the source.
 - `../ART/ART-0002-ART-ASSET-REGISTER.md` — per-asset state
 - `../History/OPEN_RISKS.md` — `RISK-01`, `RISK-04`
 - `../History/OPEN_DECISIONS.md` — `DEC-02`, `DEC-03`
-- `../../RECONCILIATION_SOURCE_INVENTORY.md` — source discovery record
+- `../../Documentation/Archive/Historical/RECONCILIATION_SOURCE_INVENTORY.md` — source discovery record
 
 ---
 

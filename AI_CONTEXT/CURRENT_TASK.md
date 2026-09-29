@@ -2,7 +2,7 @@
 > **Role:** the **current active task, its stop point, and its approval gates**. It must never restate project reality.
 > **Canonical project state:** ../Documentation/PROJECT_STATE.md · open issues ../Documentation/History/OPEN_ISSUES.md · decisions ../Documentation/DECISIONS.md
 > **History of completed work:** this directory's CHANGELOG.md and ../Documentation/History/HISTORY-0001-TIMELINE.md
-> **Reconciliation:** ../Documentation/PHASE4_AI_CONTEXT_RECONCILIATION.md
+> **Reconciliation:** ../Documentation/Archive/Audits/PHASE4_AI_CONTEXT_RECONCILIATION.md
 > Superseded as canonical source on 2026-09-29; retained as the operational task-state source.
 
 # CURRENT_TASK — Текущая задача

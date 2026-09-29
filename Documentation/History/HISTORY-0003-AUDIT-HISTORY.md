@@ -98,7 +98,7 @@ documentation set.**
 | Field | Value |
 |---|---|
 | Date | 2026-09-29 |
-| Artefacts | `ART_DELTA_AFTER_RECOVERY.md`, `RECONCILIATION_SOURCE_INVENTORY.md`, `Documentation/**`, `CONSOLIDATION_VALIDATION_REPORT.md` |
+| Artefacts | `ART_DELTA_AFTER_RECOVERY.md`, `Documentation/Archive/Historical/RECONCILIATION_SOURCE_INVENTORY.md`, `Documentation/**`, `CONSOLIDATION_VALIDATION_REPORT.md` |
 
 ### What Phase 2 corrected
 
@@ -109,7 +109,7 @@ documentation set.**
    `Documents\WildWestGunslinger art` (307 files), `Desktop\Коллаж тест VVG`
    (24), `Z:\Мой диск\WWG_RECOVERY` (90 626 files), the 2026-09-09 APK/IL2CPP
    build, and `Desktop\jvyb` VPN docs (out of scope).
-4. **Six prior claims corrected** — see `RECONCILIATION_SOURCE_INVENTORY.md` §13.
+4. **Six prior claims corrected** — see `Documentation/Archive/Historical/RECONCILIATION_SOURCE_INVENTORY.md` §13.
 5. **One security risk flagged:** `Desktop\omniroute ключи.txt` — not read,
    not printed, must never enter the repository.
 
@@ -130,7 +130,7 @@ documentation set.**
 
 ## 6. Cross-references
 
-- `RECONCILIATION_SOURCE_INVENTORY.md` — §13 correction table
+- `Documentation/Archive/Historical/RECONCILIATION_SOURCE_INVENTORY.md` — §13 correction table
 - `HISTORY-0001` — timeline
 - `UNI-0003` — defects
 - `AI-0001` §6 — AI error corrections

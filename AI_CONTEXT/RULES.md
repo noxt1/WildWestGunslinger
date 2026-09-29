@@ -3,7 +3,7 @@
 > **Canonical index of these rules:** ../Documentation/GAME/GAME-0004-REQUIREMENTS-AND-DESIGN-DECISIONS.md section 5.1 (OR-01 .. OR-12)
 > **Protected-file list:** section 5.2 of the same document. Note CONFLICT-16: three listed files are already modified in the working tree.
 > **Canonical project state:** ../Documentation/PROJECT_STATE.md
-> **Reconciliation:** ../Documentation/PHASE4_AI_CONTEXT_RECONCILIATION.md
+> **Reconciliation:** ../Documentation/Archive/Audits/PHASE4_AI_CONTEXT_RECONCILIATION.md
 > Superseded as canonical project state on 2026-09-29. Retained as the **operational rules** source.
 
 # RULES — Постоянные правила работы с проектом

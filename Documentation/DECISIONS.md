@@ -13,6 +13,9 @@ Two halves: **what has been decided** (binding) and **what has not**
 
 ### 1.1 Evidence and governance
 
+
+> **Current approved decisions are authoritative here.** Historical decisions are preserved in ``Documentation/Archive/`` and do **not** remain active unless explicitly re-adopted here.
+
 | # | Decision | Basis |
 |---|---|---|
 | GD-01 | Evidence precedence: runtime > file facts > git > backups > measured art docs > project docs > AI prose > assumptions | adopted Phase 2 |

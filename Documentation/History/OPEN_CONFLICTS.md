@@ -188,7 +188,7 @@ A conflict is **resolved** when a higher-ranked evidence class settles it
 
 - `DOC-0001` §1 — evidence precedence
 - `OPEN_DECISIONS.md` — decisions needed
-- `RECONCILIATION_SOURCE_INVENTORY.md` §13 — correction table
+- `Documentation/Archive/Historical/RECONCILIATION_SOURCE_INVENTORY.md` §13 — correction table
 
 ---
 

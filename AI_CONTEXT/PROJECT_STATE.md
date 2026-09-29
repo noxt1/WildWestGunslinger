@@ -1,9 +1,9 @@
 > **Status:** OPERATIONAL / REFERENCE LAYER - reconciled 2026-09-29 (Phase 4)
 > **Role:** agent-facing orientation. It **points to** canonical state; it does **not** define it.
 > **Canonical project state:** ../Documentation/PROJECT_STATE.md (authoritative for what exists)
-> **Canonical truth:** ../Documentation/PROJECT_TRUTH.md (repository root)
+> **Canonical truth:** ../PROJECT_TRUTH.md (repository root)
 > **Not canonical for:** requirements (../Documentation/REQUIREMENTS.md), decisions (../Documentation/DECISIONS.md), plan (../Documentation/MASTER_PLAN.md), open issues (../Documentation/History/OPEN_ISSUES.md)
-> **Reconciliation:** ../Documentation/PHASE4_AI_CONTEXT_RECONCILIATION.md · loss check ../Documentation/AI_CONTEXT_LOSS_CHECK.md
+> **Reconciliation:** ../Documentation/Archive/Audits/PHASE4_AI_CONTEXT_RECONCILIATION.md · loss check ../Documentation/Archive/Historical/AI_CONTEXT_LOSS_CHECK.md
 > **Known stale items** in this file are marked inline. Do not treat any statement here as current without checking the canonical document it points to.
 > Superseded as canonical source on 2026-09-29; retained as an operational reference.
 

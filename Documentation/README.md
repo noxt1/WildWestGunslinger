@@ -8,6 +8,34 @@ If you are an agent or a new contributor, **start here.**
 
 ---
 
+## 0. CURRENT PROJECT DOCUMENTATION vs ARCHIVE
+
+This documentation set has **two strictly separate layers**.
+
+### CURRENT / CANONICAL
+
+The documents in sections 2–4 below. They are the **operational source of truth** for ChatGPT,
+OpenCode, technical tasks, architectural decisions and current project state. Use these.
+
+### ARCHIVE
+
+`Archive/` — preserved history and source material. It is **not** part of current instructions.
+
+> **Explicit rule:** Archived documentation is preserved for history and context only. It is not an
+> operational source of truth and **must not be applied to the current project** unless a canonical
+> document explicitly references it as historical evidence.
+
+A new agent reads CURRENT documentation for instructions, and consults `Archive/` only to understand
+a past decision, a previous state, or the origin of a current rule.
+
+**`Archive/` is not a security boundary.** This repository is public: anything moved there remains
+readable on GitHub with its full history. Archiving is about *meaning*, not about hiding anything.
+
+The plan that decided every placement is `DOCUMENTATION_ARCHIVE_MIGRATION_MAP.md`.
+Archive rules are explained in `Archive/README.md`.
+
+---
+
 ## 1. The one-paragraph truth
 
 WildWestGunslinger is an **unreleased, pre-alpha, third-person western arena
@@ -36,11 +64,13 @@ Follow this chain. Each step is short and each links onward.
   6. DECISIONS.md                  what has been decided / left open
   7. MASTER_PLAN.md                sequencing, derived from reality
   8. OPEN_ISSUES.md                unresolved defects and gaps
-  9. domains:  ART-  UNI-  GAME-  AI-  REL-  DOC-  History
+  9. domains:  Character  GAME  UNI  ART  AI  REL  History
+ 10. Archive/                      history and source material only
 ```
 
 Steps 3–7 live at `Documentation/` root. Step 8 is
-`Documentation/History/OPEN_ISSUES.md`. Step 9 is the domain folders.
+`Documentation/History/OPEN_ISSUES.md`. Step 9 is the domain folders. Step 10 is **not** current
+instruction — see section 0.
 
 ---
 
@@ -61,16 +91,26 @@ Steps 3–7 live at `Documentation/` root. Step 8 is
 
 ## 4. Domain folders
 
-| Folder | Prefix | Entry document |
-|---|---|---|
-| `ART/` | `ART-` | `ART-0001-ART-STATE.md` |
-| `UNI/` | `UNI-` | `UNI-0001-UNITY-PROJECT-STATE.md` |
-| `GAME/` | `GAME-` | `GAME-0001-GAME-DESIGN-STATE.md` |
-| `AI/` | `AI-` | `AI-0001-AI-AGENT-STATE.md` |
-| `REL/` | `REL-` | `REL-0001-RECOVERY-AND-BACKUP.md` |
-| `Character/` | `CHAR-` | `CHARACTER_SOURCE_BACKUP.md` |
-| `History/` | `HISTORY-`, `OPEN_` | `HISTORY-0001-TIMELINE.md` |
-| root | `DOC-` | `DOC-0001-CANONICAL-DOCUMENTATION-INDEX.md` |
+Domain documents use the project's identifier scheme (`DOC-0003-IDENTIFIER-SYSTEM.md`).
+The folders are named by that scheme, not by generic topic names, so that the `GAME-0002` /
+`UNI-0003` style references used throughout the documentation keep working.
+
+| Domain topic | Folder | Prefix | Entry document | Read it for |
+|---|---|---|---|---|
+| Art pipeline, QA gates, asset lifecycle | `ART/` | `ART-` | `ART-0001-ART-STATE.md` | art state, asset register, pipeline and QA gates |
+| Unity project, tooling, defects | `UNI/` | `UNI-` | `UNI-0001-UNITY-PROJECT-STATE.md` | Unity runtime state, asset register, known defects, toolchain |
+| **Combat**, **Weapons**, **Progression**, **UI**, **Enemy**, **Environment** | `GAME/` | `GAME-` | `GAME-0001-GAME-DESIGN-STATE.md` | design state, gameplay systems (damage, firing, projectile, XP, upgrades, arena, enemy spawning), controls and platform targets, requirements |
+| AI architecture and agent tooling | `AI/` | `AI-` | `AI-0001-AI-AGENT-STATE.md` | AI agent state, tooling and production method |
+| **Character** | `Character/` | — | `CHARACTER_SOURCE_BACKUP.md` | character source lineage, rig, backup state |
+| Recovery, builds, security & release | `REL/` | `REL-` | `REL-0001-RECOVERY-AND-BACKUP.md` | backups, build artefacts, security/release requirements |
+| Timeline, audit history, open registers | `History/` | `HISTORY-`, `OPEN_` | `HISTORY-0001-TIMELINE.md` | timeline, legacy numbering, audit history, and the **live** `OPEN_ISSUES` / `OPEN_DECISIONS` / `OPEN_CONFLICTS` / `OPEN_RISKS` registers |
+| Cross-project index | root | `DOC-` | `DOC-0001-CANONICAL-DOCUMENTATION-INDEX.md` | canonical document index |
+| **History and source material only** | `Archive/` | — | `Archive/README.md` | archived audits, superseded docs, preserved sources — **not** current instruction |
+
+> **Note on domain folders.** `GAME-0002` covers several of the topics above (combat, weapons,
+> progression, UI, enemy, environment). It is deliberately **not** split or duplicated across
+> multiple folders; read it as the single gameplay-systems document. The mapping is recorded in
+> `DOCUMENTATION_ARCHIVE_MIGRATION_MAP.md`.
 
 ---
 
@@ -127,11 +167,14 @@ These are the errors that produced every correction in the audit history.
 
 | Item | Status |
 |---|---|
-| Character art preservation | **CLOSED** — 332/332 files, full SHA256 verified, restore-tested |
-| Secret exposure in repo/docs | **PASS** — 0 findings across 731 files |
-| Consolidation commit | **AWAITING APPROVAL** — nothing staged, nothing committed |
-| Open decisions | **10** — all require human authority |
-| Open critical defects | **7** |
+| Canonical documentation consolidation | **COMMITTED** — see `Archive/Audits/PHASE5_CHECKPOINT_REPORT.md` |
+| Technical baseline (Phases 5A–5D) | **FROZEN** — art production pause for integration |
+| GitHub reconciliation | **RECONCILED LOCALLY, NOT PUSHED** — `PHASE6_GITHUB_RECONCILIATION_REPORT.md` |
+| Secret exposure in repo/docs | **PASS** — 0 findings; scan method independently validated |
+| Weapon damage decision (`DEC-11`) | **OPEN** — deliberately undecided |
+| Android device runtime (`RT-02`) | **NOT VERIFIED** — no device available |
+| Level readout UI (`RT-07`) | **OPEN** — absent; XP bar itself works |
+| Character Foundation | **NOT integrated** into Unity |
 | Ready to ship | **NO** |
 
 ---
@@ -163,16 +206,23 @@ not enumerated.
 
 ## 10. Related documents outside this folder
 
-| File | Role |
-|---|---|
-| `../PROJECT_TRUTH.md` | consolidated ground truth |
-| `../ART_DELTA_AFTER_RECOVERY.md` | proof of zero art change after the recovery point |
-| `../RECONCILIATION_SOURCE_INVENTORY.md` | every source discovered, anywhere on the machine |
-| `../CONSOLIDATION_VALIDATION_REPORT.md` | Phase 2 validation |
-| `CONSOLIDATION_PRECOMMIT_VALIDATION.md` | Phase 2.5 validation (risk closure + pre-commit) |
-| `../RECOVERY_POINT_REPORT.md` | 2026-09-29 recovery verification |
-| `../AUDIT_2_RUNTIME_REPORT.md` | runtime audit — highest-authority evidence |
-| `../Working/reports/*.md` | 10 Blender QA reports |
+| File | Role | Layer |
+|---|---|---|
+| `../PROJECT_TRUTH.md` | consolidated ground truth | CURRENT |
+| `../AI_CONTEXT/` | operational layer for agent working rules | CURRENT (operational) |
+| `../Working/reports/*.md` | 22 Blender QA reports | CURRENT (source, uncommitted) |
+| `Archive/Audits/AUDIT_2_RUNTIME_REPORT.md` | runtime audit — historical highest-authority evidence | ARCHIVE |
+| `Archive/Historical/ART_DELTA_AFTER_RECOVERY.md` | proof of zero art change after the recovery point | ARCHIVE |
+| `Archive/Historical/Documentation/Archive/Historical/RECONCILIATION_SOURCE_INVENTORY.md` | every source discovered on the machine | ARCHIVE |
+| `Archive/Historical/RECOVERY_POINT_REPORT.md` | 2026-09-29 recovery verification | ARCHIVE |
+| `Archive/Audits/AUDIT_2_RECONCILIATION_REPORT.md` | Audit 2 documentation reconciliation | ARCHIVE |
+| `Archive/Audits/CONSOLIDATION_PRECOMMIT_VALIDATION.md` | Phase 2.5 validation (risk closure + pre-commit) | ARCHIVE |
+| `Archive/Source/AI_PRODUCTION_METHODOLOGY.md` | 52-point art production methodology (specification) | ARCHIVE (source) |
+| `Archive/Audits/AUDIT_SESSION_CONTEXT_2026-09-28.md` | audit/session preservation record | ARCHIVE |
+| `DOCUMENTATION_ARCHIVE_MIGRATION_MAP.md` | what moved where, and why | CURRENT |
+| `STAGING_MANIFEST_PHASE6_1.md` | Phase 6.1 staging manifest | CURRENT |
+| `PHASE6_1_DOCUMENTATION_STRUCTURE_REPORT.md` | Phase 6.1 report | CURRENT |
+| `PHASE6_PUSH_PREVIEW.md` | pre-push preview (**push not performed**) | CURRENT |
 
 ---
 

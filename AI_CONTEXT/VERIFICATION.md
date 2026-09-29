@@ -3,7 +3,7 @@
 > **Canonical index:** ../Documentation/GAME/GAME-0004-REQUIREMENTS-AND-DESIGN-DECISIONS.md section 5.1 (OR-05, OR-06, OR-12)
 > **Evidence precedence:** ../Documentation/DOC-0001-CANONICAL-DOCUMENTATION-INDEX.md section 1
 > **Canonical project state:** ../Documentation/PROJECT_STATE.md
-> **Reconciliation:** ../Documentation/PHASE4_AI_CONTEXT_RECONCILIATION.md
+> **Reconciliation:** ../Documentation/Archive/Audits/PHASE4_AI_CONTEXT_RECONCILIATION.md
 > Superseded as canonical source on 2026-09-29. Retained as the **evidence-rules** source.
 
 # VERIFICATION — проверка перед завершением (адаптация verification-before-completion)

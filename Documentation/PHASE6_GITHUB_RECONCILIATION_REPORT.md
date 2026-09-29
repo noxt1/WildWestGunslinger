@@ -109,7 +109,7 @@ verification was performed in §7 below and returned clean. **No value was print
 | `Documentation/DECISIONS.md` | | OK |
 | `Documentation/MASTER_PLAN.md` | | OK |
 | `Documentation/History/OPEN_ISSUES.md` | | OK |
-| `Documentation/PHASE5_CHECKPOINT_REPORT.md` | | OK |
+| `Documentation/Archive/Audits/PHASE5_CHECKPOINT_REPORT.md` | | OK |
 
 **No remote document conflicts with, or supersedes, any canonical local document.** The two remote
 files are additive and self-identify as specification / historical. **No canonical documentation was

@@ -184,7 +184,7 @@ final weapons art · enemy model replacement · full AI runtime verification · 
 verification. **Character Foundation is NOT integrated into Unity.**
 
 `DEC-11` (weapon base damage) remains **OPEN** and was not decided.
-See `Documentation/PHASE5_CHECKPOINT_REPORT.md`.
+See `Documentation/Archive/Audits/PHASE5_CHECKPOINT_REPORT.md`.
 
 ---
 ## Key timeline conclusions

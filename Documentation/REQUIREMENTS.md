@@ -14,6 +14,9 @@ true. Current state lives in `PROJECT_STATE.md` and `ARCHITECTURE.md`.
 Every row carries an explicit implementation status so a requirement is never
 mistaken for progress.
 
+
+> **Current requirements are maintained here.** Historical and superseded requirements are preserved in ``Documentation/Archive/`` and are **not** automatically active.
+
 | Status | Meaning |
 |---|---|
 | `MET` | verified in the running build |

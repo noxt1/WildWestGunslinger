@@ -4,7 +4,7 @@
 > **Code inventory with current line counts:** ../Documentation/UNI/UNI-0001-UNITY-PROJECT-STATE.md section 5.1
 > **Not canonical for:** project state, requirements, decisions, or plan.
 > **Line counts in this file are STALE** - measured values live in UNI-0001 section 5.1.
-> **Reconciliation:** ../Documentation/PHASE4_AI_CONTEXT_RECONCILIATION.md
+> **Reconciliation:** ../Documentation/Archive/Audits/PHASE4_AI_CONTEXT_RECONCILIATION.md
 > Superseded as canonical source on 2026-09-29; retained as an operational reference.
 
 # ARCHITECTURE — Архитектура AI-системы

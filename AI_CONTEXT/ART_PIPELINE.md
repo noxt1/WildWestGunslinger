@@ -2,7 +2,7 @@
 > **Role:** **authoritative for art workflow rules** (Method C, material contract, FBX export contract, presentation state, batch-integration policy). These are *operational* and are NOT duplicated into PROJECT_TRUTH.
 > **Canonical art state:** ../Documentation/ART/ART-0001-ART-STATE.md · asset states ../Documentation/ART/ART-0002-ART-ASSET-REGISTER.md · gates ../Documentation/ART/ART-0003-ART-PIPELINE-AND-QA-GATES.md
 > **Character quality rules:** .opencode/skills/wwg-character-art/SKILL.md (state sections there are unverified - see ../Documentation/AI/AI-0001-AI-AGENT-STATE.md section 2.1)
-> **Reconciliation:** ../Documentation/PHASE4_AI_CONTEXT_RECONCILIATION.md
+> **Reconciliation:** ../Documentation/Archive/Audits/PHASE4_AI_CONTEXT_RECONCILIATION.md
 > Superseded as canonical project state on 2026-09-29. Retained as the **operational art workflow** source.
 
 # ART_PIPELINE — Blender / 3D asset production мост

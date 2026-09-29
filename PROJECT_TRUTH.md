@@ -15,6 +15,13 @@
 | Genre | Third-person western arena shooter |
 | Engine | Unity 6 (6000.x) |
 | Platforms | Windows PC (primary dev) — `RUNTIME VERIFIED` · Android — `BUILD VERIFIED` (IL2CPP APK, 0 errors), **device runtime NOT VERIFIED** |
+---
+
+> **This document describes CURRENT PROJECT REALITY.**
+>
+> Historical documents in `Documentation/Archive/` do **not** override this document. If an
+> archived document appears to disagree with this one, this document is correct unless a canonical
+> document explicitly states otherwise.
 | Stage | Pre-alpha, unreleased |
 | Canonical scene | `Assets/Scenes/TestArena.unity` |
 | Unity project root | repository root (relative: `.`) |

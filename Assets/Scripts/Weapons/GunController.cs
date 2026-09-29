@@ -34,12 +34,6 @@ public class GunController : MonoBehaviour
 
     private void Awake()
     {
-        damage =
-            Mathf.Max(
-                damage,
-                200f
-            );
-
         playerController =
             GetComponentInParent<
                 PlayerController

@@ -161,17 +161,24 @@ tree.
 - **Impact:** the Rusher renders with a frame-debugger display material. Indicates a material that was never replaced before the prefab was saved.
 - **State:** unfixed.
 
-### UNI-D10 — Gun damage overwritten to 200 at runtime
-- **Observed:** both `GunController` instances report `200` damage at runtime while the Inspector shows 10 (one prefab) and 100 (the other).
-- **Static evidence (confirmed by Phase 3):** `Assets/Scripts/Weapons/GunController.cs` line 37, inside `Awake()`:
-  ```csharp
-  damage = Mathf.Max(damage, 200f);
-  ```
-  This clamps damage to a **minimum** of 200, so any authored value below 200 is silently raised to 200. The serialized field default is also `damage = 200f` (line 14).
-- **Impact:** weapon balance is not authorable from the Inspector; the effective value is set in code. Two orders of magnitude discrepancy versus the intended 10.
-- **State:** unfixed. Runtime audit ref `RT-04`; also `RT-03` (duplicate `FireButton/GunController` and `weaponPoint` resolving to the Player root).
-- **Never present the Inspector value as the runtime value.** The Inspector shows the *authored* value; the runtime value is always ≥ 200.
+### UNI-D10 — Gun damage overwritten to 200 — ✅ FIXED, RUNTIME VERIFIED (Phase 5B)
 
+- **Was:** `Awake()` contained `damage = Mathf.Max(damage, 200f)` — a hard-coded **floor** that silently discarded every authored value below 200.
+- **Why it was a defect:** no design documentation referenced it, and a search of all 42 scripts found the literal `200` **nowhere else** in the codebase. It had zero dependents and no justification.
+- **Fix:** the 6-line clamp was deleted from `Awake()`. The field default `= 200f` (line 14) was deliberately **left unchanged** — that is authored configuration for newly added components, not a defect.
+- **Runtime evidence (2026-09-29, Phase 5B, via Unity MCP):**
+
+  | Instance | Authored | Runtime **before** | Runtime **after** |
+  |---|---|---|---|
+  | `Player` | 100 | 200 | **100** |
+  | `FireButton` | 10 | 200 | **10** |
+
+  - Upgrade matrix confirmed: 100 → ×1.20 → **120** → **144** → **172.8** (cumulative, multiplicative); a `0` multiplier is correctly ignored.
+  - Firing confirmed: bullets spawned continuously carrying `damage = 10`; after 4 s of fire an enemy died (3 → 2). `10 damage × 10 hits = 100 = EnemyHealth.maxHealth`.
+  - **0 project-origin errors in 500 console entries.**
+- **⚠️ Exposed a separate, still-open defect:** the weapon that *fires* and the object that receives *upgrades* are **different `GunController` instances** (`FindFirstObjectByType` → `FireButton`; `UpgradeManager` → `Player`). This was invisible while both were clamped to 200. Recorded as `ISSUE-22` / `RT-03`.
+- **Balance consequence (accepted, needs a decision):** the firing weapon is now 10× slower to kill than before (10 hits instead of 1). Restoring authored intent is correct, but the authored value now needs balancing — `DEC-11`.
+- **State:** **✅ FIXED — RUNTIME VERIFIED.**
 ### UNI-D11 — Zero modular environment meshes integrated
 - **Observed:** 0 modular meshes in the scene despite the kit existing in `Assets/Art/Environment/Modular/`.
 - **Impact:** the environment kit is unusable. Interacts with `UNI-D06` — integration cannot proceed until import is fixed.
@@ -210,8 +217,8 @@ retained for traceability to `AUDIT_2_RUNTIME_REPORT.md`.
 |---|---|---|
 | `RT-01` | Modular FBX import 0.01×, Z-up uncompensated | `UNI-D06` |
 | `RT-02` | `MobileTouchControls` refs null (Android-critical) | `UNI-D07` |
-| `RT-03` | `FireButton`/`GunController` duplicate; `weaponPoint` → Player root; damage 10→200 | `UNI-D10` (partial — the duplicate/`weaponPoint` element has no dedicated entry) |
-| `RT-04` | `GunController.Awake` forces `damage ≥ 200` | `UNI-D10` |
+| `RT-03` | Duplicate `GunController`; firing and upgrades bound to **different instances** — **CONFIRMED at runtime** | `ISSUE-22` | `FIRE = FindFirst → FireButton(10)` vs `UPGRADE = GetComponent → Player(100)` |
+| `RT-04` | `GunController.Awake` forced `damage ≥ 200` — **✅ FIXED, RUNTIME VERIFIED 2026-09-29** | `UNI-D10` **CLOSED** | Phase 5B: Player 200→100, FireButton 200→10 |
 | `RT-05` | `Rusher`/`Shooter` prefab materials wrong | `UNI-D08`, `UNI-D09` |
 | `RT-06` | 9 missing-script warnings per spawn cycle — **RUNTIME VERIFIED: 0 warnings** (Phase 5R) | `UNI-D05` **CLOSED** |
 | `RT-07` | `HUDController.xpBar` / `levelText` null | **`UNI-D13`** |

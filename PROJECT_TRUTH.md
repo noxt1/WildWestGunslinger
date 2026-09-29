@@ -68,7 +68,7 @@ Confirmed by play-mode observation on 2026-09-29:
 | 6 | **Modular FBX import at 0.01× scale**, Z-up not compensated | Critical | Runtime |
 | 7 | **`Shooter.prefab` uses `TMP_SDF-HDRP LIT`** (font material as surface) | High | Runtime |
 | 8 | **`Rusher.prefab` uses `FrameDebuggerRenderTargetDisplay`** | High | Runtime |
-| 9 | **Gun damage overwritten to 200** (Inspector shows 10 / 100) | High | Runtime |
+| 9 | **Gun damage overwritten to 200** — **✅ FIXED, RUNTIME VERIFIED 2026-09-29** (Player 200→100, FireButton 200→10; upgrades ×1.20 cumulative) | ~~High~~ → closed | Phase 5B |
 | 10 | **`MobileTouchControls` references are null** — latent on PC, **critical for Android** | Critical (Android) | Runtime |
 | 11 | **0 destructible instances** despite controlled-fracture assets existing | Medium | Runtime |
 | 12 | **0 modular meshes integrated** in scene | High | Runtime |

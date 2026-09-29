@@ -36,7 +36,7 @@ One line per system. **Status vocabulary is strict** (`README.md` §5).
 | Enemy vision scanning | working | `RUNTIME VERIFIED` | observed | `GAME-0002` |
 | Custom A\* navigation | working | `RUNTIME VERIFIED` | non-null paths, movement | `GAME-0002` |
 | Weapon firing | working | `RUNTIME VERIFIED` | both prefabs fire | `GAME-0002` |
-| Gun damage value | **broken** | `VERIFIED FACT` | forced to 200 | `UNI-D10` |
+| Gun damage value | **fixed** | `RUNTIME VERIFIED` | authored values honoured (Player 100, FireButton 10); upgrades ×1.20 cumulative | `UNI-D10` closed |
 | NavMesh | **absent** | `VERIFIED ABSENCE` | 0 agents, 0 triangulation | `UNI-D01` |
 | Character rig in Unity | **absent** | `VERIFIED ABSENCE` | 0 Animator/Avatar/Controller/SkinnedMesh | `UNI-D02` |
 | Character visuals | **absent** | `VERIFIED ABSENCE` | player and enemies are capsules | `UNI-D03` |

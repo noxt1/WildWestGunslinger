@@ -116,7 +116,7 @@ project owner in earlier sessions. They are **historical confirmations**, not
 |---|---|---|
 | `Shooter.prefab` fires | ✅ | observed |
 | `Rusher.prefab` fires | ✅ | observed |
-| Damage value correct | ❌ | forced to 200 at runtime, overriding 10 / 100 |
+| Damage value correct | ✅ **RUNTIME VERIFIED** | authored values honoured: Player **100**, FireButton **10**; upgrades ×1.20 cumulative (`UNI-D10` fixed Phase 5B) |
 | Damage model / hit detection | ❓ | not tested |
 | Hit feedback | ❓ | not tested |
 | Destructibles | ❌ | 0 instances in scene |

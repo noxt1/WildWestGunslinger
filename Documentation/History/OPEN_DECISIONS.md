@@ -165,3 +165,19 @@ coupling them would have required a prohibited history operation.
 ---
 
 **End of `OPEN_DECISIONS.md`**
+
+---
+
+## DEC-11 - Weapon base damage and `GunController` identity - OPEN
+
+| Field | Value |
+|---|---|
+| Question | (a) Should the firing weapon's base damage be 10, 100, or 200? (b) Should the duplicate `GunController` be resolved so firing and upgrades share one instance? |
+| Why now | Removing the `Mathf.Max(damage, 200f)` clamp (Phase 5B) restored authored values and **exposed** the split binding that the clamp had hidden |
+| Measured facts | `Player` authored 100 · `FireButton` authored 10 · `EnemyHealth.maxHealth` = 100 · `UpgradeManager.damageMultiplier` = 1.20 |
+| Consequence (a) | firing weapon is now **10 hits** to kill a base enemy, versus 1 before the fix |
+| Consequence (b) | until resolved, Damage upgrades multiply a controller that does not fire |
+| Options | single `GunController` on the Player with the touch path referencing it · or keep two and wire `UpgradeManager`/`MobileTouchControls` to the firing instance |
+| Evidence | `Documentation/PHASE5B_GUN_DAMAGE_REPORT.md` |
+| Owner | human |
+| Ref | `ISSUE-22`, `UNI-D10` |

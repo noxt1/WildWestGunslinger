@@ -201,6 +201,16 @@ Combat, investigation, sound propagation, cover-taking, flanking.
 - **Confirmed cause:** OpenCode-side MCP client session initialisation for **remote** type servers
 - **Workaround (documented and proven):** direct JSON-RPC to `http://127.0.0.1:8080/mcp`. See `../PHASE5R_UNITY_RUNTIME_CHANNEL_REPORT.md` section 6 for the exact procedure, including the mandatory `Mcp-Session-Id` header and the SSE `data:` frame extraction
 - **Status:** **MITIGATED** - runtime verification is fully possible via the fallback. The underlying OpenCode integration issue remains open upstream
+### ISSUE-22 - Duplicate `GunController`: firing and upgrades bound to different instances
+- **Severity:** **High** (damage upgrades do not reach the weapon that fires)
+- **Confirmed at runtime (2026-09-29, Phase 5B):**
+  - `FindFirstObjectByType<GunController>()` -> `FireButton` controller, base damage **10** (this is what `MobileTouchControls` and any touch-fire path use)
+  - `UpgradeManager.gunController` (`GetComponent<GunController>()` on the Player) -> `Player` controller, base damage **100**
+  - `SPLIT = true`
+- **Impact:** the player fires with damage 10 while every Damage upgrade multiplies damage on a *different* controller. Upgrades are effectively not delivered to the weapon in use
+- **Was masked** while `Awake()` forced both to 200, making them indistinguishable
+- **Status:** **OPEN** - recorded only in Phase 5B per task scope. Not fixed
+- **Decision needed:** see `DEC-11`
 ## Cross-references
 
 - `UNI-0003` — Unity defects with severity

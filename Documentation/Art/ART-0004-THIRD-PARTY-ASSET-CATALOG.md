@@ -91,6 +91,29 @@ Records must state which of the two they describe:
 | **Asset-register state** | `ART-0002-ART-ASSET-REGISTER.md` §2a |
 | **Notes / restrictions** | See §5.1.1 (source defects) and §5.1.2 (fit caveat) |
 
+#### 5.1.0 Derivative lineage
+
+The asset exists as two distinct working states. Neither is an original WWG asset.
+
+| State | File | Status |
+|---|---|---|
+| **E1 — approved base** | `_chk_user_manual_fit_final.blend` | `APPROVED WITH FIT CAVEAT` (2026-09-30) |
+| **E1.1 — low-poly refinement** | `WWG_ThirdParty_CowboyHat_LOWPOLY_E1_1.blend` | `READY FOR APPROVAL` (2026-09-30) |
+
+**E1.1 modification record** (derivative of the same CC BY 4.0 original):
+
+| Item | Value |
+|---|---|
+| Modification date | 2026-09-30 |
+| Nature | **visual-fidelity low-poly** — silhouette / crown / brim readability preserved |
+| Method | `Decimate → COLLAPSE`, ratio 0.65 (Hat) / 0.70 (Strap, Buttons), **vertex-group weighted** by visual importance; modifiers applied |
+| Geometry | 4184 → **2780 tris** (−33.6 %), 2166 → **1464 verts** (−32.4 %) |
+| Topology | `Hat` 0 non-manifold before and after; `Strap`/`Buttons` source defects **preserved unchanged** (64 each) |
+| Fit | **0 BVH intersections**; 0/162 head points outside silhouette; min clearance 4.99 mm |
+| SHA-256 | `918ED9419725884ABA7B1C821AE7964763854EFAD051BDE03D59812F843A7315` |
+| Report | `Working/reports/e1_1_lowpoly_adaptation_2026-09-30.md` |
+| Classification | **MODIFIED / ADAPTED THIRD-PARTY DERIVATIVE** — attribution in §5.1.3 unchanged and still required |
+
 #### 5.1.1 Source-asset defects — inherited, not WWG-authored
 
 The raw OBJ carries topology defects. These belong to the **source asset** and were

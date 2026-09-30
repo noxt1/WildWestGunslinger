@@ -146,6 +146,31 @@ state machine (`../DOC-0001-CANONICAL-DOCUMENTATION-INDEX.md` §4).
 
 ---
 
+## 2b. E1.1 — Hat low-poly refinement
+
+> **Added 2026-09-30.** `E1` (§2a) remains the **approved base**. `E1.1` is a
+> **refinement of that approved asset, not a redesign**, and is
+> **`READY FOR APPROVAL`**. It does **not** supersede E1 until human approval is recorded.
+
+| Field | Value |
+|---|---|
+| Asset | **E1.1 — Hat (low-poly refinement of E1)** |
+| **State** | **`READY FOR APPROVAL`** (awaiting human approval) |
+| Base asset | E1 — Hat (§2a), `APPROVED WITH FIT CAVEAT` |
+| Working `.blend` | `Working/blender_src/third_party/MadeByYeshe_CowboyHat/Working/WWG_ThirdParty_CowboyHat_LOWPOLY_E1_1.blend` |
+| SHA-256 | `918ED9419725884ABA7B1C821AE7964763854EFAD051BDE03D59812F843A7315` |
+| Source / licence | unchanged — Cowboy Hat by MadeByYeshe, **CC BY 4.0** (`ART-0004` §5.1.0) |
+| Geometry | 4184 → **2780 tris** (−33.6 %); 2166 → **1464 verts** (−32.4 %) |
+| Method | vertex-group-weighted `Decimate → COLLAPSE` (0.65 / 0.70), applied |
+| Fit QA | **0 BVH intersections**; 0/162 head points outside silhouette; min clearance 4.99 mm |
+| Topology QA | 0 non-manifold / 0 zero-area / 0 loose / 0 degenerate normals; source defects in `Strap`/`Buttons` preserved |
+| Report | `Working/reports/e1_1_lowpoly_adaptation_2026-09-30.md` |
+
+> Fit caveat continues to apply — see §2a. Low-poly did **not** introduce any
+> intersection and the Character Foundation was **not** modified.
+
+---
+
 ## 2. Garments (vest / gloves)
 
 | Asset | Location | State | Evidence |

@@ -192,7 +192,37 @@ face-level tests.
 
 ---
 
-## 12. TripoSR — experiment, not a dependency
+## 11b. E1.1 — low-poly refinement (2026-09-30)
+
+**Nature:** optimization of an **already approved** asset, not redesign.
+
+| Item | Value |
+|---|---|
+| Base | E1 (`APPROVED WITH FIT CAVEAT`) — preserved unchanged |
+| Output | `WWG_ThirdParty_CowboyHat_LOWPOLY_E1_1.blend` (`918ED941…`) |
+| State | **`READY FOR APPROVAL`** |
+| Method | vertex-group-weighted `Decimate → COLLAPSE` — 0.65 (Hat), 0.70 (Strap/Buttons), applied |
+| Geometry | 4184 → 2780 tris (−33.6 %); 2166 → 1464 verts (−32.4 %) |
+| Fit | 0 BVH intersections; 0/162 outside silhouette; clearance 4.21 → 4.99 mm (caveat retained) |
+| Foundation | **unchanged** |
+
+**What was learned**
+
+- The polygon budget was distributed by **visual importance**, not uniform thinning: a
+  `LP_Keep` vertex group preserved the crease/crown top and the brim edge at weight 1.0
+  while thinned the low-curvature brim field (0.42) and the hidden underside (0.30).
+- Ratio 0.55 was **rejected on visual evidence** (dark blotching / non-deliberate
+  faceting on the crown) despite passing topology checks. 0.65 was selected. This is the
+  clearest case in E1 of *numeric PASS ≠ acceptable result*.
+- `use_collapse_triangulate` guarantees consistent triangulation, but converts quads to
+  tris — so **polygon count rises while triangle count falls**. Reported honestly.
+- Low-poly conversion **neither fixed nor worsened** the `Strap`/`Buttons` source
+  non-manifold defects (64 each, before and after). They remain attributed to the
+  source asset and open.
+
+Full evidence: `Working/reports/e1_1_lowpoly_adaptation_2026-09-30.md`.
+
+---
 
 A local TripoSR smoke test on `1.jpg` produced an OBJ, but the result was judged
 **poor quality / not suitable for production**. TripoSR remains **optional tooling**;

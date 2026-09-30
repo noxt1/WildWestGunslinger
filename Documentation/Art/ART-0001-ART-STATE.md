@@ -258,3 +258,17 @@ See `ART_DELTA_AFTER_RECOVERY.md`.
 ---
 
 **End of `ART-0001-ART-STATE.md`**
+- **`ART-0004` — third-party asset catalog (single canonical licence/attribution registry; E1 Hat record in §5.1)**
+- `History/HISTORY-0004` — E1 Hat causal development history
+
+---
+
+## 11. E1 — Hat (2026-09-30)
+
+**`APPROVED WITH FIT CAVEAT`** — third-party asset (`Cowboy Hat` by MadeByYeshe,
+**CC BY 4.0**) fitted to the approved Character Foundation. Assembly synchronised under
+`WWG_ThirdParty_Hat_Root`; **0** BVH triangle-level intersections; a non-zero inner gap
+(**≈ 4.21 mm**) remains as a recorded caveat against intended-camera presentation.
+Not `PROMOTED` / `INTEGRATED` / `RUNTIME VERIFIED`. Low-poly deferred.
+
+Full record — `ART-0004` §5.1 · register entry — `ART-0002` §2a · history — `History/HISTORY-0004`.

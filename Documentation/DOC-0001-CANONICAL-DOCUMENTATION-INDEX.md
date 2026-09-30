@@ -48,6 +48,7 @@ When two sources conflict, the higher rank wins and the conflict is recorded in
 | `ART-0001` | `ART-0001-ART-STATE.md` | Art programme state, source-of-truth locations |
 | `ART-0002` | `ART-0002-ART-ASSET-REGISTER.md` | Per-asset register with state machine |
 | `ART-0003` | `ART-0003-ART-PIPELINE-AND-QA-GATES.md` | Blender → FBX → Unity pipeline and QA gates |
+| `ART-0004` | `ART-0004-THIRD-PARTY-ASSET-CATALOG.md` | **Single canonical registry** of third-party assets: creator, source, licence, attribution, derivative status |
 
 ### 2.3 Unity — `Documentation/UNI/`
 
@@ -87,6 +88,7 @@ When two sources conflict, the higher rank wins and the conflict is recorded in
 | `HISTORY-0001` | `HISTORY-0001-TIMELINE.md` | Dated project timeline |
 | `HISTORY-0002` | `HISTORY-0002-LEGACY-STAGE-NUMBERING.md` | Legacy Stage N → canonical IDs |
 | `HISTORY-0003` | `HISTORY-0003-AUDIT-HISTORY.md` | Audit 1, Audit 2, U-12 and their corrections |
+| `HISTORY-0004` | `HISTORY-0004-E1-HAT-DEVELOPMENT-HISTORY.md` | E1 Hat causal development history, failed methods, validated methods |
 | `OPEN_DECISIONS` | `OPEN_DECISIONS.md` | Decisions that must be made by a human |
 | `OPEN_RISKS` | `OPEN_RISKS.md` | Active risks |
 | `OPEN_CONFLICTS` | `OPEN_CONFLICTS.md` | Unresolved source conflicts |
@@ -129,6 +131,8 @@ CREATED → QA PASS → APPROVED → PROMOTED → INTEGRATED → RUNTIME VERIFIE
 > **Current project-wide truth:** no asset has reached `RUNTIME VERIFIED`.
 > **Two assets are APPROVED** (BARREL_01, FENCE_01 - recorded user confirmation).
 > One is at QA PASS awaiting approval (CRATE_01; CP2 **not authorized**).
+> **E1 — Hat is `APPROVED WITH FIT CAVEAT`** (third-party asset, user-confirmed
+> 2026-09-30 — see `ART/ART-0004` §5.1 and `ART/ART-0002` §2a).
 > **No asset is PROMOTED, INTEGRATED, or RUNTIME VERIFIED.**
 
 ---

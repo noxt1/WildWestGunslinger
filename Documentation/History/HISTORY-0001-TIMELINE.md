@@ -185,8 +185,22 @@ verification. **Character Foundation is NOT integrated into Unity.**
 
 `DEC-11` (weapon base damage) remains **OPEN** and was not decided.
 See `Documentation/Archive/Audits/PHASE5_CHECKPOINT_REPORT.md`.
+---
+
+## 2026-09-30 — Character Foundation approved; E1 Hat closed
+
+Append-only record. No history above this point was altered.
+
+| Event |
+|---|
+| **Character Foundation APPROVED** — `B14CE5A1…`, 53 bones (52 deform + `B-root`), F8 Head Top **1818.2576 mm**. Body transform `rotation (90,0,0)` / `loc (0,0,0)` / `scale 1` is the **legitimate approved state** |
+| **E1 — Hat → `APPROVED WITH FIT CAVEAT`** — third-party asset (`Cowboy Hat` by MadeByYeshe, **CC BY 4.0**) fitted to the approved Foundation. Not `PROMOTED` / `INTEGRATED` / `RUNTIME VERIFIED` |
+| Final hat fit: uniform scale **1.62398**, rotation **(−1.278°, 7.332°, 80.083°)**, location **(−3.538, −42.303, 1702.868) mm**; **0 BVH intersections**, 0/162 head points outside silhouette; non-zero inner gap (**≈ 4.21 mm**) recorded as caveat |
+| Third-party asset registered in the new canonical catalogue `ART/ART-0004`; `internal_ground_ao_texture.jpeg` marked `LICENSE UNVERIFIED — EXCLUDED FROM PRODUCTION` |
+| Detailed causal record: **`HISTORY-0004-E1-HAT-DEVELOPMENT-HISTORY.md`** |
 
 ---
+
 ## Key timeline conclusions
 
 1. **The build (2026-09-09) is 18 days older than the newest art work** — it

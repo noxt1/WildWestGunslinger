@@ -199,6 +199,35 @@ code far older than the current project state.
 ## 10. Asset promotion state
 
 **Two assets are `APPROVED`** (`BARREL_01`, `FENCE_01` - recorded user confirmation). `CRATE_01` is at `QA PASS` with CP2 not authorized. **No asset has reached `RUNTIME VERIFIED`.** Highest state of the remaining assets is
+## 7b. E1 — Hat — APPROVED WITH FIT CAVEAT (2026-09-30)
+
+> **E1 — HAT — `APPROVED WITH FIT CAVEAT`**
+>
+> The E1 hat is a **third-party asset** used as an adapted project asset:
+> **Cowboy Hat** by **MadeByYeshe**, **CC BY 4.0** —
+> `https://sketchfab.com/3d-models/cowboy-hat-15fd37f4e03c447b995b5851cac52801`.
+> **WWG does not own the original asset.** Attribution is **required** and recorded.
+>
+> | Item | Value |
+> |---|---|
+> | State | `APPROVED WITH FIT CAVEAT` (user-confirmed) — not `PROMOTED` / `INTEGRATED` / `RUNTIME VERIFIED` |
+> | Assembly | `WWG_ThirdParty_Hat_Root` — `Hat` / `Strap` / `Buttons`, synchronised |
+> | Final fit | uniform scale `1.62398`; rotation `(−1.278°, 7.332°, 80.083°)`; location `(−3.538, −42.303, 1702.868) mm` |
+> | QA | **0** BVH triangle-level intersections; 0/162 head points outside silhouette |
+> | Low-poly | **not performed** (deferred) |
+> | Asset record | `Documentation/ART/ART-0004-THIRD-PARTY-ASSET-CATALOG.md` §5.1 |
+> | History | `Documentation/History/HISTORY-0004-E1-HAT-DEVELOPMENT-HISTORY.md` |
+>
+> **FIT CAVEAT — do not overstate.** A visible inner head-to-hat gap remains (recorded
+> minimum inner clearance **≈ 4.21 mm**); visual acceptance is based on the **intended
+> upper / game camera**. It is **not** a `perfect fit` / `perfectly flush` / `zero gap`.
+> The Character Foundation was **not modified** during this work.
+>
+> **Next clothing stage: E2 — Torso Clothing / Shirt**, which must treat the Character
+> Foundation as immutable.
+
+---
+
 `QA PASS`. Modular environment FBX, character FBX, and all `WWG_*` prefabs are
 below the promotion line, and the character rig is not integrated at all.
 

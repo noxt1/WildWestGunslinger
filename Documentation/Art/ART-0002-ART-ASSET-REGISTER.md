@@ -8,7 +8,8 @@ State machine (from `DOC-0001` section 4):
 `CREATED → QA PASS → APPROVED → PROMOTED → INTEGRATED → RUNTIME VERIFIED`
 
 **Two assets are `APPROVED` (`BARREL_01`, `FENCE_01`). One is at `QA PASS` awaiting
-approval (`CRATE_01`). Nothing is `PROMOTED` or `INTEGRATED`.**
+approval (`CRATE_01`). E1 — Hat is `APPROVED WITH FIT CAVEAT` (§2a). Nothing is
+`PROMOTED` or `INTEGRATED`.**
 
 > ### Filename semantics — mandatory reading
 > Several source files contain the words `FINAL`, `FINAL_REPAIR`,
@@ -108,6 +109,40 @@ state machine (`../DOC-0001-CANONICAL-DOCUMENTATION-INDEX.md` §4).
 > "QA PASS" here means QA renders/documentation exist — **not** that a human
 > approved the asset. `APPROVED` is a human act and has not occurred for any
 > character asset.
+
+---
+
+## 2a. E1 — Hat (third-party, approved with fit caveat)
+
+> **Added 2026-09-30.** Registered as `APPROVED WITH FIT CAVEAT` — a human visual
+> approval was recorded by the project owner. State per `../DOC-0001` §4
+> (`CREATED → QA PASS → APPROVED → PROMOTED → INTEGRATED → RUNTIME VERIFIED`);
+> this asset is at **`APPROVED`**, not yet `PROMOTED` / `INTEGRATED` / `RUNTIME VERIFIED`.
+
+| Field | Value |
+|---|---|
+| Asset | **E1 — Hat** (third-party asset used as an adapted project asset) |
+| **State** | **`APPROVED WITH FIT CAVEAT`** (user-confirmed, 2026-09-30) |
+| Source asset | **Cowboy Hat** by **MadeByYeshe** — **CC BY 4.0** (third-party; see `ART-0004`) |
+| Working `.blend` | `Working/blender_src/third_party/MadeByYeshe_CowboyHat/Working/_chk_user_manual_fit_final.blend` |
+| Assembly root | `WWG_ThirdParty_Hat_Root` — parts `Hat`, `Strap`, `Buttons`, **synchronised** |
+| Final uniform scale | `1.62398` |
+| Final rotation | `(−1.278°, 7.332°, 80.083°)` |
+| Final location | `(−3.538, −42.303, 1702.868) mm` |
+| Geometry QA | **0 BVH triangle-level intersections**; 0 non-manifold; 0 zero-area; 0 duplicate (checked state) |
+| Head coverage | 0 / 162 sampled head points outside the hat silhouette |
+| Low-poly | **NOT performed** (deferred to a separate pass) |
+| Full asset record | **`ART-0004-THIRD-PARTY-ASSET-CATALOG.md` §5.1** |
+| Causal history | `../History/HISTORY-0004-E1-HAT-DEVELOPMENT-HISTORY.md` |
+
+> **FIT CAVEAT (must travel with this asset).** The hat is **visually approved but not
+> geometrically ideal**: a visible inner head-to-hat gap remains (recorded minimum inner
+> clearance **≈ 4.21 mm**), and visual acceptance is based on the **intended upper / game
+> camera**. Do **not** describe it as `perfect fit`, `perfectly flush` or `zero gap`.
+> Correct wording: **`VISUALLY APPROVED WITH FIT CAVEAT` / `TECHNICALLY USABLE` /
+> `NON-ZERO INNER GAP REMAINS`.**
+>
+> Intersection QA is clean (**0**); the caveat concerns the inner gap, not a collision.
 
 ---
 

@@ -29,8 +29,13 @@ authority, because each one is irreversible or affects many downstream items.
 | Candidates (Doomy) | `_WORK` (2026-09-21), `_APPROVAL_CANDIDATE` (09-22 15:48), `_REFINED` (09-22 16:16), `_VEST_APPROVAL_CANDIDATE` (09-22 17:12), `_VEST_WORK` (09-25 12:05), `_VEST_MARK1_REPAIR_SB_WORK` (09-25 23:33), `_VEST_FULL_REPAIR_SB_WORK` (09-26 00:10), `_FINAL_REPAIR_SB_WORK` (09-26 00:33), `_FINAL_REPAIR_SB_WORK_PRESAVE_20260926_053821` (09-26 05:38), `_CLOTHING_REBUILD_SB_WORK` (09-26 12:02) |
 | Note | Names containing `APPROVAL_CANDIDATE` are **candidates, not approvals**. Newest ≠ approved |
 | Also required | A canonical `FBX/` vs `Unity_Export/` selection (currently byte-identical duplicates) |
-| Blocks | Every character asset, `UNI-D02`, `Q1`, `Q2` |
+| Blocks | ~~Every character asset, `UNI-D02`, `Q1`, `Q2`~~ — **no longer blocking since 2026-10-07.** What remains open is (a) any **further per-role** foundation selection and (b) the **Unity integration** decision for a chosen foundation. Neither is settled by `DEC-12`; see `DECISIONS.md` §2a |
 | Owner | human |
+| **Status** | **✅ RESOLVED — 2026-10-07, by project owner (explicit ARCHITECTURE DECISION, `DECISIONS.md` §1.1 `DEC-12` / `GD-11`). The single-foundation premise is withdrawn. WWG uses **multiple production character foundations**: **`Bandit`** and **`Cowboy`** as primary character foundations, **`Doomy`** as the enemy foundation / variant basis. `WWG_Rig` is retained as the legacy technical rig. The historical candidate tables below are kept as record and are **no longer blocking**. |
+
+> **Identifier note (2026-10-15).** The architecture decision above is registered as **`DEC-12`**;
+> it had been mis-recorded as `DEC-11` in local drafts. `DEC-11` remains the separate, still-open
+> weapon decision (see `DEC-11` below) and is unchanged.
 
 ---
 

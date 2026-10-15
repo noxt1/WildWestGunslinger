@@ -15,7 +15,7 @@ One line per system. **Status vocabulary is strict** (`README.md` §5).
 | Stage | **Pre-alpha, unreleased** |
 | Shippable | **NO** — 7 critical defects open |
 | Canonical scene | `Assets/Scenes/TestArena.unity` |
-| Git | `main` @ `7ad314c`, **ahead 1 / behind 2** vs `origin/main`, 0 staged |
+| Git | **MEASURED 2026-10-15:** `main` @ `e631b5d`, **0 ahead / 0 behind** vs the locally available `origin/main` ref, staged 0, working tree 74 modified + 2 deleted + 344 untracked. Dated snapshot, not a durable state — no `fetch` was performed — see `../PROJECT_TRUTH.md` §6 |
 | Runtime verification channel | **AVAILABLE** | RUNTIME VERIFIED attainable | Unity MCP 3.4.7 on 127.0.0.1:8080; Play Mode + Console proven 2026-09-29 | PHASE5R |
 | Asset approval state | **`BARREL_01` and `FENCE_01` = `APPROVED`** (user-confirmed). `CRATE_01` = `QA PASS`, CP2 not authorized. **Nothing is `PROMOTED`/`INTEGRATED`/`RUNTIME VERIFIED`** |
 | Character art | complete, measured, **backed up (CLOSED)**, **not integrated** |
@@ -38,8 +38,8 @@ One line per system. **Status vocabulary is strict** (`README.md` §5).
 | Weapon firing | working | `RUNTIME VERIFIED` | one canonical `GunController` (`Player#70770`); fire path == upgrade path; bullets carry current damage | `GAME-0002` |
 | Gun damage value / identity | **fixed** | `RUNTIME VERIFIED` | base **100** unchanged; `FireButton` duplicate removed; controller count 2 -> 1; identity equality 70770==70770 | `UNI-D10` closed, `ISSUE-22` closed |
 | NavMesh | **absent** | `VERIFIED ABSENCE` | 0 agents, 0 triangulation | `UNI-D01` |
-| Character rig in Unity | **absent** | `VERIFIED ABSENCE` | 0 Animator/Avatar/Controller/SkinnedMesh | `UNI-D02` |
-| Character visuals | **absent** | `VERIFIED ABSENCE` | player and enemies are capsules | `UNI-D03` |
+| Character rig in Unity | **PARTIALLY present** — **STATIC VERIFIED** 2026-10-15: `Assets/Prefabs/Enemies/Bandit.prefab` (working tree, modified vs `e631b5d`) carries an `Animator`, an assigned Humanoid `Avatar` and an assigned `AnimatorController`, and a nested `Bandit.fbx` instance. Still **absent from the canonical scene** (0 refs) and **not runtime-verified in game**; `UNI-D02` remains **OPEN** | `STATIC VERIFIED` (prefab only) | `UNI-D02`, `OPEN_CONFLICTS.md` `CONFLICT-17` |
+| Character visuals | **PARTIALLY present** — static rig/Avatar/Controller/skin hierarchy exists on the `Bandit` prefab and on the `Doomy_*` variant prefabs. Player and the enemies actually spawned by the canonical scene are **not** visually replaced by character art in the game | `STATIC VERIFIED` (prefabs) | `UNI-D03` remains **OPEN** |
 | Broken references | **defect** | `RUNTIME VERIFIED` | 12, unidentified | `UNI-D04` |
 | Missing scripts | **defect** | `RUNTIME VERIFIED` | 4, unidentified | `UNI-D05` |
 | Modular FBX import | **broken** | `RUNTIME VERIFIED` | 0.01×, Z-up uncompensated | `UNI-D06` |
@@ -71,7 +71,8 @@ One line per system. **Status vocabulary is strict** (`README.md` §5).
 | Vest/glove QA renders (25) | exist | `STATIC VERIFIED` |
 | Wall/Floor modular FBX (6) | on disk | `STATIC VERIFIED` |
 | Character FBX (5) + weapons (4) | exported, not integrated | `STATIC VERIFIED` |
-| Unity integration of any of the above | **none** | `VERIFIED ABSENCE` |
+| Character FBX + weapons (4) | exported, not integrated | `STATIC VERIFIED` |
+| Unity integration of any of the above | **none promoted/published** — a working-tree, uncommitted `Bandit` prefab extension exists (Animator + Avatar + Controller + nested FBX instance) but is **not** integrated into the canonical scene and **not** runtime-verified | `STATIC VERIFIED` (prefab) + `NOT VERIFIED` (scene) |
 | Any asset `APPROVED` | **none** | `VERIFIED ABSENCE` |
 | Canonical character `.blend` | **undecided** | `OPEN DECISION` `DEC-02` |
 

@@ -98,26 +98,39 @@ investigation, sound propagation, cover-taking behaviour, flanking.
 
 ## 6. Git state
 
-| Field | Value |
+> **MEASURED SNAPSHOT — 2026-10-15.** This is a dated measurement of the working state at that
+> moment, **not a permanent property of the repository**. It will change after any future commit.
+> Do not read a dirty working tree as clean, and do not treat these counts as durable.
+
+| Field | Value (measured 2026-10-15) |
 |---|---|
 | Branch | `main` |
-| HEAD | `7ad314c869e5dad1daf8e56fdf0b8f4197592969` |
-| `origin/main` | `f932fcc722d22b8150ccf7e9616914324347c6e8` |
-| Divergence | **ahead 1 / behind 2** |
-| Working tree | **82 entries: 15 modified, 2 deleted, 65 untracked** |
-| Staged | 0 |
+| HEAD | `e631b5d9ef130531159f7894618732799c5140ef` (`feat(art): adapt E1 hat to low-poly`) |
+| `origin/main` (local ref) | `e631b5d9ef130531159f7894618732799c5140ef` |
+| Divergence `main...origin/main` | **0 ahead / 0 behind** — local `main` matches the available `origin/main` ref |
+| Staged | **0** |
+| Working tree | **420 status entries = 74 modified tracked + 2 deleted + 344 untracked** |
+| Untracked, as individual files | **3 889** (the 344 entries are directories collapsed by `git status`) |
 | History start | 2026-09-25 (git initialised **after** most art work) |
 
-`origin/main` is ahead by 2 commits and contains two Markdown files
-(`AI_PRODUCTION_METHODOLOGY.md`, `AUDIT_SESSION_CONTEXT_2026-09-28.md`) that are
-**absent from the local working tree**.
+**Scope notes for the figures above**
 
-### Recovery branch and tag
+- The divergence figure comes from the **locally available** `origin/main` ref only. **No `fetch`
+  was performed**, so this is not a statement about the live state of GitHub; it is a statement
+  about local refs. GitHub `main` was independently read via API on 2026-10-15 and matched
+  `e631b5d`, but that read is not part of the Git baseline.
+- The single untracked addition relative to the earlier 343-entry count is
+  `Working/reports/three_layer_sync_audit_2026-10-15.md` (the three-layer sync audit report).
+- A dirty working tree is **not** a defect and **not** a clean state. It reflects active
+  production work awaiting human approval; see `MASTER_PLAN.md` Phase A5 and the open decisions
+  register.
+
+### 6a. Recovery branch and tag
 
 | Ref | Commit |
 |---|---|
 | `recovery/checkpoint-2026-09-29-audit2` | `040651b1d8963231b814217319b099b7ab5ef16d` |
-| tag `recovery-2026-09-29-audit2` | `040651b1d8963231b814217319b099b7ab5ef16d` |
+| tag `recovery-2026-09-29-audit2` (annotated tag object `7bc19c7aa0b439cdb998f7d6241ff816b641b18b`) | `040651b1d8963231b814217319b099b7ab5ef16d` |
 
 ---
 

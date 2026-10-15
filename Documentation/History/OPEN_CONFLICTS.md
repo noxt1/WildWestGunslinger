@@ -33,6 +33,14 @@ A conflict is **resolved** when a higher-ranked evidence class settles it
 
 ## CONFLICT-03 — Bone count: 62 vs. 51
 
+> **STATUS (2026-09-29): SUPERSEDED by the 53-bone Character Foundation.**
+> This record is preserved as history. The resolution below ("51") was correct **for the
+> former 51-bone lineage only** and is **no longer the current contract**. The active
+> rig is `WWG_Rig` with **53 bones** (52 deform + 1 non-deform `B-root`); the 51-bone
+> material is **HISTORICAL / NON-CANONICAL / NON-PRODUCTION**.
+> See `Documentation/Character/CHARACTER_FOUNDATION_CONTRACT.md`. Do not resolve future bone-count
+> questions from this record.
+
 | Field | Value |
 |---|---|
 | Sources | `AUDIT_2_RECONCILIATION_REPORT.md`: `Skeleton=62 bones` · `Doomy_measurements.md`: `WWG_Template_Armature` = **51 bones** |
@@ -193,3 +201,17 @@ A conflict is **resolved** when a higher-ranked evidence class settles it
 ---
 
 **End of `OPEN_CONFLICTS.md`**
+
+
+## CONFLICT-17 — Bandit production import authorised, but the integration gate is frozen — ✅ RESOLVED 2026-10-07
+
+| Field | Value |
+|---|---|
+| Sources | §0 authorisation of `BANDIT — PRODUCTION IMPORT` (2026-10-07): "controlled production import" of `Bandit_REPAIRED.fbx` **APPROVED FOR PRODUCTION IMPORT** · `PROJECT_TRUTH.md` §"CURRENT VERIFIED TECHNICAL BASELINE": "Technical integration is **frozen**" and "**ART COMPLETION GATE** … before large-scale Unity integration resumes"; `Documentation/Character/README.md` + `Documentation/Character/CHARACTER_FOUNDATION_CONTRACT.md`: Character Foundation **APPROVED** = `WWG_Rig` **53 bones**, not integrated; `OPEN_ISSUES.md` `ISSUE-06`: "the promotion target is **undefined**" |
+| Original resolution | **OPEN — needs a human.** Three decisions were required: (1) whether Bandit (118 bones) replaces `WWG_Rig` (53 bones) as the Character Foundation; (2) whether the ART COMPLETION GATE opens; (3) whether the existing prefab may be extended.
+| Resolution | **✅ RESOLVED — 2026-10-07 by project owner ARCHITECTURE DECISION (`DECISIONS.md` §1.1 `DEC-12` / `GD-11`). Multiple production character foundations are permitted: `Bandit` + `Cowboy` primary, `Doomy` enemy foundation, `WWG_Rig` legacy technical rig. The C-1 "single foundation only" premise, C-2 and C-3 are withdrawn as blockers. C-4 (`Assets/Prefabs/Enemies/Bandit.prefab`) is resolved by explicit authorisation to use the existing prefab as the production target. Superseded reasoning retained above as record. | Three decisions are required: (1) whether Bandit (118 bones) replaces `WWG_Rig` (53 bones) as the Character Foundation, recorded in `PROJECT_TRUTH.md`, `Documentation/Character/README.md`, `DECISIONS.md` and the AI context contract; (2) whether the ART COMPLETION GATE opens for this one controlled import while `Enemy characters / assets — IN PROGRESS`; (3) whether the existing tracked prefab `Assets/Prefabs/Enemies/Bandit.prefab` may be extended or a separate prefab created |
+| Consequence | **State as measured 2026-10-15 (read-only re-verification, supersedes the 2026-10-07 "not executed" line above, which is retained as the historical starting point).**<br>**STATIC VERIFIED** — `Assets/Prefabs/Enemies/Bandit.prefab` is **modified in the working tree** vs `e631b5d` (+110/−64) and now carries an `Animator` with an assigned `Avatar` (`{fileID: 9000000, guid: 76cbbd77…, type: 3}`, i.e. the Humanoid Avatar sub-asset of `Assets/Art/Characters/Bandit/Models/Bandit.fbx`) and an assigned `AnimatorController` (`Assets/Art/Characters/Bandit/Animations/BanditController.controller`, `837d5255…`), plus a **nested prefab instance of `Bandit.fbx`** (9 926 780 B, importer `animationType: 3` Humanoid). MonoBehaviours present: `EnemyController`, `EnemyHealth`, `EnemyTacticalPlanner`. `CapsuleCollider` and `Rigidbody` retained.<br>**STATIC VERIFIED** — the prefab contains **no** `BanditAnimatorDriver` component (script GUID `820a2d8b54cd078498b1b500ad981932` absent from the file).<br>**STATIC VERIFIED** — canonical scene `Assets/Scenes/TestArena.unity` contains **0 references** to `Bandit.prefab` (GUID `3f21965e…`) and **0** to the driver GUID; the scene's enemy roster is the `Doomy_*` variant set (`Doomy_Bandit`, `Doomy_Rusher`, `Doomy_Shooter`, `Doomy_Tactical`).<br>**STATIC VERIFIED** — the prefab file itself contains no inline `SkinnedMeshRenderer` components; the skinned mesh hierarchy is contributed by the nested `Bandit.fbx` instance. Skinned-mesh counts reported for the *resolved* hierarchy in QA sessions are runtime observations of that instance, **not** a static property of the prefab file.<br>**QA-HARNESS RUNTIME VERIFIED (not the game)** — Animator states `Aim`, `Fire`, `Reload`, `Hit`, `Dead` were reached through real production signals in an isolated QA scene (`Assets/_Sandbox/BanditQA_2026-10-12/`) during the 2026-10-12…15 session, with no direct `Animator.Play`/`SetTrigger` from the harness. See `Working/reports/bandit_animator_dead_state_qa_2026-10-15.md`.<br>**NOT VERIFIED / NOT INTEGRATED** — the driver's behaviour in the **canonical game scene** is **not** confirmed, because the canonical scene neither instantiates `Bandit.prefab` nor carries the driver component. Bandit is **not** `INTEGRATED` and **not** `RUNTIME VERIFIED` in the game.<br>None of the above is committed: the prefab change is an uncommitted working-tree modification, not a published promotion. `Working/reports/bandit_production_import_STOP_2026-10-07.md` remains the 2026-10-07 record of the point where the import had **not** yet run. |
+| Note | The FBX itself is fully verified: `Bandit_B_REPAIRED.fbx`, 9 926 780 B, SHA-256 `92B2D3871D4D902E48360D9A1DF190E7741DE49E3AFA6006A0B4856AFA759EE6`. All technical validation (Avatar, 8-clip retarget, deformation repair, weapon compatibility, gameplay-camera QA) already passed in a disposable workspace, so nothing needs re-testing once the decisions are recorded |
+| Ref | `ART-0004` §9 · `bandit_deformation_repair_qa_2026-10-07` · `bandit_production_import_STOP_2026-10-07` |
+
+---

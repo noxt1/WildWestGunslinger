@@ -11,7 +11,7 @@
 | Prefix | Domain | Folder |
 |---|---|---|
 | `DOC-` | Governance, index, superseded register, identifiers | `Documentation/` |
-| `ART-` | Art programme, assets, pipeline, QA gates | `Documentation/ART/` |
+| `ART-` | Art programme, assets, pipeline, QA gates | `Documentation/Art/` |
 | `UNI-` | Unity project, data, defects, toolchain | `Documentation/UNI/` |
 | `GAME-` | Game design, gameplay systems, controls | `Documentation/GAME/` |
 | `AI-` | AI agents, skills, production method | `Documentation/AI/` |
@@ -84,6 +84,26 @@ Unity defects use `UNI-Dnn`:
 Art pipeline defects use `ART-Pnn` (see `ART-0003` §6).
 Risks use `RISK-nn`. Decisions use `DEC-nn`. Conflicts use `CONFLICT-nn`.
 Issues use `ISSUE-nn`.
+
+### 5.1 `DEC-nn` versus the historical `DEC-0nn` series
+
+Two distinct decision series exist and must never be merged or renumbered:
+
+| Series | Form | Range in use | Meaning | Status |
+|---|---|---|---|---|
+| **Active** | `DEC-nn` — **two digits** | `DEC-01` … `DEC-12` | project decisions in the canonical register, `DECISIONS.md` §1.1 / `History/OPEN_DECISIONS.md` | **current, authoritative** |
+| **Historical** | `DEC-0nn` — **three digits** | `DEC-001` … `DEC-013` | art-pipeline decisions from the Audit 2 enumeration, found only in `Documentation/Archive/Audits/AUDIT_2_RECONCILIATION_REPORT.md` | **archive only — historical, not renumbered** |
+
+Rules:
+
+- `DEC-011` (three digits, *modular wall/floor kit*) and `DEC-11` (two digits, *weapon base damage and
+  `GunController` identity*) are **different decisions**. Neither is an alias of the other.
+- The three-digit series is **frozen**. Do not renumber, extend or cite it as if it were active.
+- When an active decision is assigned an identifier, it takes the next free **two-digit** value and
+  is registered in `DECISIONS.md`. Never reuse a two-digit value that already has a meaning.
+- Collision check before assigning: search both `DECISIONS.md` and `History/OPEN_DECISIONS.md`
+  for the two-digit form **and** for the three-digit form, so a new identifier cannot silently
+  overwrite an open decision.
 
 ---
 

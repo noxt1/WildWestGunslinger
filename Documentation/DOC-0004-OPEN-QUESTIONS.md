@@ -13,8 +13,8 @@ A short, human-actionable list. Detail lives in `History/OPEN_DECISIONS.md`,
 
 | # | Question | Why it blocks | Ref |
 |---|---|---|---|
-| Q1 | Which of the 32 `WWG_Foundation_Source` variants is canonical? | Every downstream character asset depends on it | `DEC-02` |
-| Q2 | Which `WWG_Doomy_Cowboy` file is canonical — `CLOTHING_REBUILD_SB_WORK` (newest) or an approval candidate? | "Newest" ≠ "approved" | `DEC-02` |
+| Q1 | Which foundation is selected **for a specific production role** (player character, enemy variants)? `DEC-12` settled the architecture — multiple foundations are permitted — but no role selection is confirmed | Blocks the per-role asset decision; does **not** block every character asset | `DEC-02` (SUPERSEDED by `DEC-12`) |
+| Q2 | Which character source may be **accepted for the `Cowboy` role** named in `DEC-12`, and on what basis (licence, source approval, rigging evidence)? | "Newest" ≠ "approved"; a candidate package cannot be promoted without a human approval | `DEC-12` · `OPEN_ISSUES.md` `ISSUE-27` |
 | Q3 | Which `Wall` / `Floor` FBX is FINAL? | Blocks environment promotion | `DEC-04` |
 | Q4 | What is the repository material policy? | Blocks every material decision | `DEC-01` |
 | Q5 | Is `CRATE_01` CP1 approved, thereby authorizing CP2? (CP1 = COMPLETE, **CP2 NOT AUTHORIZED**) | Blocks crate fragmentation | `DEC-05` |

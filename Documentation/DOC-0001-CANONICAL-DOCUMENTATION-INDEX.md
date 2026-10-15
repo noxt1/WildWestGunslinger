@@ -41,7 +41,7 @@ When two sources conflict, the higher rank wins and the conflict is recorded in
 | `DOC-0003` | `DOC-0003-IDENTIFIER-SYSTEM.md` | `ART-`/`UNI-`/`GAME-`/`AI-`/`DOC-`/`REL-` scheme |
 | `DOC-0004` | `DOC-0004-OPEN-QUESTIONS.md` | Unresolved questions requiring a human decision |
 
-### 2.2 Art — `Documentation/ART/`
+### 2.2 Art — `Documentation/Art/`
 
 | ID | Document | Purpose |
 |---|---|---|

@@ -47,7 +47,7 @@ mistaken for progress.
 | CR-02 | Character geometry exists in an editable source | **MET** | 43 `.blend` in the external source, **backed up (CLOSED)** |
 | CR-03 | Character measurements are recorded | **MET** | 4 measurement/clearance documents |
 | CR-04 | Character multi-view QA is produced | **MET** | ~120 renders, `CK1`–`CK18` + view sets |
-| CR-05 | **One** canonical character file is designated | **NOT MET** | 10 `Doomy` candidates + 32 `Foundation` variants (`DEC-02`) |
+| CR-05 | **One** canonical character file is designated | **NOT MET** | Re-worded 2026-10-15: the *exclusivity* premise is **SUPERSEDED by `DECISIONS.md` §1.1 `DEC-12`** (multiple production character foundations are permitted), so the 10 `Doomy` / 32 `Foundation` candidate table no longer blocks work. The requirement is kept **open** because the remaining substance is a **role-specific foundation selection plus actual Unity integration** — neither is decided by `DEC-12`. See `DECISIONS.md` §2a. Historical candidates: `DEC-02` (now `SUPERSEDED`) |
 | CR-06 | A character asset is `APPROVED` | **NOT MET** | no character asset has an approval record (note: `BARREL_01`/`FENCE_01` props **are** approved - `ART-0002` §4) |
 | CR-07 | The character is imported into Unity | **NOT MET** | no character FBX in `Assets/` (`ISSUE-06`) |
 | CR-08 | A skinned representation exists in the scene | **NOT MET** | 0 `SkinnedMeshRenderer` (`UNI-D02`) |

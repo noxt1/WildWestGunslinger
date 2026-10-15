@@ -33,6 +33,18 @@ Two halves: **what has been decided** (binding) and **what has not**
 
 | # | Decision | Evidence / source | Date | Status |
 |---|---|---|---|---|
+| `DEC-12` | **Multiple production character foundations are allowed.** `Bandit` and `Cowboy` are primary production character foundations; `Doomy` is a separate enemy foundation / variant basis. Each foundation carries its own Humanoid-compatible rig; gameplay is unified through a **shared** Animator / Avatar / animation / weapon-attachment contract, not through one universal rig. `WWG_Rig` remains the legacy technical rig and is not a prerequisite for any of them. | Explicit project-owner ARCHITECTURE DECISION, 2026-10-07 | 2026-10-07 | **CONFIRMED** |
+
+> **Identifier note (2026-10-15).** `DEC-12` is a **rename** of an architecture decision that had
+> been mis-recorded as `DEC-11` in local working-tree drafts. **`DEC-11` is NOT this decision** —
+> `DEC-11` is the separate, still-open weapon decision *"Weapon base damage and `GunController`
+> identity"* (`History/OPEN_DECISIONS.md`, status **OPEN**). The original `DEC-11` meaning and its
+> `OPEN` status are preserved unchanged. Renumbering keeps `DEC-11` pointing at its canonical
+> subject instead of silently redefining an open weapon decision.
+>
+> **Scope reminder:** `DEC-12` settles the *architecture* only. It does **not** select a foundation
+> for every production role, and it does **not** mean any foundation is integrated into Unity.
+> See §2a.
 | `DEC-07` | **Land the canonical documentation commit on `main` as-is — documentation only, no product files. Defer the `origin/main` divergence (ahead/behind) to a separate planned operation. Do not merge the two GitHub-only Markdown files.** | Explicit project-owner APPROVE, 2026-09-29 | 2026-09-29 | **CONFIRMED** |
 
 **Effect:** unblocks the first consolidation commit. `git pull`, `merge`,
@@ -95,7 +107,7 @@ Full register: `History/OPEN_DECISIONS.md`. **No agent may resolve any of these.
 | # | Open decision | Blocks |
 |---|---|---|
 | `DEC-01` | Repository material policy | all material repair, scene reproducibility |
-| `DEC-02` | **Canonical character foundation file** (10 `Doomy` candidates, 32 `Foundation` variants) | every character asset |
+| `DEC-02` | **Canonical character foundation file** (10 `Doomy` candidates, 32 `Foundation` variants) — **SUPERSEDED by `DEC-12` (2026-10-07, renamed 2026-10-15), retained as the historical record.** The *exclusivity* requirement it expressed ("exactly one canonical character foundation") is withdrawn: multiple production foundations are permitted. What remains a separate, still-open question is which concrete foundation is chosen **for a given role**, and separately whether that foundation is integrated into Unity. Neither is decided by `DEC-12` | no longer blocks every character asset — blocks the **role-specific foundation selection** and the **integration decision**, both human acts |
 | `DEC-03` | Character source location policy (repo vs. external + schedule) | `RISK-01`/`RISK-03` long-term |
 | `DEC-04` | Which `WallSegment`/`FloorSegment` revision is FINAL | environment promotion |
 | `DEC-05` | **`CRATE_01` CP1 approval.** State established: CP1 = COMPLETE, **CP2 = NOT AUTHORIZED / AWAITING APPROVAL**. Open: does the user approve CP1? | crate CP2 |
@@ -104,6 +116,27 @@ Full register: `History/OPEN_DECISIONS.md`. **No agent may resolve any of these.
 | `DEC-08` | Whether legacy Stage numbering retains any authority | legacy docs |
 | `DEC-09` | Disposition of the duplicate scene `Assets/TestArena.unity` | scene hygiene |
 | `DEC-10` | Whether untracked `WWG_*` prefabs/materials are committed | clean-clone reproducibility |
+### 2a. Three distinct states — do not conflate them
+
+`DEC-12` settles only the first of these. Keeping them separate is what prevents a confirmed
+architecture decision from being read as a completed integration.
+
+| State | Question | Decided by | Status 2026-10-15 |
+|---|---|---|---|
+| **1. Architecture** | May the project carry **multiple** production character foundations with one shared gameplay/animation contract? | project owner | **DECIDED** — `DEC-12`, confirmed 2026-10-07. Yes. |
+| **2. Role-specific foundation selection** | Which concrete foundation is selected **for a given role** (e.g. `Bandit` primary, `Cowboy` primary, `Doomy` enemy basis)? | project owner | **PARTIALLY ASSIGNED** in `DEC-12`; the general exclusivity question that `DEC-02` asked is **SUPERSEDED**. Any further per-role selection is a human act. |
+| **3. Unity integration** | Is a given foundation actually **imported, integrated and runtime-verified** in the game? | project owner (asset promotion is a human act, `README.md` §5) | **NOT INTEGRATED / NOT RUNTIME VERIFIED** for any character foundation. Static presence of rig, Avatar, Animator and skinned meshes on a prefab is **not** integration and **not** runtime verification. |
+
+**Consequences**
+
+- `DEC-02` is **not deleted** — the identifier is retained above as `SUPERSEDED` so history stays
+  traceable and no parallel record duplicating `DEC-12` is created.
+- A requirement written as "one canonical character file" is **not** satisfied merely because
+  `DEC-12` was accepted; see `REQUIREMENTS.md` `CR-05`.
+- Nothing in this section authorises character integration work. Per `MASTER_PLAN.md` Phase D,
+  project-integrity repair (D1/D2) still precedes any character import or integration step.
+- The architecture decision does **not** authorise entering Phase D or changing any game file.
+
 
 ---
 

@@ -35,7 +35,7 @@
 | `Documentation/GAME/*` (4) | Game design + systems + controls + requirements | ACTIVE DOMAIN | stays | identifier scheme; cited by ID | yes |
 | `Documentation/UNI/*` (4) | Unity state / assets / defects / toolchain | ACTIVE DOMAIN | stays | identifier scheme; `UNI-D13` etc. cited widely | yes |
 | `Documentation/REL/*` (3) | Recovery, build artefacts, security/release | ACTIVE DOMAIN | stays | identifier scheme | yes |
-| `Documentation/ART/*` (3) | Art state / asset register / pipeline+QA gates | ACTIVE DOMAIN | stays | identifier scheme | yes |
+| `Documentation/Art/*` (3) | Art state / asset register / pipeline+QA gates | ACTIVE DOMAIN | stays | identifier scheme | yes |
 | `Documentation/AI/*` (2) | AI agent state, tooling method | ACTIVE DOMAIN | stays | identifier scheme | yes |
 | `Documentation/Character/*` (1) | Character source backup | ACTIVE DOMAIN | stays | domain dir already correct | yes |
 | `Documentation/History/*` (7) | Timeline, legacy numbering, audit history, `OPEN_ISSUES` / `OPEN_DECISIONS` / `OPEN_CONFLICTS` / `OPEN_RISKS` | ACTIVE DOMAIN | stays | the four `OPEN_*` registers are live working documents, not history | yes |

@@ -1,4 +1,4 @@
-﻿---
+---
 type: roadmap
 status: active
 created: "2026-10-15"
@@ -737,11 +737,13 @@ Cowboy Elderly, and the Android device verification (no device available).
 | Direction | Root cause | Fix | Evidence |
 |---|---|---|---|
 | **A - death** | The AI turns the enemy by writing 	ransform.rotation on a **non-kinematic Rigidbody** (a teleport), which the physics resolves as a spin - up to **18 rad/s** accumulated. While the AI kept writing, the spin was corrected every frame; death stopped the writes, so the corpse unwound and was flung (measured 160-360 deg, 2-5 m, 14.5 m/s peaks). The capsule then stayed inside the arena contact envelope and the solver pushed it out at a constant 2.1 m/s | EnemyController: zero the angular velocity and freeze FreezeRotationY on death, zero the horizontal velocity **every** physics tick while dead, and put the body in kinematic mode (only when grounded, so an airborne death still falls) | probe_death_baseline.csv -> probe_death_v3/v4.csv: displacement 2.145 m -> **0.001-0.015 m**, rotation 160.6 deg -> **0.03-9.62 deg**, angular velocity 18 -> **0** |
-| **B - aim vs bullet** | The aim pose is a **static local-space animation**, the bullet always goes from irePoint to the player, FacePlayer() ran before the movement code (which turned the body again), and a 	ransform.rotation write is not authoritative on a dynamic Rigidbody (measured **94 deg** mismatch) | FaceDirectionToward now writes b.rotation; the facing to the player is re-applied after the state update in FixedUpdate | probe_aim_baseline.csv (94.0 deg at the shot) vs probe_aim_v4.csv: steady-state median **32.3 deg**, last frames **1.3-15.3 deg**. The shot-moment probe value is taken in Update before the next FixedUpdate, so it is not a valid before/after metric - a natural firing cycle was not measured |
+| **B - aim vs bullet** | The aim pose is a **static local-space animation**, the bullet always goes from irePoint to the player, FacePlayer() ran before the movement code (which turned the body again), and a 	ransform.rotation write is not authoritative on a dynamic Rigidbody (measured **94 deg** mismatch) | FaceDirectionToward now writes 
+b.rotation; the facing to the player is re-applied after the state update in FixedUpdate | probe_aim_baseline.csv (94.0 deg at the shot) vs probe_aim_v4.csv: steady-state median **32.3 deg**, last frames **1.3-15.3 deg**. The shot-moment probe value is taken in Update before the next FixedUpdate, so it is not a valid before/after metric - a natural firing cycle was not measured |
 | **C1 - debris blocks shots** | The player bullet swept with the mask ~0 and stopped at the first hit, so a debris fragment ate the bullet; the enemy bullet had the same behaviour | Bullet sweeps with SphereCastAll and skips colliders of an **already destroyed** DestructibleObject; EnemyBullet got the same filter. No layer or collision-matrix change, debris physics untouched | probe_barrel_final.csv: shot 3 passes the debris of the destroyed barrel A and damages barrel B |
 | **C2 - barrel dies in one hit** | Barrel maxHealth 50 vs the player bullet damage **200** -> instant Destroyed; the Damaged stage was empty | Barrel prefab only: maxHealth **400** (2 x 200, derived from the measured damage), hideOnDamaged = [intact body], showOnDamaged = [12 hoops], disableColliderOnDestroyed = true, plus a permanent Collision node so the damaged barrel stays hittable | probe_barrel_final.csv: shot 1 -> Damaged 200/400, shot 2 -> Destroyed. Crate and cover untouched |
 
-**Not closed:** the shot-moment aim metric in a natural firing cycle; the corpse still blocks bullets and the mesh falls inside the standing capsule (no ragdoll in the project, no new assets allowed); crate and cover still break in one hit (out of scope by instruction); other 	ransform.rotation writes in the AI remain (full conversion to b.rotation would change AI behaviour); EnemyHearing.FixedUpdate has no death gate (harmless in the measurement, left alone). **No APK was built** (forbidden in this pass) - there are no build-level or device-level results.
+**Not closed:** the shot-moment aim metric in a natural firing cycle; the corpse still blocks bullets and the mesh falls inside the standing capsule (no ragdoll in the project, no new assets allowed); crate and cover still break in one hit (out of scope by instruction); other 	ransform.rotation writes in the AI remain (full conversion to 
+b.rotation would change AI behaviour); EnemyHearing.FixedUpdate has no death gate (harmless in the measurement, left alone). **No APK was built** (forbidden in this pass) - there are no build-level or device-level results.
 ---
 
 ## 18. Session entry - 2026-10-20 (thirteenth session: APS v2.06 research - study only, no implementation)
@@ -767,7 +769,7 @@ Cowboy Elderly, and the Android device verification (no device available).
 
 **Scope.** Fix the confirmed navigation defects of the AI: direct movement into an obstacle when A* fails, routes too close to covers, the movement goal coinciding with the cover point, and the physics lifting the capsule onto crates. Permission was given for **targeted** changes in ArenaTacticalMap.cs and the existing A*. **No APK was built**, no commit, no navigation rewrite, no APS features.
 
-**Baseline measured** (real map, real props, Working/reports/nav_probe_baseline.csv): the path to a goal inside a cover **ended inside the prop in 9 of 9 cases**, the minimum clearance to the props was **0.00 m**, and a capsule pressed into a prop was lifted by the solver by up to **0.568 m** (|vy| 6.83 m/s). 1660 walkable cells.
+**Baseline measured** (real map, real props, Working/reports/nav_probe_baseline.csv): the path to a goal inside a cover **ended inside the prop in 8 of 8 cases** (the earlier "9 of 9" figure belonged to a superseded run of the stand - see section 21), the minimum clearance by the baseline methodology (to any collider except the measured prop) was **0.00-0.55 m**, and a capsule pressed into a prop was lifted by the solver by up to **0.568 m** (|vy| 6.83 m/s). 1660 walkable cells.
 
 **Root causes confirmed in code:** (1) MoveTowardsKnownTarget moves **directly** to the goal when it is closer than 5 m - the cover goal sits ~0.9 m from a crate, so the agent was sent straight into it; (2) when A* fails the same code moved **directly at the goal** through the obstacle; (3) TryFindPathInsideRoom **unconditionally overwrote** the last path point with the raw goal, so a goal inside a prop became the path's destination; (4) the node probe and the path-simplification line-of-sight test used radius 0.55 m while the navigation agent radius is 0.65 m and the enemy capsule radius is 0.5 m, and the edges between cells were never validated.
 
@@ -776,7 +778,7 @@ avFallbackToNearestCount /
 avStoppedUnreachableCount were added. The A* itself (search, heuristic, scoring, 4-neighbour grid, maxPathNodes) was **not** rewritten.
 
 **After** (
-av_probe_after.csv): paths ending inside a cover **0 of 9** (was 9 of 9), points inside a prop **0** (was 1), minimum clearance to the props **0.75-1.23 m** (was 0.00), walkable cells 1660 -> 1420 (-14 %, the cost of correctness), path build 0.9-8.2 ms, functional 8 s run: **0 prop contacts, 0.000 m vertical rise, 0 unsafe fallbacks, 0 stops**. The capsule lift under a **direct** push into a prop is unchanged - that is a property of Unity Physics, not of the route, and was deliberately not "fixed" by blocking vertical motion.
+av_probe_after.csv): paths ending inside a cover **0 of 8** (was 8 of 8), points inside a prop **0** in total (was 8 in total), minimum clearance **0.68-1.09 m** by the after-methodology (only to destructible props; the baseline methodology measured to any collider and gives 0.00-0.55 m, so the two rows are **not** a before/after pair), walkable cells 1660 -> 1420 (-14 %, the cost of correctness), path build 1.00-6.47 ms, functional 8 s run: **0 prop contacts, 0.000 m vertical rise, 0 unsafe fallbacks, 0 stops**. The capsule lift under a **direct** push into a prop is unchanged - that is a property of Unity Physics, not of the route, and was deliberately not "fixed" by blocking vertical motion. Re-verified against the saved CSVs in section 21.
 
 **Not closed:** the functional run never reached a cover, so the runtime "takes a position at the cover" behaviour is not confirmed; routes through the dense two-tier sections are rarer (the agent now stops next to a section it cannot squeeze through) and need observation; the unreachable-target case stops the agent and relies on the existing path-refresh mechanism instead of a dedicated wait state; no build/device verification.
 ---
@@ -802,7 +804,7 @@ av_probe_after.csv): paths ending inside a cover **0 of 9** (was 9 of 9), points
 | Enemy aiming vs bullet direction | implemented, partially verified (Editor) - steady-state mismatch median 32 deg; the shot-moment metric in a natural firing cycle is still unmeasured |
 | Destructible barrel | done and confirmed (Editor) - 1 shot -> Damaged, 2 -> Destroyed |
 | Destructible crate | implemented, partially verified (Editor) - 10 physical fragments; CP2/DEC-05 remain **formally open** (owner act) |
-| Navigation correctness | editor verified (geometry/probe checks) - paths ending inside a cover 8/8 -> 0/8, clearance 0.00-0.55 -> 0.68-1.09 m; **in-game cover approach still pending**; build and device not verified |
+| Navigation correctness | editor verified (geometry/probe checks) - paths ending inside a cover **8/8 -> 0/8** (re-verified from the saved CSVs, section 21); clearance 0.00-0.55 m (baseline methodology) vs 0.68-1.09 m (after methodology) - **not a before/after pair**; **in-game cover approach still pending**; build and device not verified |
 | Character art / materials | done and confirmed (Editor) - Cowboy Elderly in the four enemy prefabs, working URP/Lit materials, 34 duplicate assets archived |
 | External research (APS v2.06) | documented only - no integration, and the licence does not permit porting the implementation |
 | Audio, weapon-model integration, balance, mobile performance | planned / not started |
@@ -816,7 +818,7 @@ av_probe_after.csv): paths ending inside a cover **0 of 9** (was 9 of 9), points
 | D2 | AI_CONTEXT/CURRENT_TASK.md | "Stage 4.4.5 FROZEN / PAUSED", "CRATE_01 CP1 COMPLETE" | the project is far beyond that stage; the file already declares itself superseded as canonical |
 | D3 | Documentation/History/OPEN_ISSUES.md | Cowboy needs a recorded purchase proof | the asset was acquired, the Fab licence is verified (ART-0004 section 10); the issue still needs an owner decision to close |
 | D4 | AI_CONTEXT/CONFIRMED_STATE.md, AI_CONTEXT/README.md | historical / superseded | consistent with reality - left unchanged by design |
-| A1-A3 | QA_NAVIGATION_CORRECTNESS_2026-10-20.md vs its CSVs | "9 of 9", "0.75-1.23 m", "0.9-8.2 ms" | the saved CSVs contain **8** 	arget_inside cases (8/8 -> 0/8), clearance **0.68-1.09 m**, build **1.00-6.47 ms** |
+| A1-A3 | QA_NAVIGATION_CORRECTNESS_2026-10-20.md vs its CSVs | "9 of 9", "0.75-1.23 m", "0.9-8.2 ms" | the saved CSVs contain **8** `target_inside` cases (8/8 -> 0/8), clearance **0.68-1.09 m** (after methodology) vs **0.00-0.55 m** (baseline methodology - not a pair), build **1.00-6.47 ms**. **Re-verified and corrected on 2026-10-20 - see section 21 and the metrics reconciliation report** |
 | A4 | both navigation CSVs | 9-column header | rows carry 8 fields (no pathFound), the functional row 9, and decimals use a comma - tolerant parsing is required; the conclusions are unaffected |
 
 ### 20.4 Next steps (a plan, not an authorisation)
@@ -832,3 +834,41 @@ av_probe_after.csv): paths ending inside a cover **0 of 9** (was 9 of 9), points
 ### 20.5 Integration point for future reports
 
 Any later QA report (navigation cover approach, Android session, weapon/audio integration) is integrated into this roadmap as a new numbered section and into WWG_CURRENT_STATE.md / AI_CONTEXT/CHATGPT_HANDOFF_CURRENT.md as an addition - the existing context is never overwritten or delayed until a report appears.
+
+---
+
+## 21. Session entry - 2026-10-20 (sixteenth session: navigation QA metrics reconciliation - documentation only)
+
+**Scope.** The documentation audit found that the numbers in the navigation QA report did not match the saved measurement files. The CSVs were re-read from bytes, re-parsed with two independent implementations, the metrics were recomputed, and every derived document was corrected. **No game code, scene, prefab, asset, APK or stand was changed or re-run.** Evidence: `Working/reports/NAVIGATION_QA_METRICS_RECONCILIATION_2026-10-20.md`.
+
+### 21.1 What the files actually contain
+
+| Fact | Value |
+|---|---|
+| Delimiter | `;` - a comma is the **decimal separator** inside numeric fields |
+| Encoding / line endings | UTF-8 with BOM, CRLF, trailing newline |
+| Header | 9 names, including `pathFound` |
+| Data rows | **8** fields (prop scenarios), **10** (info rows: the count is the last field), **9** (functional enemy row) |
+| Why the lengths differ | the header is a hard-coded literal, the rows are written by a format string that **never emits `pathFound`** - the header describes the schema but is **not a positional map** for any row type. `pathFound` cannot be recovered (it is absent from every row of both files and was used by no conclusion) |
+| Parsing rules applied | 8 fields -> scenario, result, pathPoints, lastPointInProp, minClearance, pointsInProp, buildMs, detail; 10 fields -> count in the last field; 9 fields -> scenario, result, -, -, -, minClearance, contacts, buildMs, detail; decimals parsed by replacing `,` with `.`; the free-text `detail` column keeps dots (invariant `Vector3` formatting) |
+
+### 21.2 Recomputed metrics (two independent parsers, identical results)
+
+| Metric | Baseline | After | Comparable |
+|---|---|---|---|
+| paths ending **inside** a cover | **8 of 8** | **0 of 8** | yes - the primary result |
+| sum of path points inside a cover | 8 | **0** | yes |
+| clearance, baseline methodology (to any collider) | 0.00-0.55 m | - | **no** |
+| clearance, after methodology (to destructible props only) | - | 0.68-1.09 m | **no** - the two rows use different definitions |
+| path build time, `target_inside` | 1.66-4.97 ms | 1.00-6.47 ms | yes |
+| walkable cells | 1660 | 1420 | yes |
+| functional 8 s run | - | 0 prop contacts, 0.000 m rise, 0 fallbacks, 0 stops | yes |
+| capsule lift under a direct push | max 0.568 m | max 1.482 m | physics characterisation, **not** a navigation metric |
+
+**Sample comparability:** both runs contain 8 `target_inside` scenarios but over different props (baseline `Intact`x4/`Collision`x3/`Crate`x1; after `Crate`x3/`Intact`x3/`Collision`x2), and 5 vs 2 `far_side` scenarios. Aggregate metrics are comparable; per-prop clearance values are not.
+
+### 21.3 Correction applied
+
+The report's first edition claimed **9/9**, **0.75-1.23 m** and **0.9-8.2 ms** - figures from a superseded run of the stand whose CSV was later overwritten. The QA report now carries the verified numbers plus a dedicated correction section (5.2) stating the old values, what the re-check showed, the method, the CSV format facts and the non-comparability of the clearance rows. The same corrections were propagated to this roadmap (19, 20), to `AI_CONTEXT/CHATGPT_HANDOFF_CURRENT.md`, to the documentation reconciliation report (A1-A7) and to the vault notes. The original CSVs were **not** modified.
+
+**Unchanged open items:** the in-game cover approach is still unconfirmed; routes in the dense two-tier sections may be rarer; the solver can still lift the capsule under a direct push; no dedicated wait state; no APK, no device - `BUILD VERIFIED` and `DEVICE VERIFIED` are not claimed.

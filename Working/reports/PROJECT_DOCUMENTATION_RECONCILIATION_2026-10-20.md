@@ -182,3 +182,19 @@
 - `NAVIGATION: EDITOR VERIFIED — navigation geometry/probe checks; IN-GAME COVER APPROACH — PENDING` — отчёт `QA_NAVIGATION_CORRECTNESS_2026-10-20.md` существует, прочитан и сверен с CSV; ограничения §4.3 сохранены.
 - `BUILD VERIFIED` — **не заявляется** в этом документационном проходе (сборка не выполнялась). Последняя сборка проекта — `CowboyAnim_TwoTier_2026-10-20.apk`, её статус описан в §6.
 - `DEVICE VERIFIED` — **не заявляется** (устройство отсутствует).
+
+---
+
+## 12. Итог публикации (дополнено после коммита)
+
+| Пункт | Значение |
+|---|---|
+| Документационный commit (локальный) | **9722d22876d2717a5a65b560e09c22b023713921** (9722d22) |
+| Фактический удалённый SHA после push | **9722d22876d2717a5a65b560e09c22b023713921** (efs/heads/main на origin) |
+| Push | обычный git push origin main, 12cd312..9722d22 main -> main, **без** force/rebase/reset; git ls-remote подтвердил удалённый SHA; расхождение 0/0 |
+| Состав коммита | 24 файла, только .md и .csv: 6 отчётов (5 QA + reconciliation), 14 CSV-измерений, AI_CONTEXT/CHATGPT_HANDOFF_CURRENT.md, Documentation/INTEGRATION_ROADMAP.md (§20), Documentation/Art/ART-0004-… (§10). Полный staged diff проверен перед коммитом: игровых скриптов, сцен, префабов, ассетов и APK в нём нет; сканирование на секреты — без совпадений |
+| Публично не вошло | игровой код и ассеты 2026-10-16…20 (смерть, прицел, разрушение бочки, навигация, двухъярусные секции, чистка ассетов), 194 более ранних неотслеживаемых отчёта, APK, Working/archive_assets/**. Всё это остаётся **только в локальной копии** и не должно считаться опубликованным |
+| Личные данные | из публикуемых файлов убраны абсолютные пути с именем пользователя (C:\Users\<user> → <user>) |
+| Vault | локальный git-репозиторий без remote; заметки зафиксированы локальным коммитом, публикация не выполнялась и невозможна |
+
+**Финальные статусы:** LOCAL DOCUMENTATION: VERIFIED · OBSIDIAN: VERIFIED · GITHUB DOCUMENTATION: SYNCED (SHA 9722d22) · NAVIGATION: EDITOR VERIFIED (geometry/probe) + IN-GAME COVER APPROACH PENDING · BUILD VERIFIED — **не заявляется** (сборка в этом проходе не выполнялась) · DEVICE VERIFIED — **не заявляется** (устройства нет).

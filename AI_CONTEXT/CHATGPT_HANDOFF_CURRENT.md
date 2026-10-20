@@ -56,6 +56,8 @@
 ## 5. Статус навигации (детализация)
 
 - Отчёт: `Working/reports/QA_NAVIGATION_CORRECTNESS_2026-10-20.md`; данные: `Working/reports/nav_probe_baseline.csv`, `nav_probe_after.csv`.
+- **Статус:** `EDITOR VERIFIED — navigation geometry/probe checks`; `IN-GAME COVER APPROACH — PENDING`; `BUILD VERIFIED — NO`; `DEVICE VERIFIED — NO`.
+- Проверено в Editor: baseline — 8/8 путей заканчивались внутри укрытия, зазор 0.00–0.55 м, 1660 проходимых клеток; after — **0/8**, зазор **0.68–1.09 м**, 1420 клетки, построение 1.00–6.47 мс; 8-секундный прогон — 0 контактов, 0.000 м подъёма, 0 небезопасных откатов.
 - Правки (локально, не опубликованы): `Assets/Scripts/Procedural/ArenaTacticalMap.cs`, `Assets/Scripts/Enemies/EnemyController.cs`; стенд `Assets/_Sandbox/NavProbe_2026-10-20/`.
 - Проверено в Editor: геометрия маршрутов и проба. **Не проверено:** фактическое занятие укрытия, поведение в плотных секциях, сборка, устройство.
 - Побочный эффект, требующий наблюдения: проходимых клеток 1660 → 1420.

@@ -1,0 +1,6 @@
+step;result
+shot1;Damaged hp=200/400 | B=Intact hp=400/400
+shot2;Destroyed hp=0/400 | B=Intact hp=400/400
+shot3;Destroyed hp=0/400 | B=Damaged hp=200/400
+shot4;Destroyed hp=0/400 | B=Destroyed hp=0/400
+debrisCollidersEnabled;0
